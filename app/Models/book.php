@@ -26,7 +26,7 @@ class book extends Model
 
     public function orderDetails()
     {
-        return $this->hasMany(orders_detail::class);
+        return $this->hasMany(OrdersDetail::class);
     }
 
     public function carts()
@@ -54,5 +54,32 @@ class book extends Model
     {
         $this->stock += $quantity;
         $this->save();
+    }
+
+    public function reviews()
+    {
+        return $this->hasMany(BookReview::class);
+    }
+
+    // HELPER METHOD untuk rating
+    public function averageRating()
+    {
+        return $this->reviews()->avg('rating') ?? 0;
+    }
+
+    public function totalReviews()
+    {
+        return $this->reviews()->count();
+    }
+
+    public function ratingBreakdown()
+    {
+        return [
+            '5_star' => $this->reviews()->where('rating', 5)->count(),
+            '4_star' => $this->reviews()->where('rating', 4)->count(),
+            '3_star' => $this->reviews()->where('rating', 3)->count(),
+            '2_star' => $this->reviews()->where('rating', 2)->count(),
+            '1_star' => $this->reviews()->where('rating', 1)->count(),
+        ];
     }
 }

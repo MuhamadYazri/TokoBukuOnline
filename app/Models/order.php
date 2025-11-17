@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class order extends Model
+class Order extends Model
 {
     use HasFactory;
 
@@ -30,9 +30,8 @@ class order extends Model
 
     public function orderDetails()
     {
-        return $this->hasMany(orders_detail::class);
+        return $this->hasMany(OrdersDetail::class);
     }
-
 
     public function isPending()
     {
@@ -50,9 +49,8 @@ class order extends Model
         $this->save();
     }
 
-    public function cancel()
+    public function getTotalAmount()
     {
-        $this->status = 'cancelled';
-        $this->save();
+        return $this->orderDetails()->sum('price');
     }
 }

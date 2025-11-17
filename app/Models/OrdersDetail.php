@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class orders_detail extends Model
+class OrdersDetail extends Model
 {
     use HasFactory;
 
     protected $table = 'orders_details';
 
+    /**
+     * @method static static create(array $attributes)
+     */
     protected $fillable = [
         'order_id',
         'book_id',

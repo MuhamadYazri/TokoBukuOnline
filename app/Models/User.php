@@ -61,10 +61,21 @@ class User extends Authenticatable
 
     public function activityLogs()
     {
-        return $this->hasMany(activity_log::class);
+        return $this->hasMany(ActivityLog::class);
     }
 
-    public function isAdmin()
+    public function reviews()
+    {
+        return $this->hasMany(BookReview::class);
+    }
+
+
+    /**
+     * Check if user is an admin
+     *
+     * @return bool
+     */
+    public function isAdmin(): bool
     {
         return $this->role === 'admin';
     }
