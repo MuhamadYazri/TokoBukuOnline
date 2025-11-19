@@ -14,18 +14,42 @@ class UserSeeder extends Seeder
      */
     public function run(): void
     {
+        // Admin User
         User::create([
-            'name' => 'Admin Toko Buku',
-            'email' => 'admin@tokobuku.com',
-            'password' => Hash::make('admin123'),
+            'name' => 'Admin LiterAsik',
+            'email' => 'admin@literasik.com',
+            'password' => Hash::make('password'),
             'role' => 'admin',
             'email_verified_at' => now(),
         ]);
 
+        // Customer Users
         User::create([
-            'name' => 'John Doe',
-            'email' => 'customer@example.com',
-            'password' => Hash::make('customer123'),
+            'name' => 'Budi Santoso',
+            'email' => 'budi@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'customer',
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => 'Siti Nurhaliza',
+            'email' => 'siti@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'customer',
+            'email_verified_at' => now(),
+        ]);
+
+        User::create([
+            'name' => 'Andi Wijaya',
+            'email' => 'andi@example.com',
+            'password' => Hash::make('password'),
+            'role' => 'customer',
+            'email_verified_at' => now(),
+        ]);
+
+        // Buat 10 customer random lagi
+        User::factory(10)->create([
             'role' => 'customer',
             'email_verified_at' => now(),
         ]);

@@ -16,5 +16,12 @@ class DatabaseSeeder extends Seeder
             BookSeeder::class,
             UserSeeder::class
         ]);
+
+        $this->command->info('✅ Database seeded successfully!');
+        $this->command->info('📧 Admin Email: admin@literasik.com');
+        $this->command->info('🔑 Password: password');
+        $this->command->newLine();
+        $this->command->info('📧 Customer Email: budi@example.com');
+        $this->command->info('🔑 Password: password');
     }
 }

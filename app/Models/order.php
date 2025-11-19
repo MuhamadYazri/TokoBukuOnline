@@ -30,7 +30,7 @@ class Order extends Model
 
     public function orderDetails()
     {
-        return $this->hasMany(OrdersDetail::class);
+        return $this->hasMany(OrderDetail::class);
     }
 
     public function isPending()

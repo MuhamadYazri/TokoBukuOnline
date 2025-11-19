@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\OrdersDetail;
+use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\Book;
 use App\Models\ActivityLog;
@@ -68,7 +68,9 @@ class OrderController extends Controller
             $totalPrice = 0;
 
             // Validasi stok & hitung total
-            foreach ($cartItems as $item) {
+            foreach ($cartItems as $itemm) {
+                $item = new $itemm;
+
                 if ($item->book->stock < $item->quantity) {
                     DB::rollBack();
                     return back()->with('error', "Stok buku '{$item->book->title}' tidak mencukupi!");
@@ -81,7 +83,9 @@ class OrderController extends Controller
             $orderNumber = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
 
             // Buat order untuk setiap buku
-            foreach ($cartItems as $item) {
+            foreach ($cartItems as $itemm) {
+                $item = new $item;
+
                 $order = Order::create([
                     'user_id' => Auth::id(),
                     'order_number' => $orderNumber,
@@ -92,7 +96,7 @@ class OrderController extends Controller
                 ]);
 
                 // Buat order detail
-                OrdersDetail::create([
+                OrderDetail::create([
                     'order_id' => $order->id,
                     'book_id' => $item->book_id,
                     'quantity' => $item->quantity,
@@ -126,7 +130,7 @@ class OrderController extends Controller
     /**
      * Tampilkan detail order
      */
-    public function show(order $order)
+    public function show(Order $order)
     {
         // Pastikan order milik user yang login
         if ($order->user_id !== Auth::id()) {
@@ -141,7 +145,7 @@ class OrderController extends Controller
     /**
      * Cancel order
      */
-    public function cancel(order $order)
+    public function cancel(Order $order)
     {
         // Pastikan order milik user yang login
         if ($order->user_id !== Auth::id()) {

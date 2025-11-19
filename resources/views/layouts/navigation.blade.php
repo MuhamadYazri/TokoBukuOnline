@@ -7,8 +7,9 @@
         </a>
 
         <div class="navbar-actions">
+
             <div class="shopping-cart-wrapper">
-                <a href="{{ route('cart.index') }}" class="cart-link">
+                <a href="{{ route('customer.cart.index' ) }}" class="cart-link">
                     <svg class="cart-icon" width="20" height="20" viewBox="0 0 20 20" fill="#EFEFEF" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7.5 18.3333C8.42047 18.3333 9.16667 17.5871 9.16667 16.6667C9.16667 15.7462 8.42047 15 7.5 15C6.57953 15 5.83333 15.7462 5.83333 16.6667C5.83333 17.5871 6.57953 18.3333 7.5 18.3333Z" stroke="#EFEFEF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M16.6667 18.3333C17.5871 18.3333 18.3333 17.5871 18.3333 16.6667C18.3333 15.7462 17.5871 15 16.6667 15C15.7462 15 15 15.7462 15 16.6667C15 17.5871 15.7462 18.3333 16.6667 18.3333Z" stroke="#EFEFEF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -26,17 +27,17 @@
     </div>
 
     <div class="search-bar">
-        <form action="#" method="GET" class="search-form">
+        <form action="{{ 'books' }}" method="GET" class="search-form">
             <svg class="search-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                 <path d="M9 17C13.4183 17 17 13.4183 17 9C17 4.58172 13.4183 1 9 1C4.58172 1 1 4.58172 1 9C1 13.4183 4.58172 17 9 17Z" stroke="#717182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                 <path d="M19 19L14.65 14.65" stroke="#717182" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
             <input
                 type="text"
-                name="q"
+                name="search"
                 class="search-input"
                 placeholder="Cari judul buku, penulis, atau kategori..."
-                value="{{ request('q') }}">
+                value="{{ request('search') }}">
         </form>
     </div>
 
@@ -52,7 +53,7 @@
         </div>
         <div class="nav-mobile-item">
             @auth
-                <a href="{{ route('profile.edit') }}" class="nav-mobile-link">
+                <a href="{{ route('customer.profile.edit') }}" class="nav-mobile-link">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M7 7C8.933 7 10.5 5.433 10.5 3.5C10.5 1.567 8.933 0 7 0C5.067 0 3.5 1.567 3.5 3.5C3.5 5.433 5.067 7 7 7ZM7 8.75C4.66375 8.75 0 9.92125 0 12.25V14H14V12.25C14 9.92125 9.33625 8.75 7 8.75Z" fill="#334155"/>
                     </svg>
@@ -75,7 +76,8 @@
         const navMobile = document.getElementById('navMobile');
         navMobile.classList.toggle('active');
     }
-    const navbar = document.querySelector('.navbar')
+    const navbar = document.querySelector('.navbar');
+
     let lastScrollPosition = 0;
 
     document.addEventListener('scroll', ()=>{
@@ -83,14 +85,18 @@
 
         if(window.scrollY > 80){
             navbar.classList.add('scrolled');
+            console.log('top');
         }else{
             navbar.classList.remove('scrolled');
+            console.log('not-top');
         }
 
         if(lastScrollPosition < scrollPosition){
-            navbar.classList.add('scrollTop');
+            navbar.classList.add('scrollAtas');
+            console.log('scroll down');
         }else{
-            navbar.classList.remove('scrollTop');
+            navbar.classList.remove('scrollAtas');
+            console.log('scroll up');
         }
 
 

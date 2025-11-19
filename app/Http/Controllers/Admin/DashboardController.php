@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\Order;
-use App\Models\OrdersDetail;
+use App\Models\OrderDetail;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -22,12 +22,12 @@ class DashboardController extends Controller
         $monthlyRevenue = $this->getMonthlyRevenue();
         $bestSellingBooks = $this->getBestSellingBooks(5);
 
-        return view('admin.dashboard', compact(
-            'stats',
-            'monthlyTransactions',
-            'monthlyRevenue',
-            'bestSellingBooks'
-        ));
+        return view('admin.dashboard');
+    }
+
+    public function test()
+    {
+        return view('admin.dashboard');
     }
 
     /**
@@ -89,7 +89,7 @@ class DashboardController extends Controller
      */
     private function getBestSellingBooks($limit = 10)
     {
-        return OrdersDetail::select(
+        return OrderDetail::select(
             'book_id',
             DB::raw('SUM(quantity) as total_sold'),
             DB::raw('SUM(quantity * price) as total_revenue')

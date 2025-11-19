@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Customer;
 
 use App\Http\Controllers\Controller;
-use App\Models\book;
+use App\Models\Book;
 use Illuminate\Http\Request;
 
 class BookController extends Controller
@@ -48,7 +48,7 @@ class BookController extends Controller
     /**
      * Tampilkan detail buku
      */
-    public function show(book $book)
+    public function show(Book $book)
     {
         // Load reviews dengan user
         $book->load(['reviews' => function ($query) {
