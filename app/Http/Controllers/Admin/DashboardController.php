@@ -22,7 +22,7 @@ class DashboardController extends Controller
         $monthlyRevenue = $this->getMonthlyRevenue();
         $bestSellingBooks = $this->getBestSellingBooks(5);
 
-        return view('admin.dashboard');
+        return view('admin.dashboard', compact('stats', 'monthlyTransactions', 'monthlyRevenue', 'bestSellingBooks'));
     }
 
     public function test()

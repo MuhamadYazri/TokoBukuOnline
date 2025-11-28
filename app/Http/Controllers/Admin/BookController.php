@@ -36,6 +36,7 @@ class BookController extends Controller
         $validated = $request->validate([
             'title' => 'required|string|max:255',
             'author' => 'required|string|max:255',
+            'category' => 'required|in:pengembangan-diri,fiksi,filosofi,psikologi',
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'year' => 'nullable|integer|min:1900|max:' . date('Y'),
@@ -45,6 +46,8 @@ class BookController extends Controller
 
         // Upload cover image
         if ($request->hasFile('cover')) {
+
+
             $validated['cover'] = $request->file('cover')->store('books/covers', 'public');
         }
 

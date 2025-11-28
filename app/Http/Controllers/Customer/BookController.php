@@ -24,6 +24,22 @@ class BookController extends Controller
             });
         }
 
+        // Category Filter
+        if ($request->has('category') && $request->category != '') {
+            $query->where('category', $request->category);
+        }
+
+        // Rating Filter
+        if ($request->has('rating') && $request->rating != '') {
+            $rating = (float) $request->rating;
+            $query->whereIn('id', function ($subquery) use ($rating) {
+                $subquery->select('book_id')
+                    ->from('book_reviews')
+                    ->groupBy('book_id')
+                    ->havingRaw('AVG(rating) >= ?', [$rating]);
+            });
+        }
+
         // Sorting
         $sort = $request->input('sort', 'latest');
         switch ($sort) {
@@ -40,7 +56,7 @@ class BookController extends Controller
                 $query->latest();
         }
 
-        $books = $query->paginate(12);
+        $books = $query->paginate(10);
 
         return view('customer.books.index', compact('books'));
     }
@@ -48,20 +64,21 @@ class BookController extends Controller
     /**
      * Tampilkan detail buku
      */
-    public function show(Book $book)
+    public function show($id)
     {
         // Load reviews dengan user
-        $book->load(['reviews' => function ($query) {
-            $query->latest()->limit(10);
-        }, 'reviews.user']);
+        // $book->load(['reviews' => function ($query) {
+        //     $query->latest()->limit(10);
+        // }, 'reviews.user']);
 
+        $book = Book::find($id);
         // Buku terkait (same author)
-        $relatedBooks = Book::where('author', $book->author)
-            ->where('id', '!=', $book->id)
-            ->where('stock', '>', 0)
-            ->limit(4)
-            ->get();
+        // $relatedBooks = Book::where('author', $book->author)
+        //     ->where('id', '!=', $book->id)
+        //     ->where('stock', '>', 0)
+        //     ->limit(4)
+        //     ->get();
 
-        return view('customer.books.show', compact('book', 'relatedBooks'));
+        return view('customer.books.show', compact('book'));
     }
 }

@@ -169,7 +169,7 @@
                                 <!-- Book Info -->
                                 <div class="books-card-info">
                                     <div class="books-card-details">
-                                        <p class="books-card-category">{{ $book->category ?? 'Pengembangan Diri' }}</p>
+                                        <p class="books-card-category">{{ $book->getCategoryNameAttribute()}}</p>
                                         <h3 class="books-card-title">{{ Str::limit($book->title, 30) }}</h3>
                                         <p class="books-card-author">Oleh {{ $book->author }}</p>
                                     </div>

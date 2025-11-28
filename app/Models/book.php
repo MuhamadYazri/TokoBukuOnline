@@ -12,12 +12,30 @@ class Book extends Model
     protected $fillable = [
         'title',
         'author',
+        'category',
         'price',
         'stock',
         'year',
         'cover',
         'description'
     ];
+
+    const CATEGORIES = [
+        'pengembangan-diri' => 'Pengembangan Diri',
+        'fiksi' => 'Fiksi',
+        'filosofi' => 'Filosofi',
+        'psikologi' => 'Psikologi',
+    ];
+
+    public static function getCategories()
+    {
+        return self::CATEGORIES;
+    }
+
+    public function getCategoryNameAttribute()
+    {
+        return self::CATEGORIES[$this->category] ?? 'Pengembangan Diri';
+    }
 
     public function orders()
     {

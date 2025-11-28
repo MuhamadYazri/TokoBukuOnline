@@ -1,507 +1,283 @@
 <x-app-layout>
     <div class="book-detail-page">
-        <div class="container">
-            <!-- Breadcrumb -->
-            <nav class="breadcrumb">
-                <a href="{{ route('customer.books.index') }}">Katalog</a>
-                <span>/</span>
-                <span>{{ $book->title }}</span>
-            </nav>
+        <!-- Header with Gradient -->
+        <div class="book-detail-header">
+            <div class="book-detail-header-text">
+                <h1 class="book-detail-header-title">Detail Buku</h1>
+                <p class="book-detail-header-subtitle">Lihat informasi detail sebuah buku</p>
+            </div>
+        </div>
 
-            <!-- Book Detail Section -->
-            <div class="book-detail-grid">
-                <!-- Left: Book Cover -->
-                <div class="book-cover-section">
+        <!-- Main Container -->
+        <div class="book-detail-container">
+            <!-- Breadcrumb -->
+            <div class="book-detail-breadcrumb">
+                <p>Beranda / Koleksi Buku / {{ $book->title }}</p>
+            </div>
+
+            <!-- Section 1: Book Image, Actions, Stock -->
+            <div class="book-detail-section-1">
+                <!-- Book Image -->
+                <div class="book-detail-image">
                     @if($book->cover)
-                        <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}" class="book-cover-large">
+                        <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}">
                     @else
-                        <div class="book-cover-placeholder-large">
-                            <svg width="120" height="120" viewBox="0 0 60 60" fill="none">
-                                <path d="M10 5H40L50 15V50C50 51.1046 49.1046 52 48 52H10C8.89543 52 8 51.1046 8 50V7C8 5.89543 8.89543 5 10 5Z" fill="#E5E7EB"/>
-                                <path d="M40 5V15H50" stroke="#9CA3AF" stroke-width="2"/>
-                                <path d="M18 25H42M18 32H42M18 39H35" stroke="#9CA3AF" stroke-width="2"/>
+                        <div class="book-detail-image-placeholder">
+                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
+                                <path d="M15 10H55L65 20V65C65 66.1046 64.1046 67 63 67H15C13.8954 67 13 66.1046 13 65V12C13 10.8954 13.8954 10 15 10Z" fill="#E5E7EB"/>
+                                <path d="M55 10V20H65" stroke="#9CA3AF" stroke-width="2"/>
+                                <path d="M25 35H55M25 42H55M25 49H47" stroke="#9CA3AF" stroke-width="2"/>
                             </svg>
                         </div>
                     @endif
-
-                    <!-- Action Buttons -->
-                    <div class="action-buttons">
-                        <form method="POST" action="{{ route('customer.collections.store') }}" class="w-full">
-                            @csrf
-                            <input type="hidden" name="book_id" value="{{ $book->id }}">
-                            <button type="submit" class="btn-action btn-collection">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M10 3.5L11.5 8.5H16.5L12.5 11.5L14 16.5L10 13.5L6 16.5L7.5 11.5L3.5 8.5H8.5L10 3.5Z" stroke="currentColor" stroke-width="2" stroke-linejoin="round"/>
-                                </svg>
-                                Tambah ke Koleksi
-                            </button>
-                        </form>
-                    </div>
                 </div>
 
-                <!-- Right: Book Info -->
-                <div class="book-info-section">
-                    <h1 class="book-title-detail">{{ $book->title }}</h1>
-                    <p class="book-author-detail">oleh <strong>{{ $book->author }}</strong></p>
+                <!-- Like & Share Buttons -->
+                <div class="book-detail-actions">
+                    <button class="book-detail-btn-action">
+                        <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
+                            <path d="M11 18L9.405 16.5425C3.74 11.395 0 8.0075 0 3.95C0 1.5625 1.87 0 4.4 0C5.808 0 7.15 0.6425 8 1.635C8.85 0.6425 10.192 0 11.6 0C14.13 0 16 1.5625 16 3.95C16 8.0075 12.26 11.395 6.595 16.5425L11 18Z" fill="#B3B3B3"/>
+                        </svg>
+                    </button>
+                    <button class="book-detail-btn-action">
+                        <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
+                            <path d="M15 13.5L9 17L3 13.5V3L9 6.5L15 3V13.5Z" stroke="#B3B3B3" stroke-width="2" fill="none"/>
+                            <path d="M9 6.5V17" stroke="#B3B3B3" stroke-width="2"/>
+                        </svg>
+                    </button>
+                </div>
 
-                    <!-- Rating Summary -->
-                    <div class="rating-summary">
-                        <div class="rating-stars-large">
-                            @php
-                                $rating = $book->averageRating();
-                                $fullStars = floor($rating);
-                                $halfStar = ($rating - $fullStars) >= 0.5;
-                            @endphp
-
-                            @for($i = 1; $i <= 5; $i++)
-                                @if($i <= $fullStars)
-                                    <svg class="star-large star-filled" width="24" height="24" viewBox="0 0 20 20">
-                                        <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="#FCD34D"/>
-                                    </svg>
-                                @elseif($i == $fullStars + 1 && $halfStar)
-                                    <svg class="star-large star-half" width="24" height="24" viewBox="0 0 20 20">
-                                        <defs>
-                                            <linearGradient id="half-detail">
-                                                <stop offset="50%" stop-color="#FCD34D"/>
-                                                <stop offset="50%" stop-color="#E5E7EB"/>
-                                            </linearGradient>
-                                        </defs>
-                                        <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="url(#half-detail)"/>
-                                    </svg>
-                                @else
-                                    <svg class="star-large star-empty" width="24" height="24" viewBox="0 0 20 20">
-                                        <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="#E5E7EB"/>
-                                    </svg>
-                                @endif
-                            @endfor
-                        </div>
-                        <span class="rating-number">{{ number_format($rating, 1) }}</span>
-                        <span class="rating-count">({{ $book->totalReviews() }} ulasan)</span>
-                    </div>
-
-                    <!-- Book Meta Info -->
-                    <div class="book-meta">
-                        @if($book->year)
-                            <div class="meta-item">
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                                    <path d="M6 2V6M14 2V6M3 10H17M5 4H15C16.1046 4 17 4.89543 17 6V16C17 17.1046 16.1046 18 15 18H5C3.89543 18 3 17.1046 3 16V6C3 4.89543 3.89543 4 5 4Z" stroke="#6B7280" stroke-width="2"/>
-                                </svg>
-                                <span>Tahun: {{ $book->year }}</span>
-                            </div>
-                        @endif
-
-                        <div class="meta-item">
-                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                                <path d="M20 10C20 15.523 15.523 20 10 20C4.477 20 0 15.523 0 10C0 4.477 4.477 0 10 0C15.523 0 20 4.477 20 10Z" fill="#{{ $book->stock > 10 ? '10B981' : ($book->stock > 0 ? 'F59E0B' : 'EF4444') }}"/>
-                            </svg>
-                            <span>Stok: {{ $book->stock }} buku</span>
-                        </div>
-                    </div>
-
-                    <!-- Price -->
-                    <div class="price-section">
-                        <div class="price-large">
-                            <span class="price-currency">Rp</span>
-                            <span class="price-amount">{{ number_format($book->price, 0, ',', '.') }}</span>
-                        </div>
-                    </div>
-
-                    <!-- Add to Cart Form -->
-                    @if($book->stock > 0)
-                        <form method="POST" action="{{ route('customer.cart.store') }}" class="add-to-cart-section">
-                            @csrf
-                            <input type="hidden" name="book_id" value="{{ $book->id }}">
-
-                            <div class="quantity-selector">
-                                <label for="quantity">Jumlah:</label>
-                                <div class="quantity-controls">
-                                    <button type="button" class="qty-btn" onclick="decreaseQty()">−</button>
-                                    <input type="number" id="quantity" name="quantity" value="1" min="1" max="{{ $book->stock }}" class="qty-input">
-                                    <button type="button" class="qty-btn" onclick="increaseQty({{ $book->stock }})">+</button>
-                                </div>
-                            </div>
-
-                            <button type="submit" class="btn-add-to-cart">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M16 18C16.5523 18 17 17.5523 17 17C17 16.4477 16.5523 16 16 16C15.4477 16 15 16.4477 15 17C15 17.5523 15.4477 18 16 18Z" stroke="currentColor" stroke-width="2"/>
-                                    <path d="M1 1H4L6.68 13.39C6.77144 13.8504 7.02191 14.264 7.38755 14.5583C7.75318 14.8526 8.2107 15.009 8.68 15H15.4C15.8693 15.009 16.3268 14.8526 16.6925 14.5583C17.0581 14.264 17.3086 13.8504 17.4 13.39L19 6H5" stroke="currentColor" stroke-width="2"/>
-                                </svg>
-                                Tambah ke Keranjang
-                            </button>
-                        </form>
-                    @else
-                        <div class="out-of-stock">
-                            <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="#EF4444" stroke-width="2"/>
-                                <path d="M7 7L13 13M13 7L7 13" stroke="#EF4444" stroke-width="2"/>
-                            </svg>
-                            Stok Habis
-                        </div>
-                    @endif
-
-                    <!-- Description -->
-                    @if($book->description)
-                        <div class="book-description">
-                            <h3>Deskripsi</h3>
-                            <p>{{ $book->description }}</p>
-                        </div>
-                    @endif
+                <!-- Stock Info -->
+                <div class="book-detail-stock">
+                    <p class="book-detail-stock-label">Stok tersedia</p>
+                    <p class="book-detail-stock-value">{{ $book->stock }} unit</p>
                 </div>
             </div>
 
-            <!-- Reviews Section -->
-            <div class="reviews-section">
-                <h2 class="section-title">Ulasan Pembaca</h2>
+            <!-- Section 2: Book Details, Reviews, Info -->
+            <div class="book-detail-section-2">
+                <!-- Category Badge -->
+                <div class="book-detail-category-badge">
+                    <p>{{ $book->getCategoryNameAttribute()}}</p>
+                </div>
 
-                <!-- Rating Breakdown -->
-                @php
-                    $breakdown = $book->ratingBreakdown();
-                    $totalReviews = $book->totalReviews();
-                @endphp
+                <!-- Book Title -->
+                <h2 class="book-detail-title">{{ $book->title }}</h2>
 
-                <div class="rating-breakdown">
-                    <div class="rating-overview">
-                        <div class="rating-score">{{ number_format($book->averageRating(), 1) }}</div>
-                        <div class="rating-stars-medium">
-                            @for($i = 1; $i <= 5; $i++)
-                                @if($i <= floor($book->averageRating()))
-                                    <svg class="star-medium star-filled" width="20" height="20" viewBox="0 0 20 20">
-                                        <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="#FCD34D"/>
-                                    </svg>
-                                @else
-                                    <svg class="star-medium star-empty" width="20" height="20" viewBox="0 0 20 20">
-                                        <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="#E5E7EB"/>
-                                    </svg>
-                                @endif
-                            @endfor
-                        </div>
-                        <div class="rating-total">{{ $totalReviews }} ulasan</div>
-                    </div>
+                <!-- Author -->
+                <p class="book-detail-author">Oleh {{ $book->author }}</p>
 
-                    <div class="rating-bars">
-                        @for($i = 5; $i >= 1; $i--)
-                            @php
-                                $count = $breakdown["{$i}_star"];
-                                $percentage = $totalReviews > 0 ? ($count / $totalReviews) * 100 : 0;
-                            @endphp
-                            <div class="rating-bar-item">
-                                <span class="star-label">{{ $i }} ★</span>
-                                <div class="bar-container">
-                                    <div class="bar-fill" style="width: {{ $percentage }}%"></div>
-                                </div>
-                                <span class="bar-count">{{ $count }}</span>
-                            </div>
+                <!-- Rating & Reviews -->
+                <div class="book-detail-rating-wrapper">
+                    <div class="book-detail-rating-stars">
+                        @php
+                            $rating = $book->averageRating();
+                            $fullStars = floor($rating);
+                            $halfStar = ($rating - $fullStars) >= 0.5;
+                        @endphp
+
+                        @for($i = 1; $i <= 5; $i++)
+                            @if($i <= $fullStars)
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="#FFCC00"/>
+                                </svg>
+                            @elseif($i == $fullStars + 1 && $halfStar)
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <defs>
+                                        <linearGradient id="half-star-detail">
+                                            <stop offset="50%" stop-color="#FFCC00"/>
+                                            <stop offset="50%" stop-color="#E5E7EB"/>
+                                        </linearGradient>
+                                    </defs>
+                                    <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="url(#half-star-detail)"/>
+                                </svg>
+                            @else
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                                    <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" stroke="#E5E7EB" fill="#E5E7EB"/>
+                                </svg>
+                            @endif
                         @endfor
+
+                        <span class="book-detail-rating-number">{{ number_format($rating, 1) }}</span>
+                    </div>
+                    <div class="book-detail-rating-divider"></div>
+                    <p class="book-detail-reviews-count">{{ $book->totalReviews() }} ulasan</p>
+                </div>
+
+                <!-- Price -->
+                <div class="book-detail-price-box">
+                    <p class="book-detail-price-label">Harga</p>
+                    <p class="book-detail-price-value">Rp {{ number_format($book->price, 0, ',', '.') }}</p>
+                </div>
+
+                <!-- Detail Section Title -->
+                <h3 class="book-detail-section-title">Detail Buku</h3>
+
+                <!-- Info Grid -->
+                <div class="book-detail-info-grid">
+                    <div class="book-detail-info-item">
+                        <p class="book-detail-info-label">Penerbit</p>
+                        <p class="book-detail-info-value">{{ $book->publisher ?? 'Pustaka Bentang' }}</p>
+                    </div>
+                    <div class="book-detail-info-item">
+                        <p class="book-detail-info-label">Tahun</p>
+                        <p class="book-detail-info-value">{{ $book->year ?? '2025' }}</p>
+                    </div>
+                    <div class="book-detail-info-item">
+                        <p class="book-detail-info-label">Bahasa</p>
+                        <p class="book-detail-info-value">{{ $book->language ?? 'Indonesia' }}</p>
+                    </div>
+                    <div class="book-detail-info-item">
+                        <p class="book-detail-info-label">Halaman</p>
+                        <p class="book-detail-info-value">{{ $book->pages ?? '500' }}</p>
                     </div>
                 </div>
 
-                <!-- Write Review Form -->
-                <div class="write-review-section">
-                    <h3>Tulis Ulasan</h3>
-                    <form method="POST" action="{{ route('customer.reviews.store', $book->id) }}" class="review-form">
-                        @csrf
+                <!-- Description -->
+                <div class="book-detail-description-wrapper">
+                    <h3 class="book-detail-section-title">Deskripsi</h3>
 
-                        <div class="form-group">
-                            <label>Rating</label>
-                            <div class="star-rating-input" id="starRating">
-                                @for($i = 1; $i <= 5; $i++)
-                                    <svg class="star-input" data-rating="{{ $i }}" width="32" height="32" viewBox="0 0 20 20">
-                                        <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="#E5E7EB"/>
-                                    </svg>
-                                @endfor
-                            </div>
-                            <input type="hidden" name="rating" id="ratingInput" required>
-                        </div>
+                    @php
+                        $limit = 300;
+                        $isLimited = strlen($book->description) > $limit;
+                    @endphp
 
-                        <div class="form-group">
-                            <label for="review">Ulasan (opsional)</label>
-                            <textarea name="review" id="review" rows="4" class="form-textarea" placeholder="Bagikan pengalaman Anda tentang buku ini..."></textarea>
-                        </div>
+                    <p class="book-detail-description" id="descriptionText">
+                        {{ Str::limit($book->description, 300, '') }}
+                    </p>
 
-                        <button type="submit" class="btn-submit-review">Kirim Ulasan</button>
-                    </form>
+                    @if($isLimited)
+                        <p class="book-detail-description remainingContent" id="remainingContent">
+                        {{ substr($book->description, 300) }}
+                    </p>
+                    <button class="book-detail-read-more" onclick="toggleDescription()">
+                            Baca Selengkapnya
+                        </button>
+                    @else
+                        <p class="book-detail-description" id="descriptionText">
+                        {{ $book->description }}
+                    </p>
+
+                    @endif
+
                 </div>
 
-                <!-- Reviews List -->
-                <div class="reviews-list">
-                    @forelse($book->reviews as $review)
-                        <div class="review-item">
-                            <div class="review-header">
-                                <div class="review-user">
-                                    <div class="user-avatar">{{ substr($review->user->name, 0, 1) }}</div>
-                                    <div>
-                                        <div class="user-name">{{ $review->user->name }}</div>
-                                        <div class="review-date">{{ $review->created_at->diffForHumans() }}</div>
+                <!-- Add to Cart Button -->
+                <form action="{{ route('customer.cart.store') }}" method="POST">
+                    @csrf
+                    <input type="hidden" name="book_id" value="{{ $book->id }}">
+                    <input type="hidden" name="quantity" value="{{ 1 }}">
+                    <button type="submit" class="book-detail-btn-cart">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z" stroke="#6600FF" stroke-width="2"/>
+                        <path d="M16 18C16.5523 18 17 17.5523 17 17C17 16.4477 16.5523 16 16 16C15.4477 16 15 16.4477 15 17C15 17.5523 15.4477 18 16 18Z" stroke="#6600FF" stroke-width="2"/>
+                        <path d="M1 1H4L6.68 13.39C6.77144 13.8504 7.02191 14.264 7.38755 14.5583C7.75318 14.8526 8.2107 15.009 8.68 15H15.4C15.8693 15.009 16.3268 14.8526 16.6925 14.5583C17.0581 14.264 17.3086 13.8504 17.4 13.39L19 6H5" stroke="#6600FF" stroke-width="2"/>
+                        </svg>
+                        <span>Tambah Ke Keranjang</span>
+                    </button>
+                </form>
+
+                <!-- Buy Now Button -->
+                <a href="#" class="book-detail-btn-buy">
+                    Beli Sekarang
+                </a>
+
+                <!-- Reviews Section -->
+                <div class="book-detail-reviews-section">
+                    <!-- Write Review Prompt -->
+                    <div class="book-detail-review-prompt">
+                        <p class="book-detail-review-prompt-text">Apa pendapatmu tentang produk ini?</p>
+                        <button class="book-detail-btn-write-review">
+                            Tulis Ulasan
+                        </button>
+                    </div>
+
+                    <!-- Reviews Header -->
+                    <div class="book-detail-reviews-header">
+                        <div class="book-detail-reviews-header-left">
+                            <h3 class="book-detail-reviews-title">Ulasan Produk</h3>
+                            <p class="book-detail-reviews-subtitle">
+                                <span class="bold">{{ $book->totalReviews() }}</span> Ulasan
+                            </p>
+                        </div>
+                        <div class="book-detail-reviews-header-right">
+                            <select class="book-detail-reviews-sort">
+                                <option value="terbaru">Terbaru</option>
+                                <option value="terlama">Terlama</option>
+                                <option value="rating-tertinggi">Rating Tertinggi</option>
+                                <option value="rating-terendah">Rating Terendah</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Reviews List -->
+                    <div class="book-detail-reviews-list">
+                        @foreach($book->reviews()->latest()->take(5)->get() as $review)
+                            <div class="book-detail-review-item">
+                                <div class="book-detail-review-header">
+                                    <div class="book-detail-review-user">
+                                        <div class="book-detail-review-avatar">
+                                            @if($review->user->avatar)
+                                                <img src="{{ asset('storage/' . $review->user->avatar) }}" alt="{{ $review->user->name }}">
+                                            @else
+                                                <div class="book-detail-review-avatar-placeholder">
+                                                    {{ strtoupper(substr($review->user->name, 0, 1)) }}
+                                                </div>
+                                            @endif
+                                        </div>
+                                        <div class="book-detail-review-user-info">
+                                            <p class="book-detail-review-user-name">{{ $review->user->name }}</p>
+                                            <p class="book-detail-review-date">{{ $review->created_at->diffForHumans() }}</p>
+                                        </div>
+                                    </div>
+                                    <div class="book-detail-review-rating">
+                                        @for($i = 1; $i <= 5; $i++)
+                                            @if($i <= $review->rating)
+                                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                                                    <path d="M7.5 11.25L3.09 13.5675L3.93 8.5875L0.3675 5.1825L5.385 4.5675L7.5 0L9.615 4.5675L14.6325 5.1825L11.07 8.5875L11.91 13.5675L7.5 11.25Z" fill="#FFCC00"/>
+                                                </svg>
+                                            @else
+                                                <svg width="15" height="15" viewBox="0 0 15 15" fill="none">
+                                                    <path d="M7.5 11.25L3.09 13.5675L3.93 8.5875L0.3675 5.1825L5.385 4.5675L7.5 0L9.615 4.5675L14.6325 5.1825L11.07 8.5875L11.91 13.5675L7.5 11.25Z" fill="#E5E7EB"/>
+                                                </svg>
+                                            @endif
+                                        @endfor
                                     </div>
                                 </div>
-                                <div class="review-stars">
-                                    @for($i = 1; $i <= 5; $i++)
-                                        @if($i <= $review->rating)
-                                            <svg class="star-small star-filled" width="16" height="16" viewBox="0 0 20 20">
-                                                <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="#FCD34D"/>
-                                            </svg>
-                                        @else
-                                            <svg class="star-small star-empty" width="16" height="16" viewBox="0 0 20 20">
-                                                <path d="M10 15L4.12 18.09L5.24 11.45L0.49 6.91L7.18 6.09L10 0L12.82 6.09L19.51 6.91L14.76 11.45L15.88 18.09L10 15Z" fill="#E5E7EB"/>
-                                            </svg>
-                                        @endif
-                                    @endfor
-                                </div>
-                            </div>
-                            @if($review->review)
-                                <p class="review-text">{{ $review->review }}</p>
-                            @endif
-                        </div>
-                    @empty
-                        <div class="no-reviews">
-                            <p>Belum ada ulasan untuk buku ini. Jadilah yang pertama!</p>
-                        </div>
-                    @endforelse
-                </div>
-            </div>
-
-            <!-- Related Books -->
-            @if($relatedBooks->isNotEmpty())
-                <div class="related-books-section">
-                    <h2 class="section-title">Buku Lain dari {{ $book->author }}</h2>
-                    <div class="related-books-grid">
-                        @foreach($relatedBooks as $related)
-                            <div class="related-book-card">
-                                <a href="{{ route('customer.books.show', $related->id) }}">
-                                    @if($related->cover)
-                                        <img src="{{ asset('storage/' . $related->cover) }}" alt="{{ $related->title }}">
-                                    @else
-                                        <div class="related-book-placeholder">
-                                            <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
-                                                <path d="M10 5H40L50 15V50C50 51.1046 49.1046 52 48 52H10C8.89543 52 8 51.1046 8 50V7C8 5.89543 8.89543 5 10 5Z" fill="#E5E7EB"/>
-                                            </svg>
-                                        </div>
-                                    @endif
-                                    <h4>{{ $related->title }}</h4>
-                                    <p class="related-price">Rp {{ number_format($related->price, 0, ',', '.') }}</p>
-                                </a>
+                                <p class="book-detail-review-text">{{ $review->review }}</p>
                             </div>
                         @endforeach
                     </div>
+
+                    <!-- Load More Button -->
+                    @if($book->totalReviews() > 5)
+                        <div class="book-detail-reviews-load-more">
+                            <button class="book-detail-btn-load-more">
+                                Muat lebih banyak ulasan...
+                            </button>
+                        </div>
+                    @endif
                 </div>
-            @endif
+            </div>
         </div>
     </div>
 
-    @push('styles')
-    <style>
-        .book-detail-page {
-            padding: 40px 0;
-        }
+    @push('scripts')
+    <script>
+        function toggleDescription() {
+            const descText = document.querySelector('.book-detail-description.remainingContent');
+            const btn = event.target;
 
-        .breadcrumb {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 30px;
-            font-size: 14px;
-            color: #6b7280;
+            if (descText.classList.contains('expanded')) {
+                descText.classList.remove('expanded');
+                // descText.style.maxHeight = 0;
+                btn.textContent = 'Baca Selengkapnya';
+            } else {
+                descText.classList.add('expanded');
+                // descText.style.maxHeight = "none";
+                btn.textContent = 'Sembunyikan';
+            }
         }
-
-        .breadcrumb a {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .breadcrumb a:hover {
-            text-decoration: underline;
-        }
-
-        .book-detail-grid {
-            display: grid;
-            grid-template-columns: 400px 1fr;
-            gap: 60px;
-            margin-bottom: 60px;
-        }
-
-        .book-cover-section {
-            position: sticky;
-            top: 20px;
-            height: fit-content;
-        }
-
-        .book-cover-large {
-            width: 100%;
-            height: 550px;
-            object-fit: cover;
-            border-radius: 12px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.2);
-            margin-bottom: 20px;
-        }
-
-        .book-cover-placeholder-large {
-            width: 100%;
-            height: 550px;
-            background: #f3f4f6;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin-bottom: 20px;
-        }
-
-        .action-buttons {
-            display: flex;
-            gap: 10px;
-        }
-
-        .btn-action {
-            flex: 1;
-            padding: 12px;
-            border: 2px solid #e5e7eb;
-            background: white;
-            border-radius: 10px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            cursor: pointer;
-            font-weight: 600;
-            color: #1f2937;
-        }
-
-        .btn-action:hover {
-            border-color: #667eea;
-            color: #667eea;
-        }
-
-        .book-title-detail {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 10px;
-            line-height: 1.3;
-        }
-
-        .book-author-detail {
-            font-size: 18px;
-            color: #6b7280;
-            margin-bottom: 20px;
-        }
-
-        .rating-summary {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 30px;
-            padding-bottom: 30px;
-            border-bottom: 2px solid #f3f4f6;
-        }
-
-        .rating-stars-large {
-            display: flex;
-            gap: 4px;
-        }
-
-        .rating-number {
-            font-size: 24px;
-            font-weight: 700;
-            color: #1f2937;
-        }
-
-        .rating-count {
-            color: #6b7280;
-        }
-
-        .book-meta {
-            display: flex;
-            flex-direction: column;
-            gap: 12px;
-            margin-bottom: 30px;
-        }
-
-        .meta-item {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            color: #6b7280;
-        }
-
-        .price-section {
-            margin-bottom: 30px;
-        }
-
-        .price-large {
-            display: flex;
-            align-items: baseline;
-            gap: 6px;
-        }
-
-        .price-currency {
-            font-size: 20px;
-            color: #6b7280;
-        }
-
-        .price-amount {
-            font-size: 42px;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .add-to-cart-section {
-            background: #f9fafb;
-            padding: 30px;
-            border-radius: 12px;
-            margin-bottom: 30px;
-        }
-
-        .quantity-selector {
-            display: flex;
-            align-items: center;
-            gap: 15px;
-            margin-bottom: 20px;
-        }
-
-        .quantity-selector label {
-            font-weight: 600;
-        }
-
-        .quantity-controls {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-
-        .qty-btn {
-            width: 36px;
-            height: 36px;
-            border: 2px solid #e5e7eb;
-            background: white;
-            border-radius: 8px;
-            font-size: 20px;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .qty-btn:hover {
-            border-color: #667eea;
-            color: #667eea;
-        }
-
-        .qty-input {
-            width: 60px;
-            height: 36px;
-            text-align: center;
-            border: 2px solid #e5e7eb;
-            border-radius: 8px;
-            font-size: 16px;
-            font-weight: 600;
-        }
-
-        .btn-add-to-cart {
-            width: 100%;
-            padding: 16px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display:
+    </script>
+    @endpush
+</x-app-layout>

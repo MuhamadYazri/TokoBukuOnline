@@ -15,6 +15,12 @@ return new class extends Migration
             $table->id();
             $table->string('title');
             $table->string('author');
+            $table->enum('category', [
+                'pengembangan-diri',
+                'fiksi',
+                'filosofi',
+                'psikologi'
+            ])->default('pengembangan-diri');
             $table->decimal('price', 10, 2);
             $table->integer('stock');
             $table->year('year');

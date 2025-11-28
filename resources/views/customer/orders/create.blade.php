@@ -1,465 +1,214 @@
 <x-app-layout>
-    <div class="checkout-page">
-        <div class="container">
-            <h1 class="page-title">Checkout</h1>
+    <div class="checkout-page-new">
+        <!-- Gradient Header -->
+        <x-HeaderGradient title="Checkout" subtitle="Lengkapi informasi tambahan pelanggan">
+        </x-HeaderGradient>
 
-            <div class="checkout-grid">
-                <!-- Left: Order Items -->
-                <div class="checkout-items-section">
-                    <h2 class="section-title">Item yang Dibeli</h2>
+        <!-- Main Content -->
+        <div class="checkout-main-container">
+            <form method="POST" action="{{ route('customer.orders.store') }}" id="checkoutForm" class="checkout-grid">
+                @csrf
 
-                    <div class="checkout-items-list">
-                        @foreach($cartItems as $item)
-                            <div class="checkout-item">
-                                <div class="item-image-small">
-                                    @if($item->book->cover)
-                                        <img src="{{ asset('storage/' . $item->book->cover) }}" alt="{{ $item->book->title }}">
-                                    @else
-                                        <div class="item-placeholder-small">
-                                            <svg width="30" height="30" viewBox="0 0 60 60" fill="none">
-                                                <path d="M10 5H40L50 15V50C50 51.1046 49.1046 52 48 52H10C8.89543 52 8 51.1046 8 50V7C8 5.89543 8.89543 5 10 5Z" fill="#E5E7EB"/>
-                                            </svg>
-                                        </div>
-                                    @endif
-                                </div>
-                                <div class="item-details-small">
-                                    <h4>{{ $item->book->title }}</h4>
-                                    <p>{{ $item->book->author }}</p>
-                                    <span class="item-qty">{{ $item->quantity }}x</span>
-                                </div>
-                                <div class="item-price-small">
-                                    Rp {{ number_format($item->quantity * $item->book->price, 0, ',', '.') }}
-                                </div>
-                            </div>
-                        @endforeach
-                    </div>
+                <!-- Left Column -->
+                <div class="checkout-left-column">
+                    <!-- Address Section -->
+                    <section class="checkout-section">
+                        <div class="checkout-section-header">
+                            <h2 class="checkout-section-title">Alamat Pengiriman</h2>
+                            <span class="checkout-section-helper">Pilih alamat tujuan pesanan</span>
+                        </div>
 
-                    <!-- Back to Cart -->
-                    <a href="{{ route('customer.cart.index') }}" class="btn-back-cart">
-                        ← Kembali ke Keranjang
-                    </a>
-                </div>
-
-                <!-- Right: Checkout Form -->
-                <div class="checkout-form-section">
-                    <div class="checkout-card">
-                        <h3>Konfirmasi Pesanan</h3>
-
-                        <form method="POST" action="{{ route('customer.orders.store') }}" id="checkoutForm">
-                            @csrf
-
-                            <!-- Delivery Info -->
-                            <div class="form-section">
-                                <h4 class="form-section-title">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M3 9L12 2L21 9V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9Z" stroke="#667eea" stroke-width="2"/>
-                                        <path d="M9 21V12H15V21" stroke="#667eea" stroke-width="2"/>
-                                    </svg>
-                                    Informasi Pengiriman
-                                </h4>
-
-                                <div class="info-box">
-                                    <div class="info-row">
-                                        <span class="info-label">Nama:</span>
-                                        <span class="info-value">{{ auth()->user()->name }}</span>
-                                    </div>
-                                    <div class="info-row">
-                                        <span class="info-label">Email:</span>
-                                        <span class="info-value">{{ auth()->user()->email }}</span>
+                        <div class="checkout-address-list">
+                            <!-- Rumah -->
+                            <label class="checkout-address-card checkout-address-selected">
+                                <div class="checkout-address-header">
+                                    <input type="radio" name="shipping_address" value="home" class="checkout-radio" checked>
+                                    <div class="checkout-address-title-group">
+                                        <span class="checkout-address-name">Rumah</span>
+                                        <span class="checkout-address-badge">Utama</span>
                                     </div>
                                 </div>
+                                <div class="checkout-address-body">
+                                    <p class="checkout-address-recipient">{{ auth()->user()->name }}</p>
+                                    <p class="checkout-address-phone">+62 812-3456-7890</p>
+                                    <p class="checkout-address-detail">
+                                        Jl. Mawar No. 123, Kelurahan Sukamaju<br>
+                                        Kecamatan Bandung Barat, Kota Bandung<br>
+                                        Jawa Barat 40123
+                                    </p>
+                                </div>
+                            </label>
 
-                                <p class="info-note">
-                                    <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                                        <path d="M10 18C14.4183 18 18 14.4183 18 10C18 5.58172 14.4183 2 10 2C5.58172 2 2 5.58172 2 10C2 14.4183 5.58172 18 10 18Z" stroke="#6b7280" stroke-width="2"/>
-                                        <path d="M10 6V10L13 13" stroke="#6b7280" stroke-width="2"/>
-                                    </svg>
-                                    Pesanan akan diproses dalam 1-2 hari kerja
-                                </p>
-                            </div>
-
-                            <!-- Order Summary -->
-                            <div class="form-section">
-                                <h4 class="form-section-title">
-                                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                        <path d="M9 5H7C6.44772 5 6 5.44772 6 6V18C6 18.5523 6.44772 19 7 19H17C17.5523 19 18 18.5523 18 18V6C18 5.44772 17.5523 5 17 5H15M9 5C9 3.89543 9.89543 3 11 3H13C14.1046 3 15 3.89543 15 5M9 5C9 6.10457 9.89543 7 11 7H13C14.1046 7 15 6.10457 15 5M12 12H15M12 16H15M9 12H9.01M9 16H9.01" stroke="#667eea" stroke-width="2"/>
-                                    </svg>
-                                    Ringkasan Pesanan
-                                </h4>
-
-                                <div class="summary-box">
-                                    <div class="summary-row-checkout">
-                                        <span>Subtotal ({{ $cartItems->sum('quantity') }} item)</span>
-                                        <span class="summary-value-checkout">Rp {{ number_format($total, 0, ',', '.') }}</span>
-                                    </div>
-                                    <div class="summary-row-checkout">
-                                        <span>Biaya Pengiriman</span>
-                                        <span class="summary-value-checkout">Rp 0</span>
-                                    </div>
-                                    <div class="summary-row-checkout">
-                                        <span>Biaya Admin</span>
-                                        <span class="summary-value-checkout">Rp 0</span>
-                                    </div>
-                                    <div class="summary-divider-checkout"></div>
-                                    <div class="summary-row-checkout summary-total-checkout">
-                                        <span>Total Pembayaran</span>
-                                        <span class="summary-total-value-checkout">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                            <!-- Kantor -->
+                            <label class="checkout-address-card">
+                                <div class="checkout-address-header">
+                                    <input type="radio" name="shipping_address" value="office" class="checkout-radio">
+                                    <div class="checkout-address-title-group">
+                                        <span class="checkout-address-name">Kantor</span>
                                     </div>
                                 </div>
-                            </div>
+                                <div class="checkout-address-body">
+                                    <p class="checkout-address-recipient">{{ auth()->user()->name }}</p>
+                                    <p class="checkout-address-phone">+62 812-3456-7890</p>
+                                    <p class="checkout-address-detail">
+                                        Gedung Plaza Indonesia, Lantai 5<br>
+                                        Jl. MH Thamrin No. 28-30<br>
+                                        Jakarta Pusat, DKI Jakarta 10350
+                                    </p>
+                                </div>
+                            </label>
 
-                            <!-- Terms -->
-                            <div class="terms-section">
-                                <label class="checkbox-label">
-                                    <input type="checkbox" id="agreeTerms" required>
-                                    <span>Saya setuju dengan <a href="#" class="terms-link">Syarat & Ketentuan</a></span>
-                                </label>
-                            </div>
-
-                            <!-- Submit Button -->
-                            <button type="submit" class="btn-place-order" id="btnPlaceOrder">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                    <path d="M5 10L8 13L15 6" stroke="currentColor" stroke-width="2"/>
+                            <button type="button" class="checkout-add-address-btn">
+                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                    <path d="M10 4V16M4 10H16" stroke="#0088FF" stroke-width="2" stroke-linecap="round"/>
                                 </svg>
-                                Buat Pesanan
+                                Tambah Alamat Baru
                             </button>
+                        </div>
+                    </section>
 
-                            <p class="security-note">
-                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none">
-                                    <path d="M10 2L3 6V10C3 14.55 6.84 18.74 10 19C13.16 18.74 17 14.55 17 10V6L10 2Z" stroke="#10B981" stroke-width="2"/>
-                                    <path d="M7 10L9 12L13 8" stroke="#10B981" stroke-width="2"/>
-                                </svg>
-                                Transaksi Anda aman dan terenkripsi
-                            </p>
-                        </form>
-                    </div>
+                    <!-- Products Section -->
+                    <section class="checkout-section">
+                        <div class="checkout-section-header">
+                            <h2 class="checkout-section-title">Produk</h2>
+                            <span class="checkout-section-helper">Periksa kembali buku yang akan dibeli</span>
+                        </div>
+
+                        <div class="checkout-products-list">
+                            @foreach($cartItems as $item)
+                                <div class="checkout-product-item">
+                                    <div class="checkout-product-image">
+                                        @if($item->book->cover)
+                                            <img src="{{ asset('storage/' . $item->book->cover) }}" alt="{{ $item->book->title }}">
+                                        @else
+                                            <div class="checkout-product-placeholder">
+                                                <svg width="36" height="36" viewBox="0 0 60 60" fill="none" aria-hidden="true">
+                                                    <path d="M10 5H40L50 15V50C50 51.1046 49.1046 52 48 52H10C8.89543 52 8 51.1046 8 50V7C8 5.89543 8.89543 5 10 5Z" fill="#E5E7EB"/>
+                                                </svg>
+                                            </div>
+                                        @endif
+                                    </div>
+                                    <div class="checkout-product-details">
+                                        <span class="checkout-product-category">{{ $item->book->category ?? 'Buku' }}</span>
+                                        <h3 class="checkout-product-title">{{ $item->book->title }}</h3>
+                                        <p class="checkout-product-author">{{ $item->book->author }}</p>
+                                        <div class="checkout-product-bottom">
+                                            <span class="checkout-product-price">Rp {{ number_format($item->book->price, 0, ',', '.') }}</span>
+                                            <span class="checkout-product-qty">Qty {{ $item->quantity }}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            @endforeach
+                        </div>
+                    </section>
+
+                    <!-- Payment Section -->
+                    <section class="checkout-section">
+                        <div class="checkout-section-header">
+                            <h2 class="checkout-section-title">Metode Pembayaran</h2>
+                            <span class="checkout-section-helper">Pilih metode yang ingin digunakan</span>
+                        </div>
+
+                        <div class="checkout-payment-list">
+                            <label class="checkout-payment-option">
+                                <input type="radio" name="payment_method" value="credit_card" class="checkout-radio">
+                                <div class="checkout-payment-content">
+                                    <div class="checkout-payment-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <rect x="2" y="5" width="20" height="14" rx="2" stroke="#0088FF" stroke-width="2"/>
+                                            <path d="M2 9H22" stroke="#0088FF" stroke-width="2"/>
+                                            <rect x="5" y="13" width="6" height="2" fill="#0088FF"/>
+                                        </svg>
+                                    </div>
+                                    <div class="checkout-payment-info">
+                                        <span class="checkout-payment-name">Kartu Kredit/Debit</span>
+                                        <span class="checkout-payment-desc">Visa, Mastercard, JCB</span>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="checkout-payment-option">
+                                <input type="radio" name="payment_method" value="bank_transfer" class="checkout-radio">
+                                <div class="checkout-payment-content">
+                                    <div class="checkout-payment-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M3 9L12 3L21 9V20C21 20.5523 20.5523 21 20 21H4C3.44772 21 3 20.5523 3 20V9Z" stroke="#0088FF" stroke-width="2"/>
+                                            <path d="M9 21V13H15V21" stroke="#0088FF" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="checkout-payment-info">
+                                        <span class="checkout-payment-name">Transfer Bank</span>
+                                        <span class="checkout-payment-desc">BCA, Mandiri, BNI, BRI</span>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="checkout-payment-option">
+                                <input type="radio" name="payment_method" value="e_wallet" class="checkout-radio">
+                                <div class="checkout-payment-content">
+                                    <div class="checkout-payment-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <path d="M21 8V16C21 18.2091 19.2091 20 17 20H7C4.79086 20 3 18.2091 3 16V8C3 5.79086 4.79086 4 7 4H17C19.2091 4 21 5.79086 21 8Z" stroke="#0088FF" stroke-width="2"/>
+                                            <circle cx="12" cy="12" r="3" stroke="#0088FF" stroke-width="2"/>
+                                        </svg>
+                                    </div>
+                                    <div class="checkout-payment-info">
+                                        <span class="checkout-payment-name">E-Wallet</span>
+                                        <span class="checkout-payment-desc">GoPay, OVO, DANA, ShopeePay</span>
+                                    </div>
+                                </div>
+                            </label>
+
+                            <label class="checkout-payment-option checkout-payment-selected">
+                                <input type="radio" name="payment_method" value="cash" class="checkout-radio" checked>
+                                <div class="checkout-payment-content">
+                                    <div class="checkout-payment-icon">
+                                        <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                                            <circle cx="12" cy="12" r="9" stroke="#0088FF" stroke-width="2"/>
+                                            <path d="M12 6V12L16 14" stroke="#0088FF" stroke-width="2" stroke-linecap="round"/>
+                                        </svg>
+                                    </div>
+                                    <div class="checkout-payment-info">
+                                        <span class="checkout-payment-name">Tunai</span>
+                                        <span class="checkout-payment-desc">Bayar di tempat (COD)</span>
+                                    </div>
+                                </div>
+                            </label>
+                        </div>
+                    </section>
                 </div>
-            </div>
+
+                <!-- Right Column -->
+                <aside class="checkout-right-column">
+                    <div class="checkout-summary-box">
+                        <h3 class="checkout-summary-title">Detail Pembayaran</h3>
+
+                        <div class="checkout-summary-content">
+                            <div class="checkout-summary-row">
+                                <span class="checkout-summary-label">Subtotal ({{ $cartItems->sum('quantity') }} item)</span>
+                                <span class="checkout-summary-value">Rp {{ number_format($total, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="checkout-summary-row">
+                                <span class="checkout-summary-label">Pajak 10%</span>
+                                <span class="checkout-summary-value">Rp {{ number_format($total * 0.1, 0, ',', '.') }}</span>
+                            </div>
+                            <div class="checkout-summary-row">
+                                <span class="checkout-summary-label">Ongkos Kirim</span>
+                                <span class="checkout-summary-value checkout-summary-free">Gratis</span>
+                            </div>
+                            <div class="checkout-summary-divider"></div>
+                            <div class="checkout-summary-row checkout-summary-total">
+                                <span class="checkout-summary-label">Total Pembayaran</span>
+                                <span class="checkout-summary-value">Rp {{ number_format($total + ($total * 0.1), 0, ',', '.') }}</span>
+                            </div>
+                        </div>
+
+                        <button type="submit" class="checkout-btn-submit">Bayar Sekarang</button>
+                        <a href="{{ route('customer.cart.index') }}" class="checkout-btn-secondary">Kembali ke Keranjang</a>
+                        <p class="checkout-security-note">Transaksi aman dan terenkripsi</p>
+                    </div>
+                </aside>
+            </form>
         </div>
     </div>
-
-    @push('styles')
-    <style>
-        .checkout-page {
-            padding: 40px 0;
-            background: #f9fafb;
-            min-height: calc(100vh - 200px);
-        }
-
-        .page-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 30px;
-            color: #1f2937;
-        }
-
-        .checkout-grid {
-            display: grid;
-            grid-template-columns: 1fr 500px;
-            gap: 40px;
-        }
-
-        /* Checkout Items Section */
-        .checkout-items-section {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-            height: fit-content;
-        }
-
-        .section-title {
-            font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 25px;
-            padding-bottom: 20px;
-            border-bottom: 2px solid #f3f4f6;
-        }
-
-        .checkout-items-list {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-            margin-bottom: 25px;
-        }
-
-        .checkout-item {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-            padding: 15px;
-            background: #f9fafb;
-            border-radius: 10px;
-        }
-
-        .item-image-small {
-            width: 60px;
-            height: 80px;
-            border-radius: 6px;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-
-        .item-image-small img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-        }
-
-        .item-placeholder-small {
-            width: 100%;
-            height: 100%;
-            background: #e5e7eb;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .item-details-small {
-            flex: 1;
-        }
-
-        .item-details-small h4 {
-            font-size: 15px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .item-details-small p {
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 6px;
-        }
-
-        .item-qty {
-            display: inline-block;
-            padding: 2px 8px;
-            background: #e5e7eb;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: 600;
-        }
-
-        .item-price-small {
-            font-size: 16px;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .btn-back-cart {
-            display: inline-block;
-            padding: 12px 20px;
-            color: #667eea;
-            text-decoration: none;
-            font-weight: 600;
-            border: 2px solid #667eea;
-            border-radius: 10px;
-        }
-
-        .btn-back-cart:hover {
-            background: #f0f4ff;
-        }
-
-        /* Checkout Form Section */
-        .checkout-form-section {
-            position: sticky;
-            top: 20px;
-            height: fit-content;
-        }
-
-        .checkout-card {
-            background: white;
-            border-radius: 12px;
-            padding: 30px;
-            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
-        }
-
-        .checkout-card h3 {
-            font-size: 24px;
-            font-weight: 700;
-            margin-bottom: 30px;
-        }
-
-        .form-section {
-            margin-bottom: 30px;
-        }
-
-        .form-section-title {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            font-size: 18px;
-            font-weight: 700;
-            margin-bottom: 20px;
-            color: #1f2937;
-        }
-
-        .info-box {
-            background: #f9fafb;
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-        }
-
-        .info-row {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-        }
-
-        .info-row:last-child {
-            margin-bottom: 0;
-        }
-
-        .info-label {
-            color: #6b7280;
-            font-weight: 500;
-        }
-
-        .info-value {
-            font-weight: 600;
-            color: #1f2937;
-        }
-
-        .info-note {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 14px;
-            color: #6b7280;
-            background: #fffbeb;
-            padding: 12px;
-            border-radius: 8px;
-        }
-
-        .summary-box {
-            background: #f9fafb;
-            padding: 20px;
-            border-radius: 10px;
-        }
-
-        .summary-row-checkout {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 12px;
-            color: #6b7280;
-        }
-
-        .summary-value-checkout {
-            font-weight: 600;
-            color: #1f2937;
-        }
-
-        .summary-divider-checkout {
-            height: 2px;
-            background: #e5e7eb;
-            margin: 15px 0;
-        }
-
-        .summary-total-checkout {
-            font-size: 18px;
-            font-weight: 700;
-            color: #1f2937;
-        }
-
-        .summary-total-value-checkout {
-            font-size: 24px;
-            color: #667eea;
-        }
-
-        .terms-section {
-            margin-bottom: 25px;
-        }
-
-        .checkbox-label {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-        }
-
-        .checkbox-label input[type="checkbox"] {
-            width: 20px;
-            height: 20px;
-            cursor: pointer;
-        }
-
-        .terms-link {
-            color: #667eea;
-            text-decoration: none;
-        }
-
-        .terms-link:hover {
-            text-decoration: underline;
-        }
-
-        .btn-place-order {
-            width: 100%;
-            padding: 16px;
-            background: #667eea;
-            color: white;
-            border: none;
-            border-radius: 10px;
-            font-size: 16px;
-            font-weight: 600;
-            cursor: pointer;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            margin-bottom: 15px;
-        }
-
-        .btn-place-order:hover {
-            background: #5568d3;
-        }
-
-        .btn-place-order:disabled {
-            background: #9ca3af;
-            cursor: not-allowed;
-        }
-
-        .security-note {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 8px;
-            font-size: 13px;
-            color: #10b981;
-            text-align: center;
-        }
-
-        /* Responsive */
-        @media (max-width: 1024px) {
-            .checkout-grid {
-                grid-template-columns: 1fr;
-            }
-
-            .checkout-form-section {
-                position: static;
-            }
-        }
-
-        @media (max-width: 768px) {
-            .page-title {
-                font-size: 28px;
-            }
-
-            .checkout-card {
-                padding: 20px;
-            }
-        }
-    </style>
-    @endpush
-
-    @push('scripts')
-    <script>
-        // Disable submit button after click
-        document.getElementById('checkoutForm').addEventListener('submit', function() {
-            const btn = document.getElementById('btnPlaceOrder');
-            btn.disabled = true;
-            btn.innerHTML = '<svg class="animate-spin" width="20" height="20" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" opacity="0.25"/><path d="M4 12a8 8 0 018-8V0C5.373 0 0 5.373 0 12h4z" fill="currentColor"/></svg> Memproses...';
-        });
-    </script>
-    @endpush
 </x-app-layout>

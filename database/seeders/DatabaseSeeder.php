@@ -14,7 +14,9 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             BookSeeder::class,
-            UserSeeder::class
+            UserSeeder::class,
+            BookReviewSeeder::class,
+            OrderFactorySeeder::class,
         ]);
 
         $this->command->info('✅ Database seeded successfully!');
