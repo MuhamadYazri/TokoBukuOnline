@@ -71,44 +71,47 @@
     </div>
 </nav>
 
-<script>
-    function toggleMobileNav() {
-        const navMobile = document.getElementById('navMobile');
-        navMobile.classList.toggle('active');
-    }
-    const navbar = document.querySelector('.navbar');
-
-    let lastScrollPosition = 0;
-
-    document.addEventListener('scroll', ()=>{
-        const scrollPosition = window.scrollY;
-
-        if(window.scrollY > 80){
-            navbar.classList.add('scrolled');
-            console.log('top');
-        }else{
-            navbar.classList.remove('scrolled');
-            console.log('not-top');
+@push('scripts')
+    <script>
+        function toggleMobileNav() {
+            const navMobile = document.getElementById('navMobile');
+            navMobile.classList.toggle('active');
         }
+        const navbar = document.querySelector('.navbar');
 
-        if(lastScrollPosition < scrollPosition){
-            navbar.classList.add('scrollAtas');
-            console.log('scroll down');
-        }else{
-            navbar.classList.remove('scrollAtas');
-            console.log('scroll up');
-        }
+        let lastScrollPosition = 0;
+
+        document.addEventListener('scroll', ()=>{
+            const scrollPosition = window.scrollY;
+
+            if(window.scrollY > 80){
+                navbar.classList.add('scrolled');
+                console.log('top');
+            }else{
+                navbar.classList.remove('scrolled');
+                console.log('not-top');
+            }
+
+            if(lastScrollPosition < scrollPosition){
+                navbar.classList.add('scrollAtas');
+                console.log('scroll down');
+            }else{
+                navbar.classList.remove('scrollAtas');
+                console.log('scroll up');
+            }
 
 
-        lastScrollPosition = scrollPosition;
-    })
+            lastScrollPosition = scrollPosition;
+        })
 
-    document.addEventListener('click', function(event) {
-        const navMobile = document.getElementById('navMobile');
-        const hamburger = document.querySelector('.hamburger-menu');
+        document.addEventListener('click', function(event) {
+            const navMobile = document.getElementById('navMobile');
+            const hamburger = document.querySelector('.hamburger-menu');
 
-        if (!navMobile.contains(event.target) && !hamburger.contains(event.target)) {
-            navMobile.classList.remove('active');
-        }
-    });
-</script>
+            if (!navMobile.contains(event.target) && !hamburger.contains(event.target)) {
+                navMobile.classList.remove('active');
+            }
+        });
+    </script>
+
+@endpush

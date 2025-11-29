@@ -13,38 +13,38 @@
                 <!-- Stats Cards Grid -->
                 <div class="admin-stats-grid">
                     <!-- Total Pengguna -->
-                    <div class="admin-stat-card">
+                    <div class="admin-stat-card s-medium">
                         <p class="stat-label">Total Pengguna</p>
                         <p class="stat-value stat-blue">{{ $stats['total_customers'] ?? 0 }}</p>
                     </div>
 
                     <!-- Total Buku -->
-                    <div class="admin-stat-card">
+                    <div class="admin-stat-card s-medium">
                         <p class="stat-label">Total Buku</p>
                         <p class="stat-value stat-orange">{{ $stats['total_books'] ?? 0 }}</p>
                     </div>
 
                     <!-- Transaksi Bulan Ini -->
-                    <div class="admin-stat-card">
+                    <div class="admin-stat-card s-medium">
                         <p class="stat-label">Transaksi Bulan Ini</p>
                         <p class="stat-value stat-blue">{{ $stats['total_orders'] ?? 0 }}</p>
                     </div>
 
                     <!-- Pesanan Aktif -->
-                    <div class="admin-stat-card">
+                    <div class="admin-stat-card s-medium">
                         <p class="stat-label">Pesanan Aktif</p>
                         <p class="stat-value stat-purple">{{ $stats['pending_orders'] ?? 0 }}</p>
                     </div>
 
                     <!-- Pendapatan -->
-                    <div class="admin-stat-card">
+                    <div class="admin-stat-card s-medium">
                         <p class="stat-label">Pendapatan</p>
                         <p class="stat-value stat-green">Rp {{ number_format($stats['total_revenue'] ?? 0, 0, ',', '.') }}</p>
                     </div>
                 </div>
 
                 <!-- Chart: Transaksi Bulanan -->
-                <div class="admin-chart-card">
+                <div class="admin-chart-card s-medium">
                     <h3 class="chart-title">Transaksi Bulanan</h3>
                     <div class="chart-container">
                         <canvas id="transactionsChart"></canvas>
@@ -52,7 +52,7 @@
                 </div>
 
                 <!-- Chart: Tren Pendapatan -->
-                <div class="admin-chart-card">
+                <div class="admin-chart-card s-medium">
                     <h3 class="chart-title">Tren Pendapatan</h3>
                     <div class="chart-container">
                         <canvas id="revenueChart"></canvas>
@@ -60,7 +60,7 @@
                 </div>
 
                 <!-- Table: Buku Terlaris -->
-                <div class="admin-table-card">
+                <div class="admin-table-card s-medium">
                     <h3 class="table-title">Buku Terlaris</h3>
                     <div class="table-wrapper">
                         <table class="bestsellers-table">
@@ -77,7 +77,8 @@
                                     <td>
                                         <div class="rank-badge">{{ $index + 1 }}</div>
                                     </td>
-                                    <td>{{ $item->book->title ?? 'N/A' }}</td>
+                                    <td>{{ $item->book->title ?? 'N/A' }} <br>
+                                    <span>{{ $item->book->author ?? 'N/A' }}</span> </td>
                                     <td class="sold-count">{{ $item->total_sold ?? 0 }} buku</td>
                                 </tr>
                                 @empty

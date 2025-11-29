@@ -17,13 +17,16 @@
         @vite(['resources/css/app.css', 'resources/js/app.js'])
     </head>
     <body class="font-sans antialiased">
+
         @include('layouts.adminnavigation')
-        <!-- Page Content -->
-        <main>
-            {{ $slot }}
-        </main>
+        <div class="admin-layout-wrapper">
 
+            <!-- Page Content -->
+            <main class="admin-main-content">
+                {{ $slot }}
+            </main>
+        </div>
 
-    @stack('scripts')
+        @stack('scripts')
     </body>
 </html>
