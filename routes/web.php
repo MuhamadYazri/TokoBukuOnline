@@ -63,7 +63,6 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
     // Dashboard Admin
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
     Route::get('/dashboard/chart-data', [AdminDashboard::class, 'getChartData'])->name('dashboard.chart');
-    Route::get('/dashboard2', [AdminDashboard::class, 'test'])->name('test');
 
     // Books Management - CRUD Buku
     Route::resource('books', AdminBookController::class);
