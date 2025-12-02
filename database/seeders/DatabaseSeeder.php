@@ -17,6 +17,7 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             BookReviewSeeder::class,
             OrderFactorySeeder::class,
+            CartCheckoutSeeder::class,
         ]);
 
         $this->command->info('✅ Database seeded successfully!');

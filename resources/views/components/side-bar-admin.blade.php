@@ -39,7 +39,7 @@
                     </a>
                 </li>
                 <li class="admin-sidebar-menu-item">
-                    <a href="{{ route('admin.books.index') }}" class="admin-sidebar-link {{ request()->routeIs('admin.books.*') ? 'active' : '' }}">
+                    <a href="{{ route('admin.customers.index') }}" class="admin-sidebar-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
                         <svg class="admin-sidebar-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                         <path d="M12 15.75V14.25C12 13.4544 11.6839 12.6913 11.1213 12.1287C10.5587 11.5661 9.79565 11.25 9 11.25H4.5C3.70435 11.25 2.94129 11.5661 2.37868 12.1287C1.81607 12.6913 1.5 13.4544 1.5 14.25V15.75" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         <path d="M12 2.34595C12.6433 2.51272 13.213 2.8884 13.6198 3.41399C14.0265 3.93959 14.2471 4.58536 14.2471 5.24995C14.2471 5.91453 14.0265 6.5603 13.6198 7.0859C13.213 7.6115 12.6433 7.98717 12 8.15395" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

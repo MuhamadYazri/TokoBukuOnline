@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\ActivityLog;
+// use App\Models\ActivityLog;
 use App\Models\Book;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -110,11 +110,11 @@ class BookController extends Controller
         $book = Book::create($validated);
 
         // Log activity
-        ActivityLog::createLog(
-            Auth::id(),
-            'admin_create_book',
-            "Admin membuat buku baru: {$book->title}"
-        );
+        // ActivityLog::createLog(
+        //     Auth::id(),
+        //     'admin_create_book',
+        //     "Admin membuat buku baru: {$book->title}"
+        // );
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Buku berhasil ditambahkan!');
@@ -164,11 +164,11 @@ class BookController extends Controller
         $book->update($validated);
 
         // Log activity
-        ActivityLog::createLog(
-            Auth::id(),
-            'admin_update_book',
-            "Admin mengupdate buku: {$book->title}"
-        );
+        // ActivityLog::createLog(
+        //     Auth::id(),
+        //     'admin_update_book',
+        //     "Admin mengupdate buku: {$book->title}"
+        // );
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Buku berhasil diupdate!');
@@ -188,11 +188,11 @@ class BookController extends Controller
         $book->delete();
 
         // Log activity
-        ActivityLog::createLog(
-            Auth::id(),
-            'admin_delete_book',
-            "Admin menghapus buku: {$bookTitle}"
-        );
+        // ActivityLog::createLog(
+        //     Auth::id(),
+        //     'admin_delete_book',
+        //     "Admin menghapus buku: {$bookTitle}"
+        // );
 
         return redirect()->route('admin.books.index')
             ->with('success', 'Buku berhasil dihapus!');

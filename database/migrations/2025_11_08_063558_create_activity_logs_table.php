@@ -22,7 +22,8 @@ return new class extends Migration
                 'add_to_collection',
                 'admin_create_book',
                 'admin_update_book',
-                'admin_delete_book'
+                'admin_delete_book',
+                'admin_update_order',
             ]);
             $table->text('description')->nullable();
             $table->timestamps();

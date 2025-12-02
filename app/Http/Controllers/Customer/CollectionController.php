@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Collection;
 use App\Models\Book;
-use App\Models\ActivityLog;
+// use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -50,11 +50,11 @@ class CollectionController extends Controller
         $book = Book::find($validated['book_id']);
 
         // Log activity
-        ActivityLog::createLog(
-            Auth::id(),
-            'add_to_collection',
-            "Menambahkan buku '{$book->title}' ke koleksi"
-        );
+        // ActivityLog::createLog(
+        //     Auth::id(),
+        //     'add_to_collection',
+        //     "Menambahkan buku '{$book->title}' ke koleksi"
+        // );
 
         return back()->with('success', 'Buku berhasil ditambahkan ke koleksi!');
     }

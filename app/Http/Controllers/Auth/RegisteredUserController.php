@@ -3,7 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
-use App\Models\ActivityLog;
+// use App\Models\ActivityLog;
 use App\Models\User;
 use App\Providers\RouteServiceProvider;
 use Illuminate\Auth\Events\Registered;
@@ -48,7 +48,7 @@ class RegisteredUserController extends Controller
 
         Auth::login($user);
 
-        ActivityLog::createLog($user->id, 'register', 'User baru mendaftar: ' . $user->name);
+        // ActivityLog::createLog($user->id, 'register', 'User baru mendaftar: ' . $user->name);
 
         return redirect(RouteServiceProvider::HOME);
     }

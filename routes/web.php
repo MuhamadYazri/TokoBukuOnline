@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Admin\BookController as AdminBookController;
+use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
 use App\Http\Controllers\Customer\BookController as CustomerBookController;
@@ -66,6 +67,9 @@ Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () 
 
     // Books Management - CRUD Buku
     Route::resource('books', AdminBookController::class);
+
+    // Customers Management - Kelola Pengguna
+    Route::get('/customers', [AdminCustomerController::class, 'index'])->name('customers.index');
 
     // Orders Management - Kelola Pesanan
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');

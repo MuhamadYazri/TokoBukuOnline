@@ -4,7 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-use App\Models\ActivityLog;
+// use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -60,11 +60,11 @@ class OrderController extends Controller
         $order->update($validated);
 
         // Log activity
-        ActivityLog::createLog(
-            Auth::id(),
-            'admin_update_order',
-            "Admin mengubah status order #{$order->order_number} dari {$oldStatus} ke {$validated['status']}"
-        );
+        // ActivityLog::createLog(
+        //     Auth::id(),
+        //     'admin_update_order',
+        //     "Admin mengubah status order #{$order->order_number} dari {$oldStatus} ke {$validated['status']}"
+        // );
 
         return back()->with('success', 'Status pesanan berhasil diupdate!');
     }

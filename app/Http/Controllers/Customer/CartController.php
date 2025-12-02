@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Cart;
 use App\Models\Book;
-use App\Models\ActivityLog;
+// use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -68,11 +68,11 @@ class CartController extends Controller
         }
 
         // Log activity
-        ActivityLog::createLog(
-            Auth::id(),
-            'add_to_cart',
-            "Menambahkan buku '{$book->title}' ke keranjang"
-        );
+        // ActivityLog::createLog(
+        //     Auth::id(),
+        //     'add_to_cart',
+        //     "Menambahkan buku '{$book->title}' ke keranjang"
+        // );
 
         return back()->with('success', 'Buku berhasil ditambahkan ke keranjang!');
     }

@@ -7,7 +7,7 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\Book;
-use App\Models\ActivityLog;
+// use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -68,9 +68,7 @@ class OrderController extends Controller
             $totalPrice = 0;
 
             // Validasi stok & hitung total
-            foreach ($cartItems as $itemm) {
-                $item = new $itemm;
-
+            foreach ($cartItems as $item) {
                 if ($item->book->stock < $item->quantity) {
                     DB::rollBack();
                     return back()->with('error', "Stok buku '{$item->book->title}' tidak mencukupi!");
@@ -83,9 +81,7 @@ class OrderController extends Controller
             $orderNumber = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
 
             // Buat order untuk setiap buku
-            foreach ($cartItems as $itemm) {
-                $item = new $item;
-
+            foreach ($cartItems as $item) {
                 $order = Order::create([
                     'user_id' => Auth::id(),
                     'order_number' => $orderNumber,
@@ -111,11 +107,11 @@ class OrderController extends Controller
             Cart::where('user_id', Auth::id())->delete();
 
             // Log activity
-            ActivityLog::createLog(
-                Auth::id(),
-                'create_order',
-                "Membuat pesanan #{$orderNumber} dengan total Rp " . number_format($totalPrice)
-            );
+            // ActivityLog::createLog(
+            //     Auth::id(),
+            //     'create_order',
+            //     "Membuat pesanan #{$orderNumber} dengan total Rp " . number_format($totalPrice)
+            // );
 
             DB::commit();
 
