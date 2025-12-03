@@ -18,6 +18,11 @@ class BookController extends Controller
     {
         $query = Book::query();
 
+        // Calculate stats
+        $totalBooks = Book::count();
+        $totalStock = Book::sum('stock');
+        $outOfStock = Book::where('stock', 0)->count();
+
         // Search filter
         if ($request->filled('search')) {
             $search = $request->search;
@@ -38,6 +43,24 @@ class BookController extends Controller
                 $query->where('stock', '>', 0);
             } elseif ($request->stock_status == 'unavailable') {
                 $query->where('stock', '=', 0);
+            }
+        }
+
+        // Filter dropdown
+        if ($request->filled('filter')) {
+            switch ($request->filter) {
+                case 'tersedia':
+                    $query->where('stock', '>', 0);
+                    break;
+                case 'tidak_tersedia':
+                    $query->where('stock', '=', 0);
+                    break;
+                case 'stok_terbanyak':
+                    $query->orderBy('stock', 'desc');
+                    break;
+                case 'stok_tersedikit':
+                    $query->orderBy('stock', 'asc');
+                    break;
             }
         }
 
@@ -67,13 +90,13 @@ class BookController extends Controller
                 default:
                     $query->latest();
             }
-        } else {
+        } elseif (!$request->filled('filter') || !in_array($request->filter, ['stok_terbanyak', 'stok_tersedikit'])) {
             $query->latest();
         }
 
         $books = $query->paginate(20);
 
-        return view('admin.books.index', compact('books'));
+        return view('admin.books.index', compact('books', 'totalBooks', 'totalStock', 'outOfStock'));
     }
 
     /**
@@ -96,14 +119,12 @@ class BookController extends Controller
             'price' => 'required|numeric|min:0',
             'stock' => 'required|integer|min:0',
             'year' => 'nullable|integer|min:1900|max:' . date('Y'),
-            'cover' => 'nullable|image|mimes:jpeg,jpg,png|max:2048',
+            'cover' => 'nullable|image|mimes:jpeg,jpg,png,webp|max:2048',
             'description' => 'nullable|string',
         ]);
 
         // Upload cover image
         if ($request->hasFile('cover')) {
-
-
             $validated['cover'] = $request->file('cover')->store('books/covers', 'public');
         }
 

@@ -1,98 +1,108 @@
 <x-admin-layout>
-    <x-HeaderGradient title="Dashboard Admin" subtitle="Kelola toko buku online Anda">
+    <x-HeaderGradient title="Dashboard" subtitle="Ringkasan statistik dan aktivitas terkini">
     </x-HeaderGradient>
-    <div class="admin-dashboard-body">
+    <div class="dashboard-page">
+        <div class="dashboard-container">
 
-        <div class="admin-dashboard-container">
-            <!-- Header with Gradient -->
+            <!-- Stats Cards Grid -->
+            <div class="dashboard-stats-grid">
+                <!-- Total Pengguna -->
+                <div class="dashboard-stat-card">
+                    <p class="dashboard-stat-label">Total Pengguna</p>
+                    <p class="dashboard-stat-value dashboard-stat-blue">{{ number_format($stats['total_customers'] ?? 0, 0, ',', '.') }}</p>
+                </div>
 
+                <!-- Total Buku -->
+                <div class="dashboard-stat-card">
+                    <p class="dashboard-stat-label">Total Buku</p>
+                    <p class="dashboard-stat-value dashboard-stat-purple">{{ number_format($stats['total_books'] ?? 0, 0, ',', '.') }}</p>
+                </div>
 
+                <!-- Total Transaksi -->
+                <div class="dashboard-stat-card">
+                    <p class="dashboard-stat-label">Total Transaksi</p>
+                    <p class="dashboard-stat-value dashboard-stat-green">{{ number_format($stats['total_orders'] ?? 0, 0, ',', '.') }}</p>
+                </div>
 
-            <!-- Body Content -->
-            <div class="admin-body">
-                <!-- Stats Cards Grid -->
-                <div class="admin-stats-grid">
-                    <!-- Total Pengguna -->
-                    <div class="admin-stat-card s-medium">
-                        <p class="stat-label">Total Pengguna</p>
-                        <p class="stat-value stat-blue">{{ $stats['total_customers'] ?? 0 }}</p>
-                    </div>
+                <!-- Total Pesanan -->
+                <div class="dashboard-stat-card dashboard-stat-card-wide">
+                    <p class="dashboard-stat-label">Total Pesanan</p>
+                    <p class="dashboard-stat-value dashboard-stat-orange">{{ number_format($stats['pending_orders'] ?? 0, 0, ',', '.') }}</p>
+                </div>
+            </div>
 
-                    <!-- Total Buku -->
-                    <div class="admin-stat-card s-medium">
-                        <p class="stat-label">Total Buku</p>
-                        <p class="stat-value stat-orange">{{ $stats['total_books'] ?? 0 }}</p>
-                    </div>
-
-                    <!-- Transaksi Bulan Ini -->
-                    <div class="admin-stat-card s-medium">
-                        <p class="stat-label">Transaksi Bulan Ini</p>
-                        <p class="stat-value stat-blue">{{ $stats['total_orders'] ?? 0 }}</p>
-                    </div>
-
-                    <!-- Pesanan Aktif -->
-                    <div class="admin-stat-card s-medium">
-                        <p class="stat-label">Pesanan Aktif</p>
-                        <p class="stat-value stat-purple">{{ $stats['pending_orders'] ?? 0 }}</p>
-                    </div>
-
-                    <!-- Pendapatan -->
-                    <div class="admin-stat-card s-medium">
-                        <p class="stat-label">Pendapatan</p>
-                        <p class="stat-value stat-green">Rp {{ number_format($stats['total_revenue'] ?? 0, 0, ',', '.') }}</p>
+            <!-- Two Column Section -->
+            <div class="dashboard-two-columns">
+                <!-- Recent Orders -->
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card-title">Pesanan Terbaru</h3>
+                    <div class="dashboard-recent-orders">
+                        @php
+                            $recentOrders = \App\Models\Order::with('user')->latest()->take(3)->get();
+                        @endphp
+                        @forelse($recentOrders as $order)
+                        <div class="dashboard-order-item {{ !$loop->last ? 'dashboard-order-item-border' : '' }}">
+                            <div class="dashboard-order-info">
+                                <p class="dashboard-order-id">{{ $order->order_number ?? 'ORD' . str_pad($order->id, 3, '0', STR_PAD_LEFT) }}</p>
+                                <p class="dashboard-order-customer">{{ $order->user->name ?? 'N/A' }}</p>
+                            </div>
+                            <div class="dashboard-order-details">
+                                <p class="dashboard-order-total">Rp {{ number_format($order->total_price ?? 0, 0, ',', '.') }}</p>
+                                @php
+                                    $statusConfig = [
+                                        'pending' => ['label' => 'Menunggu', 'class' => 'dashboard-status-pending'],
+                                        'processing' => ['label' => 'Diproses', 'class' => 'dashboard-status-processing'],
+                                        'completed' => ['label' => 'Selesai', 'class' => 'dashboard-status-completed'],
+                                        'cancelled' => ['label' => 'Dibatalkan', 'class' => 'dashboard-status-cancelled'],
+                                    ];
+                                    $config = $statusConfig[$order->status] ?? ['label' => 'Unknown', 'class' => ''];
+                                @endphp
+                                <span class="dashboard-status-badge {{ $config['class'] }}">{{ $config['label'] }}</span>
+                            </div>
+                        </div>
+                        @empty
+                        <p class="dashboard-empty">Belum ada pesanan</p>
+                        @endforelse
                     </div>
                 </div>
 
-                <!-- Chart: Transaksi Bulanan -->
-                <div class="admin-chart-card s-medium">
-                    <h3 class="chart-title">Transaksi Bulanan</h3>
-                    <div class="chart-container">
-                        <canvas id="transactionsChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Chart: Tren Pendapatan -->
-                <div class="admin-chart-card s-medium">
-                    <h3 class="chart-title">Tren Pendapatan</h3>
-                    <div class="chart-container">
-                        <canvas id="revenueChart"></canvas>
-                    </div>
-                </div>
-
-                <!-- Table: Buku Terlaris -->
-                <div class="admin-table-card s-medium">
-                    <h3 class="table-title">Buku Terlaris</h3>
-                    <div class="table-wrapper">
-                        <table class="bestsellers-table">
-                            <thead>
-                                <tr>
-                                    <th>Peringkat</th>
-                                    <th>Judul Buku</th>
-                                    <th>Terjual</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                @forelse($bestSellingBooks as $index => $item)
-                                <tr>
-                                    <td>
-                                        <div class="rank-badge">{{ $index + 1 }}</div>
-                                    </td>
-                                    <td>{{ $item->book->title ?? 'N/A' }} <br>
-                                    <span>{{ $item->book->author ?? 'N/A' }}</span> </td>
-                                    <td class="sold-count">{{ $item->total_sold ?? 0 }} buku</td>
-                                </tr>
-                                @empty
-                                <tr>
-                                    <td colspan="3" style="text-align: center; padding: 20px; color: #666;">
-                                        Belum ada data penjualan
-                                    </td>
-                                </tr>
-                                @endforelse
-                            </tbody>
-                        </table>
+                <!-- Popular Books -->
+                <div class="dashboard-card">
+                    <h3 class="dashboard-card-title">Buku Terpopuler</h3>
+                    <div class="dashboard-popular-books">
+                        @forelse($bestSellingBooks->take(3) as $index => $item)
+                        <div class="dashboard-book-item {{ !$loop->last ? 'dashboard-book-item-border' : '' }}">
+                            <div class="dashboard-book-info">
+                                <div class="dashboard-book-rank">{{ $index + 1 }}</div>
+                                <div class="dashboard-book-details">
+                                    <p class="dashboard-book-title">{{ $item->book->title ?? 'N/A' }}</p>
+                                    <p class="dashboard-book-author">{{ $item->book->author ?? 'N/A' }}</p>
+                                </div>
+                            </div>
+                            <div class="dashboard-book-sales">
+                                <p class="dashboard-book-sold">{{ $item->total_sold ?? 0 }}</p>
+                                <p class="dashboard-book-label">terjual</p>
+                            </div>
+                        </div>
+                        @empty
+                        <p class="dashboard-empty">Belum ada data penjualan</p>
+                        @endforelse
                     </div>
                 </div>
             </div>
+
+            <!-- Chart: Penjualan Bulanan -->
+            <div class="dashboard-chart-card">
+                <h3 class="dashboard-chart-title">Penjualan Bulanan</h3>
+                <div class="dashboard-chart-container">
+                    <canvas id="transactionsChart"></canvas>
+                </div>
+                <h3 class="dashboard-chart-title">Tren Pendapatan</h3>
+                <div class="dashboard-chart-container">
+                    <canvas id="revenueChart"></canvas>
+                </div>
+            </div>
+
         </div>
     </div>
 

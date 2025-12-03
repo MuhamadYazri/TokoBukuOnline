@@ -61,17 +61,14 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
 });
 
 Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
-    // Dashboard Admin
+
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
     Route::get('/dashboard/chart-data', [AdminDashboard::class, 'getChartData'])->name('dashboard.chart');
 
-    // Books Management - CRUD Buku
     Route::resource('books', AdminBookController::class);
 
-    // Customers Management - Kelola Pengguna
     Route::get('/customers', [AdminCustomerController::class, 'index'])->name('customers.index');
 
-    // Orders Management - Kelola Pesanan
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');

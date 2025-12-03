@@ -80,17 +80,15 @@ class OrderController extends Controller
             // Generate order number
             $orderNumber = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
 
+            $order = Order::create([
+                'user_id' => Auth::id(),
+                'order_number' => $orderNumber,
+                'total_quantity' => $totalQuantity,
+                'total_price' => $totalPrice,
+                'status' => 'pending',
+            ]);
             // Buat order untuk setiap buku
             foreach ($cartItems as $item) {
-                $order = Order::create([
-                    'user_id' => Auth::id(),
-                    'order_number' => $orderNumber,
-                    'book_id' => $item->book_id,
-                    'total_quantity' => $item->quantity,
-                    'total_price' => $item->quantity * $item->book->price,
-                    'status' => 'pending',
-                ]);
-
                 // Buat order detail
                 OrderDetail::create([
                     'order_id' => $order->id,
@@ -102,6 +100,8 @@ class OrderController extends Controller
                 // Kurangi stok buku
                 $item->book->decreaseStock($item->quantity);
             }
+
+
 
             // Hapus cart setelah checkout
             Cart::where('user_id', Auth::id())->delete();

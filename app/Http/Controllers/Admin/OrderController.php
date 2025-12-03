@@ -15,7 +15,14 @@ class OrderController extends Controller
      */
     public function index(Request $request)
     {
-        $query = Order::with(['user', 'book']);
+        $query = Order::with(['user', 'book', 'orderDetails.book']);
+
+        // Calculate stats
+        $pendingCount = Order::where('status', 'pending')->count();
+        $processingCount = Order::where('status', 'processing')->count();
+        $shippedCount = Order::where('status', 'shipped')->count();
+        $completedCount = Order::where('status', 'completed')->count();
+        $cancelledCount = Order::where('status', 'cancelled')->count();
 
         // Filter by status
         if ($request->has('status') && $request->status != 'all') {
@@ -35,7 +42,7 @@ class OrderController extends Controller
 
         $orders = $query->latest()->paginate(20);
 
-        return view('admin.orders.index', compact('orders'));
+        return view('admin.orders.index', compact('orders', 'pendingCount', 'processingCount', 'shippedCount', 'completedCount', 'cancelledCount'));
     }
 
     /**

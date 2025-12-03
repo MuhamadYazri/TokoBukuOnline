@@ -23,7 +23,7 @@ class BookSeeder extends Seeder
                 'stock' => 25,
                 'year' => 2005,
                 'description' => 'Novel inspiratif tentang perjuangan anak-anak Belitung dalam menempuh pendidikan di tengah keterbatasan.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'Bumi Manusia',
@@ -33,7 +33,7 @@ class BookSeeder extends Seeder
                 'stock' => 18,
                 'year' => 1980,
                 'description' => 'Novel sejarah tentang kehidupan Minke, seorang pribumi di masa kolonial Belanda.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'Negeri 5 Menara',
@@ -43,7 +43,7 @@ class BookSeeder extends Seeder
                 'stock' => 30,
                 'year' => 2009,
                 'description' => 'Kisah inspiratif santri di Pondok Madani yang bermimpi meraih cita-cita setinggi menara.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'Perahu Kertas',
@@ -53,7 +53,7 @@ class BookSeeder extends Seeder
                 'stock' => 22,
                 'year' => 2009,
                 'description' => 'Novel romantis tentang Kugy dan Keenan yang mengejar mimpi dan cinta.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'Ronggeng Dukuh Paruk',
@@ -63,7 +63,7 @@ class BookSeeder extends Seeder
                 'stock' => 15,
                 'year' => 1982,
                 'description' => 'Trilogi tentang Srintil, seorang ronggeng dari Dukuh Paruk yang menghadapi takdir tragis.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
 
             // Non-Fiksi & Self-Help
@@ -75,7 +75,7 @@ class BookSeeder extends Seeder
                 'stock' => 40,
                 'year' => 2018,
                 'description' => 'Panduan praktis membangun kebiasaan baik dan menghilangkan kebiasaan buruk dengan perubahan kecil.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'Rich Dad Poor Dad',
@@ -85,7 +85,7 @@ class BookSeeder extends Seeder
                 'stock' => 35,
                 'year' => 1997,
                 'description' => 'Pelajaran tentang literasi keuangan dan investasi dari dua ayah dengan pandangan berbeda.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'The Psychology of Money',
@@ -95,7 +95,7 @@ class BookSeeder extends Seeder
                 'stock' => 28,
                 'year' => 2020,
                 'description' => 'Wawasan tentang hubungan emosional manusia dengan uang dan cara mengelola keuangan.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'Sapiens',
@@ -105,7 +105,7 @@ class BookSeeder extends Seeder
                 'stock' => 20,
                 'year' => 2011,
                 'description' => 'Sejarah singkat umat manusia dari era batu hingga era digital.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'Filosofi Teras',
@@ -115,7 +115,7 @@ class BookSeeder extends Seeder
                 'stock' => 30,
                 'year' => 2019,
                 'description' => 'Buku tentang filsafat Stoicism untuk kehidupan modern.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
             [
                 'title' => 'Man Search for Meaning',
@@ -125,7 +125,7 @@ class BookSeeder extends Seeder
                 'stock' => 24,
                 'year' => 1946,
                 'description' => 'Refleksi mendalam tentang pencarian makna hidup dari seorang psikiater di kamp konsentrasi Nazi.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
 
             // Programming & Tech (gunakan 'pengembangan-diri' atau tambah enum 'teknologi')
@@ -137,7 +137,7 @@ class BookSeeder extends Seeder
                 'stock' => 15,
                 'year' => 2008,
                 'description' => 'Panduan menulis kode yang bersih, mudah dibaca, dan maintainable.',
-                'cover' => null,
+                'cover' => asset('../public/img/img-book.jpg'),
             ],
         ];
 

@@ -15,6 +15,13 @@ class CustomerController extends Controller
     {
         $query = User::where('role', 'customer');
 
+        // Calculate stats
+        $totalCustomers = User::where('role', 'customer')->count();
+        $newCustomersThisMonth = User::where('role', 'customer')
+            ->whereYear('created_at', now()->year)
+            ->whereMonth('created_at', now()->month)
+            ->count();
+
         // Search filter
         if ($request->filled('search')) {
             $search = $request->search;
@@ -50,6 +57,6 @@ class CustomerController extends Controller
         $customers = $query->withCount(['orders', 'reviews', 'collections'])
             ->paginate(20);
 
-        return view('admin.customer.index', compact('customers'));
+        return view('admin.customer.index', compact('customers', 'totalCustomers', 'newCustomersThisMonth'));
     }
 }
