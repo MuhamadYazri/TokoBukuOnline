@@ -1,17 +1,13 @@
 <x-app-layout>
     <div class="checkout-page-new">
-        <!-- Gradient Header -->
         <x-HeaderGradient title="Checkout" subtitle="Lengkapi informasi tambahan pelanggan">
         </x-HeaderGradient>
 
-        <!-- Main Content -->
         <div class="checkout-main-container">
             <form method="POST" action="{{ route('customer.orders.store') }}" id="checkoutForm" class="checkout-grid">
                 @csrf
 
-                <!-- Left Column -->
                 <div class="checkout-left-column">
-                    <!-- Address Section -->
                     <section class="checkout-section">
                         <div class="checkout-section-header">
                             <h2 class="checkout-section-title">Alamat Pengiriman</h2>
@@ -19,7 +15,6 @@
                         </div>
 
                         <div class="checkout-address-list">
-                            <!-- Rumah -->
                             <label class="checkout-address-card checkout-address-selected">
                                 <div class="checkout-address-header">
                                     <input type="radio" name="shipping_address" value="home" class="checkout-radio" checked>
@@ -39,7 +34,6 @@
                                 </div>
                             </label>
 
-                            <!-- Kantor -->
                             <label class="checkout-address-card">
                                 <div class="checkout-address-header">
                                     <input type="radio" name="shipping_address" value="office" class="checkout-radio">
@@ -67,7 +61,6 @@
                         </div>
                     </section>
 
-                    <!-- Products Section -->
                     <section class="checkout-section">
                         <div class="checkout-section-header">
                             <h2 class="checkout-section-title">Produk</h2>
@@ -102,7 +95,6 @@
                         </div>
                     </section>
 
-                    <!-- Payment Section -->
                     <section class="checkout-section">
                         <div class="checkout-section-header">
                             <h2 class="checkout-section-title">Metode Pembayaran</h2>
@@ -178,7 +170,6 @@
                     </section>
                 </div>
 
-                <!-- Right Column -->
                 <aside class="checkout-right-column">
                     <div class="checkout-summary-box">
                         <h3 class="checkout-summary-title">Detail Pembayaran</h3>

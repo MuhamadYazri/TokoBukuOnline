@@ -6,7 +6,6 @@
             <form method="POST" action="{{ route('customer.orders.store') }}" class="checkout-layout">
                 @csrf
 
-                <!-- Left: Order Summary -->
                 <div class="order-summary-section">
                     <h2 class="section-title">Pesanan Anda</h2>
 
@@ -38,7 +37,6 @@
                         @endforeach
                     </div>
 
-                    <!-- Order Total -->
                     <div class="order-total-box">
                         <div class="total-row">
                             <span>Total Item</span>
@@ -56,7 +54,6 @@
                     </div>
                 </div>
 
-                <!-- Right: Payment Confirmation -->
                 <div class="payment-section">
                     <h2 class="section-title">Konfirmasi Pembayaran</h2>
 
@@ -71,7 +68,6 @@
                         </div>
                     </div>
 
-                    <!-- Customer Info -->
                     <div class="customer-info-box">
                         <h3>Informasi Pembeli</h3>
                         <div class="info-detail">
@@ -96,7 +92,6 @@
                         </div>
                     </div>
 
-                    <!-- Terms & Conditions -->
                     <div class="terms-box">
                         <label class="checkbox-label">
                             <input type="checkbox" name="agree_terms" required>
@@ -104,7 +99,6 @@
                         </label>
                     </div>
 
-                    <!-- Action Buttons -->
                     <div class="checkout-actions">
                         <a href="{{ route('customer.cart.index') }}" class="btn-back">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none">

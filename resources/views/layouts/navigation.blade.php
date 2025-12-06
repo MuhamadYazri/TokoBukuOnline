@@ -46,7 +46,7 @@
             <a href="{{ route('home') }}" class="nav-mobile-link">Beranda</a>
         </div>
         <div class="nav-mobile-item">
-            <a href="#" class="nav-mobile-link">Koleksi Buku</a>
+            <a href="{{ route('customer.collections.index') }}" class="nav-mobile-link">Koleksi Buku</a>
         </div>
         <div class="nav-mobile-item">
             <a href="{{ route('home') }}" class="nav-mobile-link">Trending</a>
@@ -59,11 +59,6 @@
                     </svg>
                     Akun Saya
                 </a>
-
-                <form action="{{ route('logout') }}" method="post">
-                    @csrf
-                    <button type="submit">keluar</button>
-                </form>
             @else
                 <a href="{{ route('login') }}" class="nav-mobile-link">
                     <svg width="14" height="14" viewBox="0 0 14 14" fill="none" xmlns="http://www.w3.org/2000/svg">

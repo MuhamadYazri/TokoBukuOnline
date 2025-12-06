@@ -1,6 +1,5 @@
 <x-app-layout>
     <div class="books-page-new">
-        <!-- Hero Header -->
         <div class="books-header-gradient">
             <div class="books-header-content">
                 <h1 class="books-header-title">Koleksi Lengkap Buku</h1>
@@ -8,14 +7,11 @@
             </div>
         </div>
 
-        <!-- Main Container -->
         <div class="books-container">
-            <!-- Filter Sidebar -->
             <div class="books-filter-wrapper">
                 <div class="books-filter-card">
                     <h2 class="books-filter-heading">Filter</h2>
 
-                    <!-- Category Filter -->
                     <form method="GET" class="form-books" action="{{ route('customer.books.index') }}">
                         <div class="books-filter-section">
                             <h3 class="books-filter-title">Kategori</h3>
@@ -48,7 +44,6 @@
 
                         </div>
 
-                        <!-- Rating Filter -->
                         <div class="books-filter-section">
                             <h3 class="books-filter-title">Rating Minimum</h3>
                             <div class="books-filter-options">
@@ -87,13 +82,11 @@
                             </div>
                         </div>
 
-                        <!-- Reset Filter Button -->
                         <a href="{{ route('customer.books.index') }}" class="books-reset-btn">
                             Reset Filter
                         </a>
                     </form>
 
-                    <!-- Toggle Arrow -->
                     <button class="books-filter-toggle" onclick="toggleFilter()">
                         <svg width="18" height="11" viewBox="0 0 18 11" fill="none">
                             <path d="M1 1L9 9L17 1" stroke="#4D4D4D" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -102,10 +95,8 @@
                 </div>
             </div>
 
-            <!-- Books List -->
             <div class="books-list-wrapper">
 
-                <!-- Header -->
                 <div class="books-list-header">
                     <p class="books-count-text">Menampilkan {{ $books->total() }} buku</p>
                     <form method="GET" action="{{ route('customer.books.index') }}" class="books-sort-form">
@@ -127,7 +118,6 @@
                     </form>
                 </div>
 
-                <!-- Books Cards -->
                 @if($books->isEmpty())
                     <div class="books-empty-state">
                         <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
@@ -144,10 +134,9 @@
                                 $rating = $book->averageRating();
                             @endphp
                             <a href="{{ route('customer.books.show', $book->id) }}" class="books-card-item">
-                                <!-- Book Image -->
                                 <div class="books-card-image">
                                     @if($book->cover)
-                                        <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}">
+                                        <img src="{{ asset( $book->cover) }}" alt="{{ $book->title }}">
                                     @else
                                         <div class="books-card-placeholder">
                                             <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
@@ -157,7 +146,6 @@
                                             </svg>
                                         </div>
                                     @endif
-                                    <!-- Rating Badge -->
                                     <div class="books-rating-badge">
                                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
                                             <path d="M6 9L2.472 10.854L3.1452 6.867L0.2904 4.146L4.308 3.654L6 0L7.692 3.654L11.7096 4.146L8.8548 6.867L9.528 10.854L6 9Z" fill="white"/>
@@ -166,7 +154,6 @@
                                     </div>
                                 </div>
 
-                                <!-- Book Info -->
                                 <div class="books-card-info">
                                     <div class="books-card-details">
                                         <p class="books-card-category">{{ $book->getCategoryNameAttribute()}}</p>
@@ -183,7 +170,6 @@
                         @endforeach
                     </div>
 
-                    <!-- Pagination -->
                     @if($books->hasPages())
                         <div class="books-pagination">
                             {{ $books->appends(request()->query())->links('vendor.pagination.custom') }}

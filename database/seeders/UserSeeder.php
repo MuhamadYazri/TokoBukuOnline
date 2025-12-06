@@ -20,6 +20,8 @@ class UserSeeder extends Seeder
             'email' => 'admin@literasik.com',
             'password' => Hash::make('password'),
             'role' => 'admin',
+            'phone' => '+62 812-3456-7890',
+            'address' => 'Jl. Sudirman No. 123, Jakarta Pusat',
             'email_verified_at' => now(),
         ]);
 
@@ -29,6 +31,8 @@ class UserSeeder extends Seeder
             'email' => 'budi@example.com',
             'password' => Hash::make('password'),
             'role' => 'customer',
+            'phone' => '+62 813-9876-5432',
+            'address' => 'Jl. Gatot Subroto No. 45, Jakarta Selatan',
             'email_verified_at' => now(),
         ]);
 
@@ -37,6 +41,8 @@ class UserSeeder extends Seeder
             'email' => 'siti@example.com',
             'password' => Hash::make('password'),
             'role' => 'customer',
+            'phone' => '+62 821-5555-6789',
+            'address' => 'Jl. Thamrin No. 78, Jakarta Pusat',
             'email_verified_at' => now(),
         ]);
 
@@ -45,6 +51,8 @@ class UserSeeder extends Seeder
             'email' => 'andi@example.com',
             'password' => Hash::make('password'),
             'role' => 'customer',
+            'phone' => '+62 856-1234-5678',
+            'address' => 'Jl. HR Rasuna Said No. 99, Jakarta Selatan',
             'email_verified_at' => now(),
         ]);
 

@@ -47,7 +47,7 @@ class CollectionController extends Controller
             'book_id' => $validated['book_id'],
         ]);
 
-        $book = Book::find($validated['book_id']);
+        // $book = Book::find($validated['book_id']);
 
         // Log activity
         // ActivityLog::createLog(

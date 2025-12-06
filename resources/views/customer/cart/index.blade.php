@@ -1,13 +1,10 @@
 <x-app-layout>
     <div class="cart-page-new">
-        <!-- Header with Gradient -->
         <x-HeaderGradient title="Keranjang" subtitle="Lihat semua buku yang ingin dicheckout">
         </x-HeaderGradient>
 
-        <!-- Main Container -->
         <div class="cart-main-container">
             @if($cartItems->isEmpty())
-                <!-- Empty Cart State -->
                 <div class="cart-empty-state">
                     <svg width="120" height="120" viewBox="0 0 120 120" fill="none">
                         <circle cx="60" cy="60" r="50" fill="#F3F4F6"/>
@@ -25,9 +22,7 @@
                 </div>
             @else
                 <div class="cart-wrapper">
-                    <!-- Left Section: Cart Items -->
                     <div class="cart-wrapper-left">
-                        <!-- Header: Select All & Delete -->
                         <div class="cart-list-header">
                             <div class="cart-select-all">
                                 <input type="checkbox" id="selectAll" class="cart-checkbox">
@@ -41,15 +36,12 @@
                             </button>
                         </div>
 
-                        <!-- Cart Items List -->
                         <div class="cart-list-products">
                             @foreach($cartItems as $item)
                                 <div class="cart-product-item" data-item-id="{{ $item->id }}">
                                     <div class="cart-product-wrapper">
-                                        <!-- Checkbox -->
                                         <input type="checkbox" class="cart-checkbox cart-item-checkbox" data-item-id="{{ $item->id }}" data-price="{{ $item->book->price }}" data-quantity="{{ $item->quantity }}">
 
-                                        <!-- Book Image -->
                                         <a href="{{ route('customer.books.show', $item->book->id) }}" class="cart-product-image">
                                             @if($item->book->cover)
                                                 <img src="{{ asset('storage/' . $item->book->cover) }}" alt="{{ $item->book->title }}">
@@ -64,25 +56,18 @@
                                             @endif
                                         </a>
 
-                                        <!-- Book Details -->
                                         <div class="cart-product-details">
-                                            <!-- Category Badge -->
                                             <div class="cart-product-category">
                                                 <p>{{ $item->book->category ?? 'Pengembangan Diri' }}</p>
                                             </div>
 
-                                            <!-- Title -->
                                             <h3 class="cart-product-title">{{ Str::limit($item->book->title, 30) }}</h3>
 
-                                            <!-- Author -->
                                             <p class="cart-product-author">{{ $item->book->author }}</p>
 
-                                            <!-- Price -->
                                             <p class="cart-product-price">Rp {{ number_format($item->book->price, 0, ',', '.') }}</p>
 
-                                            <!-- Quantity Controls -->
                                             <div class="cart-product-controls">
-                                                <!-- Delete Icon -->
                                                 <form method="POST" action="{{ route('customer.cart.destroy', $item->id) }}" class="cart-delete-form">
                                                     @csrf
                                                     @method('DELETE')
@@ -93,7 +78,6 @@
                                                     </button>
                                                 </form>
 
-                                                <!-- Minus Button -->
                                                 <form method="POST" action="{{ route('customer.cart.update', $item->id) }}" class="cart-qty-form">
                                                     @csrf
                                                     @method('PATCH')
@@ -103,10 +87,8 @@
                                                     </button>
                                                 </form>
 
-                                                <!-- Quantity Display -->
                                                 <span class="cart-qty-display">{{ $item->quantity }}</span>
 
-                                                <!-- Plus Button -->
                                                 <form method="POST" action="{{ route('customer.cart.update', $item->id) }}" class="cart-qty-form">
                                                     @csrf
                                                     @method('PATCH')
@@ -127,12 +109,10 @@
                         </div>
                     </div>
 
-                    <!-- Right Section: Summary -->
                     <div class="cart-wrapper-right">
                         <div class="cart-summary-box">
                             <h2 class="cart-summary-title">Ringkasan Belanja</h2>
 
-                            <!-- Summary Details -->
                             <div class="cart-summary-details">
                                 <div class="cart-summary-row">
                                     <p class="cart-summary-label">Subtotal</p>
@@ -148,16 +128,13 @@
                                 </div>
                             </div>
 
-                            <!-- Divider -->
                             <div class="cart-summary-divider"></div>
 
-                            <!-- Total -->
                             <div class="cart-summary-total-row">
                                 <p class="cart-summary-total-label">Total</p>
                                 <p class="cart-summary-total-value" id="summaryTotal">Rp {{ number_format($total * 1.1, 0, ',', '.') }}</p>
                             </div>
 
-                            <!-- Checkout Button -->
                             <a href="{{ route('customer.orders.create') }}" class="cart-btn-checkout">
                                 Checkout
                             </a>

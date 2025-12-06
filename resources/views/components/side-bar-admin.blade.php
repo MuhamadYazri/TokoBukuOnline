@@ -1,16 +1,13 @@
 <aside class="admin-sidebar">
     <div class="admin-sidebar-content">
-        <!-- Brand / Logo Section -->
         <div class="admin-sidebar-header">
             <div class="admin-sidebar-brand">
                 <span class="admin-sidebar-brand-text">LiterASIK</span>
             </div>
         </div>
 
-        <!-- Navigation Menu -->
         <nav class="admin-sidebar-nav">
             <ul class="admin-sidebar-menu">
-                <!-- Dashboard -->
                 <li class="admin-sidebar-menu-item">
                     <a href="{{ route('admin.dashboard') }}" class="admin-sidebar-link {{ request()->routeIs('admin.dashboard') ? 'active' : '' }}">
                         <svg class="admin-sidebar-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -21,7 +18,6 @@
                     </a>
                 </li>
 
-                <!-- Users Management -->
                 <li class="admin-sidebar-menu-item">
                     <a href="{{ route('admin.customers.index') }}" class="admin-sidebar-link {{ request()->routeIs('admin.customers.*') ? 'active' : '' }}">
                         <svg class="admin-sidebar-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -32,7 +28,6 @@
                     </a>
                 </li>
 
-                <!-- Books Management -->
                 <li class="admin-sidebar-menu-item">
                     <a href="{{ route('admin.books.index') }}" class="admin-sidebar-link {{ request()->routeIs('admin.books.*') ? 'active' : '' }}">
                         <svg class="admin-sidebar-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -42,7 +37,6 @@
                     </a>
                 </li>
 
-                <!-- Transactions Management -->
                 <li class="admin-sidebar-menu-item">
                     <a href="#" class="admin-sidebar-link">
                         <svg class="admin-sidebar-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -53,7 +47,6 @@
                     </a>
                 </li>
 
-                <!-- Orders Management -->
                 <li class="admin-sidebar-menu-item">
                     <a href="{{ route('admin.orders.index') }}" class="admin-sidebar-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
                         <svg class="admin-sidebar-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
@@ -68,7 +61,6 @@
             </ul>
         </nav>
 
-        <!-- Logout Button -->
         <div class="admin-sidebar-logout-wrapper">
             <form method="POST" action="{{ route('logout') }}" class="admin-sidebar-form">
                 @csrf

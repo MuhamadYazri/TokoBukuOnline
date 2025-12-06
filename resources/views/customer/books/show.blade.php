@@ -1,6 +1,5 @@
 <x-app-layout>
     <div class="book-detail-page">
-        <!-- Header with Gradient -->
         <div class="book-detail-header">
             <div class="book-detail-header-text">
                 <h1 class="book-detail-header-title">Detail Buku</h1>
@@ -8,19 +7,15 @@
             </div>
         </div>
 
-        <!-- Main Container -->
         <div class="book-detail-container">
-            <!-- Breadcrumb -->
             <div class="book-detail-breadcrumb">
                 <p>Beranda / Koleksi Buku / {{ $book->title }}</p>
             </div>
 
-            <!-- Section 1: Book Image, Actions, Stock -->
             <div class="book-detail-section-1">
-                <!-- Book Image -->
                 <div class="book-detail-image">
                     @if($book->cover)
-                        <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}">
+                        <img src="{{ asset($book->cover) }}" alt="{{ $book->title }}">
                     @else
                         <div class="book-detail-image-placeholder">
                             <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
@@ -32,13 +27,17 @@
                     @endif
                 </div>
 
-                <!-- Like & Share Buttons -->
                 <div class="book-detail-actions">
-                    <button class="book-detail-btn-action">
-                        <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
-                            <path d="M11 18L9.405 16.5425C3.74 11.395 0 8.0075 0 3.95C0 1.5625 1.87 0 4.4 0C5.808 0 7.15 0.6425 8 1.635C8.85 0.6425 10.192 0 11.6 0C14.13 0 16 1.5625 16 3.95C16 8.0075 12.26 11.395 6.595 16.5425L11 18Z" fill="#B3B3B3"/>
-                        </svg>
-                    </button>
+                    <form action="{{ route('customer.collections.store') }}" method="POST">
+                        @csrf
+                        <input type="hidden" name="book_id" value="{{ $book->id }}">
+                        <button class="book-detail-btn-action" type="submit">
+                            <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
+                                <path d="M11 18L9.405 16.5425C3.74 11.395 0 8.0075 0 3.95C0 1.5625 1.87 0 4.4 0C5.808 0 7.15 0.6425 8 1.635C8.85 0.6425 10.192 0 11.6 0C14.13 0 16 1.5625 16 3.95C16 8.0075 12.26 11.395 6.595 16.5425L11 18Z" fill="#B3B3B3"/>
+                            </svg>
+                        </button>
+                    </form>
+
                     <button class="book-detail-btn-action">
                         <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
                             <path d="M15 13.5L9 17L3 13.5V3L9 6.5L15 3V13.5Z" stroke="#B3B3B3" stroke-width="2" fill="none"/>
@@ -47,27 +46,21 @@
                     </button>
                 </div>
 
-                <!-- Stock Info -->
                 <div class="book-detail-stock">
                     <p class="book-detail-stock-label">Stok tersedia</p>
                     <p class="book-detail-stock-value">{{ $book->stock }} unit</p>
                 </div>
             </div>
 
-            <!-- Section 2: Book Details, Reviews, Info -->
             <div class="book-detail-section-2">
-                <!-- Category Badge -->
                 <div class="book-detail-category-badge">
                     <p>{{ $book->getCategoryNameAttribute()}}</p>
                 </div>
 
-                <!-- Book Title -->
                 <h2 class="book-detail-title">{{ $book->title }}</h2>
 
-                <!-- Author -->
                 <p class="book-detail-author">Oleh {{ $book->author }}</p>
 
-                <!-- Rating & Reviews -->
                 <div class="book-detail-rating-wrapper">
                     <div class="book-detail-rating-stars">
                         @php
@@ -104,16 +97,13 @@
                     <p class="book-detail-reviews-count">{{ $book->totalReviews() }} ulasan</p>
                 </div>
 
-                <!-- Price -->
                 <div class="book-detail-price-box">
                     <p class="book-detail-price-label">Harga</p>
                     <p class="book-detail-price-value">Rp {{ number_format($book->price, 0, ',', '.') }}</p>
                 </div>
 
-                <!-- Detail Section Title -->
                 <h3 class="book-detail-section-title">Detail Buku</h3>
 
-                <!-- Info Grid -->
                 <div class="book-detail-info-grid">
                     <div class="book-detail-info-item">
                         <p class="book-detail-info-label">Penerbit</p>
@@ -133,7 +123,6 @@
                     </div>
                 </div>
 
-                <!-- Description -->
                 <div class="book-detail-description-wrapper">
                     <h3 class="book-detail-section-title">Deskripsi</h3>
 
@@ -162,7 +151,6 @@
 
                 </div>
 
-                <!-- Add to Cart Button -->
                 <form action="{{ route('customer.cart.store') }}" method="POST">
                     @csrf
                     <input type="hidden" name="book_id" value="{{ $book->id }}">
@@ -177,14 +165,11 @@
                     </button>
                 </form>
 
-                <!-- Buy Now Button -->
                 <a href="#" class="book-detail-btn-buy">
                     Beli Sekarang
                 </a>
 
-                <!-- Reviews Section -->
                 <div class="book-detail-reviews-section">
-                    <!-- Write Review Prompt -->
                     <div class="book-detail-review-prompt">
                         <p class="book-detail-review-prompt-text">Apa pendapatmu tentang produk ini?</p>
                         <button class="book-detail-btn-write-review">
@@ -192,7 +177,6 @@
                         </button>
                     </div>
 
-                    <!-- Reviews Header -->
                     <div class="book-detail-reviews-header">
                         <div class="book-detail-reviews-header-left">
                             <h3 class="book-detail-reviews-title">Ulasan Produk</h3>
@@ -210,7 +194,6 @@
                         </div>
                     </div>
 
-                    <!-- Reviews List -->
                     <div class="book-detail-reviews-list">
                         @foreach($book->reviews()->latest()->take(5)->get() as $review)
                             <div class="book-detail-review-item">
@@ -249,7 +232,6 @@
                         @endforeach
                     </div>
 
-                    <!-- Load More Button -->
                     @if($book->totalReviews() > 5)
                         <div class="book-detail-reviews-load-more">
                             <button class="book-detail-btn-load-more">

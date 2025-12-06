@@ -60,7 +60,7 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
-Route::middleware(['auth'])->prefix('admin')->name('admin.')->group(function () {
+Route::middleware(['auth', 'isAdmin'])->prefix('admin')->name('admin.')->group(function () {
 
     Route::get('/dashboard', [AdminDashboard::class, 'index'])->name('dashboard');
     Route::get('/dashboard/chart-data', [AdminDashboard::class, 'getChartData'])->name('dashboard.chart');

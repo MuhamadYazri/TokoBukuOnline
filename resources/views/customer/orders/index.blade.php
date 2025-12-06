@@ -1,338 +1,164 @@
 <x-app-layout>
-    <div class="orders-page">
-        <div class="container">
-            <h1 class="page-title">Riwayat Pesanan</h1>
+    <x-HeaderGradient title="Dashboard Pengguna" subtitle="Lihat semua informasi mengenai Anda">
+    </x-HeaderGradient>
 
-            @if($orders->isEmpty())
-                <!-- Empty Orders State -->
-                <div class="empty-orders">
-                    <svg width="200" height="200" viewBox="0 0 200 200" fill="none">
-                        <circle cx="100" cy="100" r="80" fill="#F3F4F6"/>
-                        <path d="M70 70H130M70 90H130M70 110H110" stroke="#9CA3AF" stroke-width="4" stroke-linecap="round"/>
-                        <rect x="60" y="60" width="80" height="80" rx="5" stroke="#9CA3AF" stroke-width="4"/>
+    <div class="profile-container">
+        <!-- Navigation Card -->
+        <div class="profile-nav-card">
+            <!-- User Info Section -->
+            <div class="profile-user-info">
+                <div class="profile-avatar">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="23" height="23" viewBox="0 0 23 23" fill="none">
+                        <path d="M11.4783 11.4783C14.6491 11.4783 17.2174 8.91 17.2174 5.73913C17.2174 2.56826 14.6491 0 11.4783 0C8.30739 0 5.73913 2.56826 5.73913 5.73913C5.73913 8.91 8.30739 11.4783 11.4783 11.4783ZM11.4783 14.3478C7.64739 14.3478 0 16.2704 0 20.087V22.9565H22.9565V20.087C22.9565 16.2704 15.3091 14.3478 11.4783 14.3478Z" fill="white"/>
                     </svg>
-                    <h2>Belum Ada Pesanan</h2>
-                    <p>Anda belum pernah melakukan pemesanan</p>
-                    <a href="{{ route('customer.books.index') }}" class="btn-browse">
-                        Jelajahi Buku
-                    </a>
                 </div>
-            @else
-                <!-- Orders List -->
-                <div class="orders-list">
-                    @foreach($orders as $order)
-                        <div class="order-card">
-                            <!-- Order Header -->
-                            <div class="order-header">
-                                <div class="order-info">
-                                    <div class="order-number">
-                                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                                            <path d="M4 4H16V16H4V4Z" stroke="#667eea" stroke-width="2"/>
-                                            <path d="M8 2V6M12 2V6M2 8H18" stroke="#667eea" stroke-width="2"/>
-                                        </svg>
-                                        <span>{{ $order->order_number }}</span>
-                                    </div>
-                                    <div class="order-date">{{ $order->created_at->format('d M Y, H:i') }}</div>
-                                </div>
-                                <div class="order-status status-{{ $order->status }}">
-                                    {{ ucfirst($order->status) }}
-                                </div>
+                <h2 class="profile-user-name">{{ Auth::user()->name }}</h2>
+                <p class="profile-user-email">{{ Auth::user()->email }}</p>
+            </div>
+
+            <!-- Navigation Menu -->
+            <div class="profile-nav-menu">
+                <a href="{{ route('customer.profile.edit') }}" class="profile-nav-item">
+                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M8 8C10.21 8 12 6.21 12 4C12 1.79 10.21 0 8 0C5.79 0 4 1.79 4 4C4 6.21 5.79 8 8 8ZM8 10C5.33 10 0 11.34 0 14V16H16V14C16 11.34 10.67 10 8 10Z" fill="#4D4D4D"/>
+                    </svg>
+                    <span>Profil</span>
+                </a>
+                <a href="{{ route('customer.orders.index') }}" class="profile-nav-item profile-nav-item-active">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
+                        <path d="M7.2 2.44459H0V4.03716H7.2V2.44459ZM7.2 8.81486H0V10.4074H7.2V8.81486ZM11.472 5.62973L8.64 2.81088L9.768 1.68812L11.464 3.37624L14.856 0L16 1.12276L11.472 5.62973ZM11.472 12L8.64 9.18115L9.768 8.05839L11.464 9.74652L14.856 6.37027L16 7.49303L11.472 12Z" fill="white"/>
+                    </svg>
+                    <span>Riwayat Transaksi</span>
+                </a>
+                <a href="{{ route('customer.collections.index') }}" class="profile-nav-item">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
+                        <path d="M14.5455 0.352941C13.7382 0.105882 12.8509 0 12 0C10.5818 0 9.05455 0.282353 8 1.05882C6.94545 0.282353 5.41818 0 4 0C2.58182 0 1.05455 0.282353 0 1.05882V11.4C0 11.5765 0.181818 11.7529 0.363636 11.7529C0.436364 11.7529 0.472727 11.7176 0.545455 11.7176C1.52727 11.2588 2.94545 10.9412 4 10.9412C5.41818 10.9412 6.94545 11.2235 8 12C8.98182 11.4 10.7636 10.9412 12 10.9412C13.2 10.9412 14.4364 11.1529 15.4545 11.6824C15.5273 11.7176 15.5636 11.7176 15.6364 11.7176C15.8182 11.7176 16 11.5412 16 11.3647V1.05882C15.5636 0.741176 15.0909 0.529412 14.5455 0.352941ZM14.5455 9.88235C13.7455 9.63529 12.8727 9.52941 12 9.52941C10.7636 9.52941 8.98182 9.98824 8 10.5882V2.47059C8.98182 1.87059 10.7636 1.41176 12 1.41176C12.8727 1.41176 13.7455 1.51765 14.5455 1.76471V9.88235Z" fill="#4D4D4D"/>
+                        <path d="M12 4.23528C12.64 4.23528 13.2582 4.29881 13.8182 4.41881V3.34586C13.2437 3.23998 12.6255 3.17645 12 3.17645C10.7637 3.17645 9.64366 3.38116 8.72729 3.76233V4.9341C9.54911 4.48233 10.6909 4.23528 12 4.23528Z" fill="#4D4D4D"/>
+                        <path d="M8.72729 5.63996V6.81172C9.54911 6.35996 10.6909 6.1129 12 6.1129C12.64 6.1129 13.2582 6.17643 13.8182 6.29643V5.22349C13.2437 5.11761 12.6255 5.05408 12 5.05408C10.7637 5.05408 9.64366 5.26584 8.72729 5.63996Z" fill="#4D4D4D"/>
+                        <path d="M12 6.93878C10.7637 6.93878 9.64366 7.14349 8.72729 7.52466V8.69643C9.54911 8.24466 10.6909 7.99761 12 7.99761C12.64 7.99761 13.2582 8.06113 13.8182 8.18113V7.10819C13.2437 6.99525 12.6255 6.93878 12 6.93878Z" fill="#4D4D4D"/>
+                    </svg>
+                    <span>Koleksi Buku Saya</span>
+                </a>
+                <div class="profile-nav-divider"></div>
+                <form method="POST" action="{{ route('logout') }}" class="profile-nav-item profile-nav-item-logout">
+                    @csrf
+                    <button type="submit" class="profile-logout-btn">
+                        <svg width="16" height="14" viewBox="0 0 16 14" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M1 14H9C9.55 14 10 13.55 10 13V11H8V12H2V2H8V3H10V1C10 0.45 9.55 0 9 0H1C0.45 0 0 0.45 0 1V13C0 13.55 0.45 14 1 14ZM11.09 10.59L12.5 12L16 8.5L12.5 5L11.09 6.41L12.67 8H4V10H12.67L11.09 10.59Z" fill="#FF3B30"/>
+                        </svg>
+                        <span>Keluar</span>
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Orders Content Card -->
+        <div class="orders-content-card">
+            <h2 class="orders-content-title">Riwayat Transaksi</h2>
+
+            <div class="orders-list">
+                @forelse($orders as $order)
+                    <div class="order-card">
+                        <!-- Order Header -->
+                        <div class="order-header">
+                            <div class="order-info">
+                                <h3 class="order-id">{{ $order->order_number }}</h3>
+                                <p class="order-date">{{ $order->created_at->format('Y-m-d H:i') }}</p>
                             </div>
+                            <div class="order-badges">
+                                @if($order->payment_status === 'pending')
+                                    <span class="order-badge order-badge-warning">Belum Dibayar</span>
+                                @elseif($order->payment_status === 'paid')
+                                    <span class="order-badge order-badge-success">Sudah Dibayar</span>
+                                @elseif($order->payment_status === 'failed')
+                                    <span class="order-badge order-badge-danger">Gagal</span>
+                                @endif
 
-                            <!-- Order Body -->
-                            <div class="order-body">
-                                <div class="order-book-info">
-                                    @if($order->book->cover)
-                                        <img src="{{ asset('storage/' . $order->book->cover) }}" alt="{{ $order->book->title }}">
-                                    @else
-                                        <div class="order-book-placeholder">
-                                            <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
-                                                <path d="M10 5H40L50 15V50C50 51.1046 49.1046 52 48 52H10C8.89543 52 8 51.1046 8 50V7C8 5.89543 8.89543 5 10 5Z" fill="#E5E7EB"/>
-                                            </svg>
-                                        </div>
-                                    @endif
-                                    <div>
-                                        <h3>{{ $order->book->title }}</h3>
-                                        <p class="book-author">{{ $order->book->author }}</p>
-                                        <p class="book-qty">Jumlah: {{ $order->total_quantity }} buku</p>
-                                    </div>
-                                </div>
-
-                                <div class="order-total">
-                                    <span class="total-label">Total:</span>
-                                    <span class="total-value">Rp {{ number_format($order->total_price, 0, ',', '.') }}</span>
-                                </div>
-                            </div>
-
-                            <!-- Order Footer -->
-                            <div class="order-footer">
-                                <a href="{{ route('customer.orders.show', $order->id) }}" class="btn-detail-order">
-                                    Lihat Detail
-                                </a>
                                 @if($order->status === 'pending')
-                                    <form method="POST" action="{{ route('customer.orders.cancel', $order->id) }}" onsubmit="return confirm('Batalkan pesanan ini?')">
-                                        @csrf
-                                        @method('PATCH')
-                                        <button type="submit" class="btn-cancel-order">
-                                            Batalkan Pesanan
-                                        </button>
-                                    </form>
+                                    <span class="order-badge order-badge-warning">Menunggu</span>
+                                @elseif($order->status === 'processing')
+                                    <span class="order-badge order-badge-info">Diproses</span>
+                                @elseif($order->status === 'shipped')
+                                    <span class="order-badge order-badge-purple">Dikirim</span>
+                                @elseif($order->status === 'completed')
+                                    <span class="order-badge order-badge-success">Selesai</span>
+                                @elseif($order->status === 'cancelled')
+                                    <span class="order-badge order-badge-danger">Dibatalkan</span>
                                 @endif
                             </div>
                         </div>
-                    @endforeach
-                </div>
 
-                <!-- Pagination -->
-                <div class="pagination-wrapper">
-                    {{ $orders->links() }}
-                </div>
-            @endif
+                        <!-- Order Items -->
+                        <div class="order-items-section">
+                            <p class="order-items-label">Item Pesanan:</p>
+                            <div class="order-items-list">
+                                @foreach($order->orderDetails->take(3) as $detail)
+                                    <div class="order-item-row">
+                                        <div class="order-item-name">
+                                            <span>{{ $detail->book->title }}</span>
+                                            <span class="order-item-qty">x{{ $detail->quantity }}</span>
+                                        </div>
+                                        <div class="order-item-price">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</div>
+                                    </div>
+                                @endforeach
+                                @if($order->orderDetails->count() > 3)
+                                    <p class="order-items-more">+{{ $order->orderDetails->count() - 3 }} item lainnya</p>
+                                @endif
+                            </div>
+                        </div>
+
+                        <!-- Order Footer -->
+                        <div class="order-footer">
+                            <div class="order-payment-info">
+                                <p class="order-payment-label">Metode Pembayaran</p>
+                                <p class="order-payment-method">
+                                    @if($order->payment_method === 'bank_transfer')
+                                        🏦 Transfer Bank
+                                    @elseif($order->payment_method === 'e-wallet')
+                                        💳 E-Wallet
+                                    @elseif($order->payment_method === 'credit_card')
+                                        💳 Kartu Kredit
+                                    @else
+                                        💰 {{ ucwords(str_replace('_', ' ', $order->payment_method)) }}
+                                    @endif
+                                </p>
+                            </div>
+                            <div class="order-total-info">
+                                <p class="order-total-label">Total</p>
+                                <p class="order-total-amount">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
+                            </div>
+                        </div>
+
+                        <!-- Order Actions -->
+                        <div class="order-actions">
+                            @if($order->payment_status === 'pending')
+                                <a href="{{ route('customer.orders.payment', $order->id) }}" class="order-btn order-btn-dark">Bayar</a>
+                            @elseif($order->status === 'shipped')
+                                <form method="POST" action="{{ route('customer.orders.confirm', $order->id) }}" style="display: inline;">
+                                    @csrf
+                                    <button type="submit" class="order-btn order-btn-success">
+                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
+                                            <path d="M6 11.17L1.83 7L0.410004 8.41L6 14L18 2L16.59 0.589996L6 11.17Z" fill="white"/>
+                                        </svg>
+                                        Pesanan Diterima
+                                    </button>
+                                </form>
+                            @elseif($order->status === 'completed')
+                                <a href="{{ route('customer.orders.show', $order->id) }}" class="order-btn order-btn-success">Lihat Detail</a>
+                            @endif
+                        </div>
+                    </div>
+                @empty
+                    <div class="orders-empty">
+                        <svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <circle cx="50" cy="50" r="50" fill="#F2F2F2"/>
+                            <path d="M50 30C38.954 30 30 38.954 30 50C30 61.046 38.954 70 50 70C61.046 70 70 61.046 70 50C70 38.954 61.046 30 50 30ZM45 57.5L35 47.5L37.825 44.675L45 51.825L62.175 34.65L65 37.5L45 57.5Z" fill="#CCCCCC"/>
+                        </svg>
+                        <p class="orders-empty-text">Belum ada transaksi</p>
+                        <a href="{{ route('customer.books.index') }}" class="orders-empty-btn">Mulai Belanja</a>
+                    </div>
+                @endforelse
+            </div>
         </div>
     </div>
-
-    @push('styles')
-    <style>
-        .orders-page {
-            padding: 40px 0;
-            min-height: 70vh;
-        }
-
-        .page-title {
-            font-size: 36px;
-            font-weight: 700;
-            margin-bottom: 40px;
-        }
-
-        /* Empty Orders */
-        .empty-orders {
-            text-align: center;
-            padding: 80px 20px;
-        }
-
-        .empty-orders h2 {
-            font-size: 28px;
-            font-weight: 700;
-            margin: 30px 0 15px;
-            color: #1f2937;
-        }
-
-        .empty-orders p {
-            font-size: 16px;
-            color: #6b7280;
-            margin-bottom: 30px;
-        }
-
-        .btn-browse {
-            display: inline-flex;
-            align-items: center;
-            gap: 10px;
-            padding: 14px 30px;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 10px;
-            font-weight: 600;
-        }
-
-        .btn-browse:hover {
-            background: #5568d3;
-        }
-
-        /* Orders List */
-        .orders-list {
-            display: flex;
-            flex-direction: column;
-            gap: 20px;
-            margin-bottom: 40px;
-        }
-
-        .order-card {
-            background: white;
-            border: 2px solid #e5e7eb;
-            border-radius: 12px;
-            overflow: hidden;
-        }
-
-        .order-header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-            background: #f9fafb;
-            border-bottom: 2px solid #e5e7eb;
-        }
-
-        .order-info {
-            display: flex;
-            flex-direction: column;
-            gap: 8px;
-        }
-
-        .order-number {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 18px;
-            font-weight: 700;
-            color: #1f2937;
-        }
-
-        .order-date {
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .order-status {
-            padding: 8px 16px;
-            border-radius: 20px;
-            font-size: 13px;
-            font-weight: 700;
-            text-transform: uppercase;
-        }
-
-        .status-pending {
-            background: #fef3c7;
-            color: #92400e;
-        }
-
-        .status-processing {
-            background: #dbeafe;
-            color: #1e40af;
-        }
-
-        .status-completed {
-            background: #d1fae5;
-            color: #065f46;
-        }
-
-        .status-cancelled {
-            background: #fee2e2;
-            color: #991b1b;
-        }
-
-        .order-body {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 20px;
-        }
-
-        .order-book-info {
-            display: flex;
-            gap: 15px;
-            align-items: center;
-        }
-
-        .order-book-info img {
-            width: 60px;
-            height: 85px;
-            object-fit: cover;
-            border-radius: 6px;
-        }
-
-        .order-book-placeholder {
-            width: 60px;
-            height: 85px;
-            background: #f3f4f6;
-            border-radius: 6px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        .order-book-info h3 {
-            font-size: 16px;
-            font-weight: 600;
-            margin-bottom: 4px;
-        }
-
-        .book-author {
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-
-        .book-qty {
-            font-size: 13px;
-            color: #6b7280;
-        }
-
-        .order-total {
-            text-align: right;
-        }
-
-        .total-label {
-            display: block;
-            font-size: 13px;
-            color: #6b7280;
-            margin-bottom: 4px;
-        }
-
-        .total-value {
-            font-size: 24px;
-            font-weight: 700;
-            color: #667eea;
-        }
-
-        .order-footer {
-            display: flex;
-            gap: 10px;
-            padding: 15px 20px;
-            background: #f9fafb;
-            border-top: 2px solid #e5e7eb;
-        }
-
-        .btn-detail-order {
-            flex: 1;
-            padding: 10px;
-            text-align: center;
-            background: #667eea;
-            color: white;
-            text-decoration: none;
-            border-radius: 8px;
-            font-weight: 600;
-        }
-
-        .btn-detail-order:hover {
-            background: #5568d3;
-        }
-
-        .btn-cancel-order {
-            flex: 1;
-            padding: 10px;
-            background: white;
-            color: #ef4444;
-            border: 2px solid #ef4444;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-        }
-
-        .btn-cancel-order:hover {
-            background: #fef2f2;
-        }
-
-        /* Responsive */
-        @media (max-width: 768px) {
-            .order-header {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 15px;
-            }
-
-            .order-body {
-                flex-direction: column;
-                gap: 20px;
-            }
-
-            .order-total {
-                width: 100%;
-                text-align: left;
-                padding-top: 15px;
-                border-top: 1px solid #e5e7eb;
-            }
-        }
-    </style>
-    @endpush
 </x-app-layout>

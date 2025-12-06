@@ -49,14 +49,15 @@
                             <path d="M2.25 4.5H15.75M4.5 9H13.5M6.75 13.5H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         <select name="status" class="orders-filter-select" onchange="document.getElementById('statusFilterForm').submit()">
-                            @php($activeStatus = request('status', 'all'))
+                            @php
+                                $activeStatus = request('status', 'all');
+                            @endphp
                             <option value="all" {{ $activeStatus === 'all' ? 'selected' : '' }}>Semua Status</option>
                             <option value="pending" {{ $activeStatus === 'pending' ? 'selected' : '' }}>Menunggu</option>
                             <option value="processing" {{ $activeStatus === 'processing' ? 'selected' : '' }}>Diproses</option>
                             <option value="shipped" {{ $activeStatus === 'shipped' ? 'selected' : '' }}>Dikirim</option>
                             <option value="completed" {{ $activeStatus === 'completed' ? 'selected' : '' }}>Selesai</option>
                             <option value="cancelled" {{ $activeStatus === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
-                            @endphp
                         </select>
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="orders-filter-chevron">
                             <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>

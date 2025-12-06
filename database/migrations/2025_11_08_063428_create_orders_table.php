@@ -17,7 +17,7 @@ return new class extends Migration
             $table->string('order_number')->unique();
             $table->integer('total_quantity');
             $table->decimal('total_price', 10, 2);
-            $table->enum('status', ['pending', 'processing', 'completed', 'cancelled'])->default('pending');
+            $table->enum('status', ['pending', 'shipped', 'processing', 'completed', 'cancelled'])->default('pending');
             $table->timestamps();
         });
     }
