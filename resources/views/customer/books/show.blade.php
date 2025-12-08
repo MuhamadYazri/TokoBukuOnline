@@ -15,15 +15,9 @@
             <div class="book-detail-section-1">
                 <div class="book-detail-image">
                     @if($book->cover)
-                        <img src="{{ asset($book->cover) }}" alt="{{ $book->title }}">
+                        <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->cover }}">
                     @else
-                        <div class="book-detail-image-placeholder">
-                            <svg width="80" height="80" viewBox="0 0 80 80" fill="none">
-                                <path d="M15 10H55L65 20V65C65 66.1046 64.1046 67 63 67H15C13.8954 67 13 66.1046 13 65V12C13 10.8954 13.8954 10 15 10Z" fill="#E5E7EB"/>
-                                <path d="M55 10V20H65" stroke="#9CA3AF" stroke-width="2"/>
-                                <path d="M25 35H55M25 42H55M25 49H47" stroke="#9CA3AF" stroke-width="2"/>
-                            </svg>
-                        </div>
+                        <img src="{{ asset($book->cover) }}" alt="{{ $book->title }}">
                     @endif
                 </div>
 

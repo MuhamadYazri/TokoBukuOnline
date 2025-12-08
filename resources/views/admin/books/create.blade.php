@@ -5,16 +5,6 @@
     <div class="admin-form-body">
         <div class="admin-form-container">
 
-            <!-- Back Button -->
-            <div class="admin-form-back">
-                <a href="{{ route('admin.books.index') }}" class="admin-back-link">
-                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
-                        <path d="M12.5 15L7.5 10L12.5 5" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
-                    <span>Kembali</span>
-                </a>
-            </div>
-
             <!-- Form Card -->
             <div class="admin-form-card">
                 <form method="POST" action="{{ route('admin.books.store') }}" enctype="multipart/form-data" class="admin-book-form">
@@ -153,6 +143,69 @@
                                             <p class="admin-form-error">{{ $message }}</p>
                                         @enderror
                                     </div>
+                                </div>
+
+                                <!-- Publisher & Pages Row -->
+                                <div class="admin-form-row">
+                                    <!-- Publisher -->
+                                    <div class="admin-form-group">
+                                        <label for="penerbit" class="admin-form-label">
+                                            Penerbit
+                                        </label>
+                                        <input
+                                            type="text"
+                                            name="penerbit"
+                                            id="penerbit"
+                                            class="admin-form-input @error('penerbit') admin-form-input-error @enderror"
+                                            value="{{ old('penerbit') }}"
+                                            placeholder="Masukkan nama penerbit"
+                                        >
+                                        @error('penerbit')
+                                            <p class="admin-form-error">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+
+                                    <!-- Pages -->
+                                    <div class="admin-form-group">
+                                        <label for="halaman" class="admin-form-label">
+                                            Jumlah Halaman
+                                        </label>
+                                        <input
+                                            type="number"
+                                            name="halaman"
+                                            id="halaman"
+                                            class="admin-form-input @error('halaman') admin-form-input-error @enderror"
+                                            value="{{ old('halaman') }}"
+                                            placeholder="0"
+                                            min="1"
+                                        >
+                                        @error('halaman')
+                                            <p class="admin-form-error">{{ $message }}</p>
+                                        @enderror
+                                    </div>
+                                </div>
+
+                                <!-- Language -->
+                                <div class="admin-form-group">
+                                    <label for="bahasa" class="admin-form-label">
+                                        Bahasa
+                                    </label>
+                                    <select
+                                        name="bahasa"
+                                        id="bahasa"
+                                        class="admin-form-select @error('bahasa') admin-form-input-error @enderror"
+                                    >
+                                        <option value="">Pilih Bahasa</option>
+                                        <option value="Indonesia" {{ old('bahasa') == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
+                                        <option value="Inggris" {{ old('bahasa') == 'Inggris' ? 'selected' : '' }}>Inggris</option>
+                                        <option value="Arab" {{ old('bahasa') == 'Arab' ? 'selected' : '' }}>Arab</option>
+                                        <option value="Jepang" {{ old('bahasa') == 'Jepang' ? 'selected' : '' }}>Jepang</option>
+                                        <option value="Mandarin" {{ old('bahasa') == 'Mandarin' ? 'selected' : '' }}>Mandarin</option>
+                                        <option value="Lainnya" {{ old('bahasa') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
+                                    </select>
+                                    @error('bahasa')
+                                        <p class="admin-form-error">{{ $message }}</p>
+                                    @enderror
                                 </div>
 
                                 <!-- Description -->

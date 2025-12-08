@@ -62,15 +62,12 @@ class CollectionController extends Controller
     /**
      * Hapus buku dari koleksi
      */
-    public function destroy(collection $collection)
+    public function destroy(Request $request)
     {
-        // Pastikan collection milik user yang login
-        if ($collection->user_id !== Auth::id()) {
-            abort(403);
+        foreach ($request->book_ids as $book_id) {
+            Collection::where('user_id', Auth::id())->where('book_id', $book_id)->delete();
         }
 
-        $collection->delete();
-
-        return back()->with('success', 'Buku berhasil dihapus dari koleksi!');
+        return response()->json(['message' => 'success', 'data' => $request->book_ids]);
     }
 }

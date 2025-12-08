@@ -53,7 +53,7 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
 
     Route::get('/collections', [CollectionController::class, 'index'])->name('collections.index');
     Route::post('/collections', [CollectionController::class, 'store'])->name('collections.store');
-    Route::delete('/collections/{collection}', [CollectionController::class, 'destroy'])->name('collections.destroy');
+    Route::delete('/collections/delete', [CollectionController::class, 'destroy'])->name('collections.destroy');
 
     Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::patch('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');

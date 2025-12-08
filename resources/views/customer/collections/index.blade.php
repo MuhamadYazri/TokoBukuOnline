@@ -121,6 +121,8 @@
     </div>
 
     @if($collections->count() > 0)
+    @push('scripts')
+
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             const checkboxes = document.querySelectorAll('.book-checkbox');
@@ -167,39 +169,69 @@
                 const checkedBoxes = document.querySelectorAll('.book-checkbox:checked');
                 const bookIds = Array.from(checkedBoxes).map(cb => cb.value);
 
+                console.log(bookIds);
+
+
                 if (bookIds.length === 0) return;
 
                 if (confirm(`Apakah Anda yakin ingin menghapus ${bookIds.length} buku dari koleksi?`)) {
-                    // Create form and submit
-                    const form = document.createElement('form');
-                    form.method = 'POST';
-                    form.action = '#';
 
-                    const csrfToken = document.createElement('input');
-                    csrfToken.type = 'hidden';
-                    csrfToken.name = '_token';
-                    csrfToken.value = '{{ csrf_token() }}';
-                    form.appendChild(csrfToken);
-
-                    const methodField = document.createElement('input');
-                    methodField.type = 'hidden';
-                    methodField.name = '_method';
-                    methodField.value = 'DELETE';
-                    form.appendChild(methodField);
-
-                    bookIds.forEach(id => {
-                        const input = document.createElement('input');
-                        input.type = 'hidden';
-                        input.name = 'book_ids[]';
-                        input.value = id;
-                        form.appendChild(input);
+                    fetch('/collections/delete', {
+                        method: 'DELETE',
+                        headers: {
+                            'Content-Type': 'application/json',
+                            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+                        },
+                        body: JSON.stringify({
+                            book_ids: bookIds
+                        })
+                    }).then(Response=> Response.json()).then(data=> {
+                        location.reload();
+                        console.log(data);
+                    }).catch( error => {
+                        console.log('error: ', error );
                     });
+                    console.log('send');
 
-                    document.body.appendChild(form);
-                    form.submit();
+
+
+
+                    // Create form and submit
+                    // const form = document.createElement('form');
+                    // form.method = 'POST';
+                    // form.action = '/collections';
+
+                    // const csrfToken = document.createElement('input');
+                    // csrfToken.type = 'hidden';
+                    // csrfToken.name = '_token';
+                    // csrfToken.value = '{{ csrf_token() }}';
+                    // form.appendChild(csrfToken);
+
+                    // const methodField = document.createElement('input');
+                    // methodField.type = 'hidden';
+                    // methodField.name = '_method';
+                    // methodField.value = 'DELETE';
+                    // form.appendChild(methodField);
+                    // const input = document.createElement('input');
+                    // input.type = 'hidden';
+                    // input.name = 'user_id';
+                    // input.value = {{ auth()->id() }};
+                    // form.appendChild(input);
+
+                    // bookIds.forEach(id => {
+                    //     input.type = 'hidden';
+                    //     input.name = 'book_ids[]';
+                    //     input.value = id;
+                    //     form.appendChild(input);
+                    //     console.log('book_id');
+                    // });
+
+                    // document.body.appendChild(form);
+                    // form.submit();
                 }
             });
         });
     </script>
+    @endpush
     @endif
 </x-app-layout>

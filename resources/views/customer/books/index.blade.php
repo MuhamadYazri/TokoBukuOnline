@@ -136,15 +136,9 @@
                             <a href="{{ route('customer.books.show', $book->id) }}" class="books-card-item">
                                 <div class="books-card-image">
                                     @if($book->cover)
-                                        <img src="{{ asset( $book->cover) }}" alt="{{ $book->title }}">
+                                        <img src="{{ asset( 'storage/' . $book->cover) }}" alt="{{ $book->cover }}">
                                     @else
-                                        <div class="books-card-placeholder">
-                                            <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
-                                                <path d="M10 5H40L50 15V50C50 51.1046 49.1046 52 48 52H10C8.89543 52 8 51.1046 8 50V7C8 5.89543 8.89543 5 10 5Z" fill="#E5E7EB"/>
-                                                <path d="M40 5V15H50" stroke="#9CA3AF" stroke-width="2"/>
-                                                <path d="M18 25H42M18 32H42M18 39H35" stroke="#9CA3AF" stroke-width="2"/>
-                                            </svg>
-                                        </div>
+                                        <img src="{{ asset( $book->cover) }}" alt="{{ $book->title }}">
                                     @endif
                                     <div class="books-rating-badge">
                                         <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
