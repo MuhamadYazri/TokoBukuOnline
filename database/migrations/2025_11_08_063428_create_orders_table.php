@@ -18,6 +18,12 @@ return new class extends Migration
             $table->integer('total_quantity');
             $table->decimal('total_price', 10, 2);
             $table->enum('status', ['pending', 'shipped', 'processing', 'completed', 'cancelled'])->default('pending');
+
+            $table->string('payment_method')->nullable();
+            $table->string('payment_status')->nullable();
+            $table->string('snap_token')->nullable();
+            $table->string('transaction_id')->nullable();
+            $table->timestamp('paid_at')->nullable();
             $table->timestamps();
         });
     }

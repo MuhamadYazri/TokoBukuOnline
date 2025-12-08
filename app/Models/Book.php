@@ -15,6 +15,9 @@ class Book extends Model
         'category',
         'price',
         'stock',
+        'pages',
+        'publisher',
+        'language',
         'year',
         'cover',
         'description'

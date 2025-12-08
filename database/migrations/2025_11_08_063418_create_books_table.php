@@ -24,6 +24,9 @@ return new class extends Migration
             $table->decimal('price', 10, 2);
             $table->integer('stock');
             $table->year('year');
+            $table->string('publisher')->nullable();
+            $table->integer('pages')->nullable();
+            $table->string('language')->default('Indonesia');
             $table->string('cover')->nullable();
             $table->text('description')->nullable();
             $table->timestamps();

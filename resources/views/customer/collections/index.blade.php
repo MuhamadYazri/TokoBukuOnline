@@ -100,9 +100,13 @@
                                 <p class="collection-book-category">{{ $collection->book->category ?? 'Pengembangan Diri' }}</p>
                                 <h3 class="collection-book-title">{{ Str::limit($collection->book->title, 30) }}</h3>
                                 <p class="collection-book-author">Oleh {{ $collection->book->author }}</p>
-                                <a href="{{ route('customer.cart.store', $collection->book->id) }}" class="collection-book-cart-btn">
-                                    Tambah Keranjang
-                                </a>
+                                <form action="{{ route('customer.cart.store') }}" method="post">
+                                    @csrf
+                                    <input type="hidden" name="book_id" value="{{ $collection->book->id }}">
+                                    <input type="hidden" name="quantity" value="1">
+                                    <button class="collection-book-cart-btn" type="submit">Tambah Keranjang</button>
+                                </form>
+
                             </div>
                         </div>
                     @endforeach

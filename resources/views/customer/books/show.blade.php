@@ -7,6 +7,28 @@
             </div>
         </div>
 
+        @if(session('success'))
+            <div class="alert alert-success">
+                {{ session('success') }}
+            </div>
+        @endif
+
+        @if(session('error'))
+            <div class="alert alert-error">
+                {{ session('error') }}
+            </div>
+        @endif
+
+        @if($errors->any())
+            <div class="alert alert-error">
+                <ul style="margin: 0; padding-left: 20px;">
+                    @foreach($errors->all() as $error)
+                        <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
+
         <div class="book-detail-container">
             <div class="book-detail-breadcrumb">
                 <p>Beranda / Koleksi Buku / {{ $book->title }}</p>
@@ -151,9 +173,9 @@
                     <input type="hidden" name="quantity" value="{{ 1 }}">
                     <button type="submit" class="book-detail-btn-cart">
                         <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
-                        <path d="M7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z" stroke="#6600FF" stroke-width="2"/>
-                        <path d="M16 18C16.5523 18 17 17.5523 17 17C17 16.4477 16.5523 16 16 16C15.4477 16 15 16.4477 15 17C15 17.5523 15.4477 18 16 18Z" stroke="#6600FF" stroke-width="2"/>
-                        <path d="M1 1H4L6.68 13.39C6.77144 13.8504 7.02191 14.264 7.38755 14.5583C7.75318 14.8526 8.2107 15.009 8.68 15H15.4C15.8693 15.009 16.3268 14.8526 16.6925 14.5583C17.0581 14.264 17.3086 13.8504 17.4 13.39L19 6H5" stroke="#6600FF" stroke-width="2"/>
+                        <path d="M7 18C7.55228 18 8 17.5523 8 17C8 16.4477 7.55228 16 7 16C6.44772 16 6 16.4477 6 17C6 17.5523 6.44772 18 7 18Z" stroke="#0088ff" stroke-width="2"/>
+                        <path d="M16 18C16.5523 18 17 17.5523 17 17C17 16.4477 16.5523 16 16 16C15.4477 16 15 16.4477 15 17C15 17.5523 15.4477 18 16 18Z" stroke="#0088ff" stroke-width="2"/>
+                        <path d="M1 1H4L6.68 13.39C6.77144 13.8504 7.02191 14.264 7.38755 14.5583C7.75318 14.8526 8.2107 15.009 8.68 15H15.4C15.8693 15.009 16.3268 14.8526 16.6925 14.5583C17.0581 14.264 17.3086 13.8504 17.4 13.39L19 6H5" stroke="#0088ff" stroke-width="2"/>
                         </svg>
                         <span>Tambah Ke Keranjang</span>
                     </button>
@@ -166,7 +188,8 @@
                 <div class="book-detail-reviews-section">
                     <div class="book-detail-review-prompt">
                         <p class="book-detail-review-prompt-text">Apa pendapatmu tentang produk ini?</p>
-                        <button class="book-detail-btn-write-review">
+                        <button class="book-detail-btn-write-review" onclick="openReviewModal()">
+
                             Tulis Ulasan
                         </button>
                     </div>
@@ -179,17 +202,19 @@
                             </p>
                         </div>
                         <div class="book-detail-reviews-header-right">
-                            <select class="book-detail-reviews-sort">
-                                <option value="terbaru">Terbaru</option>
-                                <option value="terlama">Terlama</option>
-                                <option value="rating-tertinggi">Rating Tertinggi</option>
-                                <option value="rating-terendah">Rating Terendah</option>
-                            </select>
+                            <form method="GET" id="sortReviewForm">
+                                <select name="review_sort" class="book-detail-reviews-sort" onchange="sortReviews(this.value)">
+                                    <option value="latest" {{ request('review_sort') == 'latest' || !request('review_sort') ? 'selected' : '' }}>Terbaru</option>
+                                    <option value="oldest" {{ request('review_sort') == 'oldest' ? 'selected' : '' }}>Terlama</option>
+                                    <option value="rating_high" {{ request('review_sort') == 'rating_high' ? 'selected' : '' }}>Rating Tertinggi</option>
+                                    <option value="rating_low" {{ request('review_sort') == 'rating_low' ? 'selected' : '' }}>Rating Terendah</option>
+                                </select>
+                            </form>
                         </div>
                     </div>
 
                     <div class="book-detail-reviews-list">
-                        @foreach($book->reviews()->latest()->take(5)->get() as $review)
+                        @forelse($reviews as $review)
                             <div class="book-detail-review-item">
                                 <div class="book-detail-review-header">
                                     <div class="book-detail-review-user">
@@ -223,18 +248,80 @@
                                 </div>
                                 <p class="book-detail-review-text">{{ $review->review }}</p>
                             </div>
-                        @endforeach
+                        @empty
+                            <div class="book-detail-review-empty">
+                                <p>Belum ada ulasan untuk buku ini. Jadilah yang pertama memberikan ulasan!</p>
+                            </div>
+                        @endforelse
                     </div>
 
-                    @if($book->totalReviews() > 5)
-                        <div class="book-detail-reviews-load-more">
-                            <button class="book-detail-btn-load-more">
-                                Muat lebih banyak ulasan...
-                            </button>
+                    @if($reviews->hasPages())
+                        <div class="book-detail-reviews-pagination">
+                            {{ $reviews->appends(request()->query())->links() }}
                         </div>
                     @endif
                 </div>
             </div>
+        </div>
+    </div>
+
+    <!-- Review Modal -->
+    <div class="review-modal" id="reviewModal">
+        <div class="review-modal-overlay" onclick="closeReviewModal()"></div>
+        <div class="review-modal-content">
+            <div class="review-modal-header">
+                <h3 class="review-modal-title">Tulis Ulasan</h3>
+                <button class="review-modal-close" onclick="closeReviewModal()">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                        <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+
+            <form action="{{ route('customer.reviews.store', $book->id) }}" method="POST" class="review-modal-form">
+                @csrf
+
+                <div class="review-modal-book-info">
+                    <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}" class="review-modal-book-cover">
+                    <div class="review-modal-book-details">
+                        <p class="review-modal-book-title">{{ $book->title }}</p>
+                        <p class="review-modal-book-author">{{ $book->author }}</p>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label">Rating <span style="color: var(--error);">*</span></label>
+                    <div class="review-rating-input">
+                        @for($i = 1; $i <= 5; $i++)
+                            <input type="radio" name="rating" value="{{ $i }}" id="star{{ $i }}" required hidden>
+                            <label for="star{{ $i }}" class="star-label">
+                                <svg width="32" height="32" viewBox="0 0 32 32" fill="none">
+                                    <path d="M16 24L6.544 29.056L8.384 18.528L0.768 11.264L11.424 9.872L16 0L20.576 9.872L31.232 11.264L23.616 18.528L25.456 29.056L16 24Z" fill="#E5E7EB"/>
+                                </svg>
+                            </label>
+                        @endfor
+                    </div>
+                    <p class="review-rating-text">Pilih rating dari 1-5 bintang</p>
+                </div>
+
+                <div class="form-group">
+                    <label for="review" class="form-label">Ulasan <span style="color: var(--error);">*</span></label>
+                    <textarea
+                        name="review"
+                        id="review"
+                        class="form-input review-textarea"
+                        rows="5"
+                        placeholder="Tulis ulasan Anda tentang buku ini..."
+                        required
+                    ></textarea>
+                    <p class="form-helper">Minimal 10 karakter</p>
+                </div>
+
+                <div class="review-modal-actions">
+                    <button type="button" class="btn btn-secondary" onclick="closeReviewModal()">Batal</button>
+                    <button type="submit" class="btn btn-primary">Kirim Ulasan</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -246,13 +333,72 @@
 
             if (descText.classList.contains('expanded')) {
                 descText.classList.remove('expanded');
-                // descText.style.maxHeight = 0;
                 btn.textContent = 'Baca Selengkapnya';
             } else {
                 descText.classList.add('expanded');
-                // descText.style.maxHeight = "none";
                 btn.textContent = 'Sembunyikan';
             }
+        }
+
+        // Review Modal Functions
+        function openReviewModal() {
+            document.getElementById('reviewModal').classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReviewModal() {
+            document.getElementById('reviewModal').classList.remove('active');
+            document.body.style.overflow = '';
+            // Reset form
+            document.querySelector('.review-modal-form').reset();
+            // Reset stars
+            document.querySelectorAll('.star-label svg path').forEach(path => {
+                path.setAttribute('fill', '#E5E7EB');
+            });
+        }
+
+        // Star Rating Interaction
+        document.addEventListener('DOMContentLoaded', function() {
+            const stars = document.querySelectorAll('.star-label');
+            const ratingInputs = document.querySelectorAll('.review-rating-input input[type="radio"]');
+
+            stars.forEach((star, index) => {
+                star.addEventListener('mouseenter', function() {
+                    highlightStars(index + 1);
+                });
+
+                star.addEventListener('click', function() {
+                    ratingInputs[index].checked = true;
+                });
+            });
+
+            document.querySelector('.review-rating-input').addEventListener('mouseleave', function() {
+                const checked = document.querySelector('.review-rating-input input[type="radio"]:checked');
+                if (checked) {
+                    const checkedIndex = Array.from(ratingInputs).indexOf(checked);
+                    highlightStars(checkedIndex + 1);
+                } else {
+                    highlightStars(0);
+                }
+            });
+
+            function highlightStars(count) {
+                stars.forEach((star, index) => {
+                    const path = star.querySelector('svg path');
+                    if (index < count) {
+                        path.setAttribute('fill', '#FFCC00');
+                    } else {
+                        path.setAttribute('fill', '#E5E7EB');
+                    }
+                });
+            }
+        });
+
+        // Sort Reviews Function
+        function sortReviews(sortValue) {
+            const url = new URL(window.location.href);
+            url.searchParams.set('review_sort', sortValue);
+            window.location.href = url.toString();
         }
     </script>
     @endpush

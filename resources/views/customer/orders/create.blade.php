@@ -195,10 +195,12 @@
                         </div>
 
 
-                        <button type="submit" class="checkout-btn-submit">Bayar Sekarang</button>
+                        <button type="submit" class="checkout-btn-submit">
+                            Proses Pembayaran
+                        </button>
 
                         <a href="{{ route('customer.cart.index') }}" class="checkout-btn-secondary">Kembali ke Keranjang</a>
-                        <p class="checkout-security-note">Transaksi aman dan terenkripsi</p>
+                        <p class="checkout-security-note">🔒 Transaksi aman dan terenkripsi</p>
                     </div>
                 </aside>
             </form>

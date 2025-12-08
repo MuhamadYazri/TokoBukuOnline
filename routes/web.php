@@ -11,7 +11,6 @@ use App\Http\Controllers\Customer\OrderController as CustomerOrderController;
 use App\Http\Controllers\Customer\ReviewController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\ProfileController;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -26,9 +25,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
-Route::get('/test1', function () {
-    return view('test1');
-});
+
 
 Route::middleware(['auth'])->name('customer.')->group(function () {
 
@@ -38,15 +35,17 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
 
     Route::get('/books', [CustomerBookController::class, 'index'])->name('books.index');
     Route::get('/books/{book}', [CustomerBookController::class, 'show'])->name('books.show');
+    Route::post('/books/{book}/reviews', [CustomerBookController::class, 'storeReview'])->name('books.reviews.store');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
     Route::post('/cart', [CartController::class, 'store'])->name('cart.store');
     Route::patch('/cart/{cart}', [CartController::class, 'update'])->name('cart.update');
     Route::delete('/cart/{cart}', [CartController::class, 'destroy'])->name('cart.destroy');
     Route::delete('/cart-clear', [CartController::class, 'clear'])->name('cart.clear');
+    Route::delete('/cart-bulk-delete', [CartController::class, 'bulkDelete'])->name('cart.bulkDelete');
 
     Route::get('/orders', [CustomerOrderController::class, 'index'])->name('orders.index');
-    Route::get('/orders/checkout', [CustomerOrderController::class, 'create'])->name('orders.create');
+    Route::match(['get', 'post'], '/orders/checkout', [CustomerOrderController::class, 'create'])->name('orders.create');
     Route::post('/orders', [CustomerOrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/cancel', [CustomerOrderController::class, 'cancel'])->name('orders.cancel');
@@ -58,6 +57,14 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
     Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::patch('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+
+
+    // payment
+
+    Route::get('/orders/{order}/payment', [CustomerOrderController::class, 'payment'])
+        ->name('orders.payment');
+    Route::get('/orders/{order}/payment/callback', [CustomerOrderController::class, 'paymentCallback'])
+        ->name('orders.payment.callback');
 });
 
 Route::middleware(['auth', 'isAdmin'])->prefix('admin')->name('admin.')->group(function () {

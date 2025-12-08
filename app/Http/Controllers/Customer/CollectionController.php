@@ -30,7 +30,7 @@ class CollectionController extends Controller
     public function store(Request $request)
     {
         $validated = $request->validate([
-            'book_id' => 'required|exists:books,id',
+            'book_id' => 'required|exists:books,id'
         ]);
 
         // Cek apakah sudah ada di koleksi

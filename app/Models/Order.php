@@ -15,7 +15,16 @@ class Order extends Model
         'book_id',
         'total_quantity',
         'total_price',
-        'status'
+        'status',
+        'payment_method',
+        'payment_status',
+        'snap_token',
+        'transaction_id',
+        'paid_at',
+    ];
+
+    protected $casts = [
+        'paid_at' => 'datetime',
     ];
 
     public function user()
@@ -52,5 +61,40 @@ class Order extends Model
     public function getTotalAmount()
     {
         return $this->orderDetails()->sum('price');
+    }
+
+    /**
+     * Check apakah order sudah dibayar
+     * Digunakan untuk validasi sebelum redirect ke payment
+     */
+    public function isPaid()
+    {
+        return $this->payment_status === 'paid';
+    }
+
+    /**
+     * Tandai order sebagai sudah dibayar
+     * Dipanggil setelah payment berhasil (callback/webhook)
+     */
+    public function markAsPaid($transactionId = null)
+    {
+        $this->update([
+            'payment_status' => 'paid',
+            'status' => 'processing', // Status order berubah dari pending ke processing
+            'transaction_id' => $transactionId, // ID transaksi dari Midtrans
+            'paid_at' => now(), // Timestamp pembayaran
+        ]);
+    }
+
+    /**
+     * Cancel order dan kembalikan stok
+     * Hanya bisa dicancel jika status masih pending
+     */
+    public function cancel()
+    {
+        $this->update([
+            'status' => 'cancelled',
+            'payment_status' => 'failed',
+        ]);
     }
 }

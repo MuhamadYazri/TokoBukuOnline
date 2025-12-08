@@ -125,4 +125,25 @@ class CartController extends Controller
 
         return back()->with('success', 'Keranjang berhasil dikosongkan!');
     }
+
+    /**
+     * Bulk delete cart items (selected items)
+     */
+    public function bulkDelete(Request $request)
+    {
+        $request->validate([
+            'cart_ids' => 'required|array',
+            'cart_ids.*' => 'exists:carts,id'
+        ]);
+
+        // Delete hanya cart yang dimiliki user yang login
+        Cart::where('user_id', Auth::id())
+            ->whereIn('id', $request->cart_ids)
+            ->delete();
+
+        return response()->json([
+            'message' => 'success',
+            'data' => $request->cart_ids
+        ]);
+    }
 }
