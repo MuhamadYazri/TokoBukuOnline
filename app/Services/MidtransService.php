@@ -62,6 +62,13 @@ class MidtransService
             ]
         ];
 
+        // pakai preselect method payment pelanggan
+        $enabledPayment = $this->getEnabledPayments($order->payment_method);
+
+        if (!empty($enabledPayment)) {
+            $params['enabled_payments'] = $enabledPayment;
+        }
+
         try {
             $snap_token = Snap::getSnapToken($params);
 
@@ -70,6 +77,49 @@ class MidtransService
             throw new \Exception('Gagal membuat pembayaran: ' . $e->getMessage());
         }
     }
+
+    private function getEnabledPayments($paymentMethod)
+    {
+        // Mapping dari form value ke Midtrans payment codes
+        $paymentMap = [
+            // Credit Card
+            'credit_card' => ['credit_card'],
+
+            // Bank Transfer → Semua Virtual Account
+            'bank_transfer' => [
+                'bca_va',      // BCA Virtual Account
+                'bni_va',      // BNI Virtual Account
+                'bri_va',      // BRI Virtual Account
+                'permata_va',  // Permata Virtual Account
+                'other_va',    // Bank lain (Mandiri, CIMB, dll)
+            ],
+
+            // Specific Bank VAs (jika mau tambah pilihan spesifik di form)
+            'bca_va' => ['bca_va'],
+            'bni_va' => ['bni_va'],
+            'bri_va' => ['bri_va'],
+            'mandiri_va' => ['echannel'], // Mandiri Bill Payment
+
+            // E-Wallet
+            'e_wallet' => [
+                'gopay',       // GoPay
+                'shopeepay',   // ShopeePay
+                'qris',        // QRIS (universal e-wallet)
+            ],
+
+            // Specific E-Wallets (jika mau tambah pilihan spesifik)
+            'gopay' => ['gopay'],
+            'shopeepay' => ['shopeepay'],
+            'qris' => ['qris'],
+
+            // COD tidak perlu (tidak pakai Midtrans)
+            'cod' => [],
+        ];
+
+        // Return payment codes, atau empty array jika tidak ada mapping
+        return $paymentMap[$paymentMethod] ?? [];
+    }
+
 
     private function getItemDetails($order)
     {

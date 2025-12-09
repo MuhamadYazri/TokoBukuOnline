@@ -83,7 +83,7 @@ class OrderController extends Controller
     {
 
         $request->validate([
-            'payment_method' => 'required|in:credit_card,bank_transfer,e_wallet,cod',
+            'payment_method' => 'required|in:credit_card,bank_transfer,bca_va,bni_va,bri_va,mandiri_va,e_wallet,gopay,shopeepay,qris,cod',
         ]);
 
         $query = Cart::with('book')->where('user_id', Auth::id());

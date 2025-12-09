@@ -152,7 +152,7 @@
                             </label>
 
                             <label class="checkout-payment-option checkout-payment-selected">
-                                <input type="radio" name="payment_method" value="cash" class="checkout-radio" checked>
+                                <input type="radio" name="payment_method" value="cod" class="checkout-radio" checked>
                                 <div class="checkout-payment-content">
                                     <div class="checkout-payment-icon">
                                         <svg width="24" height="24" viewBox="0 0 24 24" fill="none" aria-hidden="true">
@@ -161,8 +161,8 @@
                                         </svg>
                                     </div>
                                     <div class="checkout-payment-info">
-                                        <span class="checkout-payment-name">Tunai</span>
-                                        <span class="checkout-payment-desc">Bayar di tempat (COD)</span>
+                                        <span class="checkout-payment-name">Tunai (COD)</span>
+                                        <span class="checkout-payment-desc">Bayar di tempat </span>
                                     </div>
                                 </div>
                             </label>
