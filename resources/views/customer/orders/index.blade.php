@@ -66,12 +66,14 @@
                                 <p class="order-date">{{ $order->created_at->format('Y-m-d H:i') }}</p>
                             </div>
                             <div class="order-badges">
-                                @if($order->payment_status === 'pending')
-                                    <span class="order-badge order-badge-warning">Belum Dibayar</span>
-                                @elseif($order->payment_status === 'paid')
-                                    <span class="order-badge order-badge-success">Sudah Dibayar</span>
-                                @elseif($order->payment_status === 'failed')
-                                    <span class="order-badge order-badge-danger">Gagal</span>
+                                @if($order->payment_method !== 'cod')
+                                    @if($order->payment_status === 'pending')
+                                        <span class="order-badge order-badge-warning">Belum Dibayar</span>
+                                    @elseif($order->payment_status === 'paid')
+                                        <span class="order-badge order-badge-success">Sudah Dibayar</span>
+                                    @elseif($order->payment_status === 'failed')
+                                        <span class="order-badge order-badge-danger">Gagal</span>
+                                    @endif
                                 @endif
 
                                 @if($order->status === 'pending')
@@ -98,7 +100,7 @@
                                             <span>{{ $detail->book->title }}</span>
                                             <span class="order-item-qty">x{{ $detail->quantity }}</span>
                                         </div>
-                                        <div class="order-item-price">Rp {{ number_format($detail->subtotal, 0, ',', '.') }}</div>
+                                        <div class="order-item-price">Rp {{ number_format($detail->quantity * $detail->price, 0, ',', '.') }}</div>
                                     </div>
                                 @endforeach
                                 @if($order->orderDetails->count() > 3)
@@ -125,26 +127,32 @@
                             </div>
                             <div class="order-total-info">
                                 <p class="order-total-label">Total</p>
-                                <p class="order-total-amount">Rp {{ number_format($order->total_amount, 0, ',', '.') }}</p>
+                                <p class="order-total-amount">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
                             </div>
                         </div>
 
                         <!-- Order Actions -->
                         <div class="order-actions">
-                            @if($order->payment_status === 'pending')
-                                <a href="{{ route('customer.orders.payment', $order->id) }}" class="order-btn order-btn-dark">Bayar</a>
-                            @elseif($order->status === 'shipped')
-                                <form method="POST" action="{{ route('customer.orders.confirm', $order->id) }}" style="display: inline;">
-                                    @csrf
-                                    <button type="submit" class="order-btn order-btn-success">
-                                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                            <path d="M6 11.17L1.83 7L0.410004 8.41L6 14L18 2L16.59 0.589996L6 11.17Z" fill="white"/>
-                                        </svg>
-                                        Pesanan Diterima
-                                    </button>
-                                </form>
-                            @elseif($order->status === 'completed')
-                                <a href="{{ route('customer.orders.show', $order->id) }}" class="order-btn order-btn-success">Lihat Detail</a>
+                            @if($order->payment_method === 'cod')
+                                @if($order->status === 'shipped')
+                                    <form class="order-actions" method="POST" action="{{ route('customer.orders.confirm', $order->id) }}" >
+                                        @csrf
+                                        <button type="submit" class="order-btn order-btn-success">Paket Diterima</button>
+                                    </form>
+                                @elseif($order->status === 'completed')
+                                    <a href="{{ route('customer.orders.show', $order->id) }}" class="order-btn order-btn-success">Lihat Detail</a>
+                                @endif
+                            @else
+                                @if($order->payment_status === 'pending')
+                                    <a href="{{ route('customer.orders.payment', $order->id) }}" class="order-btn order-btn-dark">Bayar</a>
+                                @elseif($order->status === 'shipped')
+                                    <form method="POST" action="{{ route('customer.orders.confirm', $order->id) }}">
+                                        @csrf
+                                        <button type="submit" class="order-btn order-btn-success">Paket Diterima</button>
+                                    </form>
+                                @elseif($order->status === 'completed')
+                                    <a href="{{ route('customer.orders.show', $order->id) }}" class="order-btn order-btn-success">Lihat Detail</a>
+                                @endif
                             @endif
                         </div>
                     </div>

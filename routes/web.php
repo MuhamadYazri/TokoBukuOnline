@@ -48,6 +48,7 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
     Route::match(['get', 'post'], '/orders/checkout', [CustomerOrderController::class, 'create'])->name('orders.create');
     Route::post('/orders', [CustomerOrderController::class, 'store'])->name('orders.store');
     Route::get('/orders/{order}', [CustomerOrderController::class, 'show'])->name('orders.show');
+    Route::post('/orders/{order}/confirm', [CustomerOrderController::class, 'confirm'])->name('orders.confirm');
     Route::patch('/orders/{order}/cancel', [CustomerOrderController::class, 'cancel'])->name('orders.cancel');
 
     Route::get('/collections', [CollectionController::class, 'index'])->name('collections.index');

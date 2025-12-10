@@ -175,12 +175,20 @@
 
                 console.log(bookIds);
 
-
                 if (bookIds.length === 0) return;
 
-                if (confirm(`Apakah Anda yakin ingin menghapus ${bookIds.length} buku dari koleksi?`)) {
-
-                    fetch('/collections/delete', {
+                Swal.fire({
+                    title: 'Apakah Anda yakin?',
+                    text: `Hapus ${bookIds.length} buku dari koleksi?`,
+                    icon: 'warning',
+                    showCancelButton: true,
+                    confirmButtonColor: '#d33',
+                    cancelButtonColor: '#3085d6',
+                    confirmButtonText: 'Ya, Hapus!',
+                    cancelButtonText: 'Batal'
+                }).then((result) => {
+                    if (result.isConfirmed) {
+                        fetch('/collections/delete', {
                         method: 'DELETE',
                         headers: {
                             'Content-Type': 'application/json',
@@ -190,12 +198,23 @@
                             book_ids: bookIds
                         })
                     }).then(Response=> Response.json()).then(data=> {
-                        location.reload();
-                        console.log(data);
+                        if(data.message === 'success') {
+                            Toast.fire({
+                                icon: 'success',
+                                title: data.toast_message
+                            });
+                        setTimeout(() => location.reload(), 1500);
+                        }
                     }).catch( error => {
+                        Toast.fire({
+                            icon: 'error',
+                            title: 'Terjadi kesalahan saat menghapus'
+                        });
                         console.log('error: ', error );
                     });
-                    console.log('send');
+                    }
+                });
+                console.log('send');
 
 
 
@@ -232,7 +251,6 @@
 
                     // document.body.appendChild(form);
                     // form.submit();
-                }
             });
         });
     </script>

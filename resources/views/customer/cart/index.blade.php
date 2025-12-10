@@ -80,10 +80,10 @@
                                             <p class="cart-product-price">Rp {{ number_format($item->book->price, 0, ',', '.') }}</p>
 
                                             <div class="cart-product-controls">
-                                                <form method="POST" action="{{ route('customer.cart.destroy', $item->id) }}" class="cart-delete-form">
+                                                <form method="POST" action="{{ route('customer.cart.destroy', $item->id) }}" class="cart-delete-form" id="delete-form-{{ $item->id }}">
                                                     @csrf
                                                     @method('DELETE')
-                                                    <button type="submit" class="cart-btn-trash" onclick="return confirm('Hapus buku ini dari keranjang?')">
+                                                    <button type="button" class="cart-btn-trash" onclick="confirmDeleteCart({{ $item->id }}, '{{ Str::limit($item->book->title, 30) }}')">
                                                         <svg width="28" height="28" viewBox="0 0 28 28" fill="none">
                                                             <path d="M4 7H24M10 12V20M14 12V20M18 12V20M5 7L6 22C6 23.1046 6.89543 24 8 24H20C21.1046 24 22 23.1046 22 22L23 7M9 7V5C9 3.89543 9.89543 3 11 3H17C18.1046 3 19 3.89543 19 5V7" stroke="#B3B3B3" stroke-width="2" stroke-linecap="round"/>
                                                         </svg>
@@ -294,6 +294,24 @@
                 form.submit();
             });
         });
+
+        // SweetAlert2 Confirm Delete for Cart
+        function confirmDeleteCart(itemId, bookTitle) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: `Hapus "${bookTitle}" dari keranjang?`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-form-' + itemId).submit();
+                }
+            });
+        }
     </script>
     @endpush
 </x-app-layout>

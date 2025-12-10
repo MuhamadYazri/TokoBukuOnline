@@ -1,6 +1,6 @@
 <nav class="navbar" id="navbar">
     <div class="navbar-top">
-        <a class="brand-name" href="dashboard">
+        <a class="brand-name" href="{{ route('home') }}">
             <span >LiterASIK</span>
 
             {{-- <img class="brand-image" src="{{ asset('img/brand-logo.png') }}" alt=""> --}}

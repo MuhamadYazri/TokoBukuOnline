@@ -7,12 +7,6 @@
                 <p class="login-subtitle">Masuk ke akun Anda</p>
             </div>
 
-            @if (session('status'))
-                <div class="alert alert-success">
-                    {{ session('status') }}
-                </div>
-            @endif
-
             <form method="POST" action="{{ route('login') }}" class="login-form">
                 @csrf
 

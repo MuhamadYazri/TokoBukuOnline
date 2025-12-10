@@ -17,23 +17,23 @@
                             <h3 class="books-filter-title">Kategori</h3>
                             <div class="books-filter-options">
                                 <label class="books-filter-option {{ !request('category') ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="" {{ !request('category') ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="category" value="" {{ !request('category') ? 'checked' : '' }}>
                                     <span class="books-filter-label">Semua</span>
                                 </label>
                                 <label class="books-filter-option {{ request('category') == 'pengembangan-diri' ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="pengembangan-diri" {{ request('category') == 'pengembangan-diri' ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="category" value="pengembangan-diri" {{ request('category') == 'pengembangan-diri' ? 'checked' : '' }}>
                                     <span class="books-filter-label">Pengembangan Diri</span>
                                 </label>
                                 <label class="books-filter-option {{ request('category') == 'fiksi' ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="fiksi" {{ request('category') == 'fiksi' ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="category" value="fiksi" {{ request('category') == 'fiksi' ? 'checked' : '' }}>
                                     <span class="books-filter-label">Fiksi</span>
                                 </label>
                                 <label class="books-filter-option {{ request('category') == 'filosofi' ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="filosofi" {{ request('category') == 'filosofi' ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="category" value="filosofi" {{ request('category') == 'filosofi' ? 'checked' : '' }}>
                                     <span class="books-filter-label">Filosofi</span>
                                 </label>
                                 <label class="books-filter-option {{ request('category') == 'psikologi' ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="psikologi" {{ request('category') == 'psikologi' ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="category" value="psikologi" {{ request('category') == 'psikologi' ? 'checked' : '' }}>
                                     <span class="books-filter-label">Psikologi</span>
                                 </label>
                             </div>
@@ -48,32 +48,32 @@
                             <h3 class="books-filter-title">Rating Minimum</h3>
                             <div class="books-filter-options">
                                 <label class="books-filter-option {{ !request('rating') ? 'active' : '' }}">
-                                    <input type="radio" name="rating" value="" {{ !request('rating') ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="rating" value="" {{ !request('rating') ? 'checked' : '' }}>
                                     <span class="books-filter-label">Semua</span>
                                 </label>
                                 <label class="books-filter-option {{ request('rating') == '4.5' ? 'active' : '' }}">
-                                    <input type="radio" name="rating" value="4.5" {{ request('rating') == '4.5' ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="rating" value="4.5" {{ request('rating') == '4.5' ? 'checked' : '' }}>
                                     <span class="books-filter-label">4.5+</span>
                                     <svg class="books-star-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                         <path d="M4.20459 15.65C3.82126 15.95 3.42959 15.9583 3.02959 15.675C2.62959 15.3917 2.49626 15.0167 2.62959 14.55L4.05459 9.925L0.429594 7.35C0.0295943 7.06667 -0.0910724 6.69167 0.0675943 6.225C0.225594 5.75833 0.546261 5.525 1.02959 5.525H5.50459L6.95459 0.725C7.03793 0.491667 7.16726 0.312334 7.34259 0.187C7.51726 0.0623336 7.70459 0 7.90459 0C8.10459 0 8.29193 0.0623336 8.46659 0.187C8.64193 0.312334 8.77126 0.491667 8.85459 0.725L10.3046 5.525H14.7796C15.2629 5.525 15.5839 5.75833 15.7426 6.225C15.9006 6.69167 15.7796 7.06667 15.3796 7.35L11.7546 9.925L13.1796 14.55C13.3129 15.0167 13.1796 15.3917 12.7796 15.675C12.3796 15.9583 11.9879 15.95 11.6046 15.65L7.90459 12.825L4.20459 15.65Z" fill="#4D4D4D"/>
                                     </svg>
                                 </label>
                                 <label class="books-filter-option {{ request('rating') == '4' ? 'active' : '' }}">
-                                    <input type="radio" name="rating" value="4" {{ request('rating') == '4' ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="rating" value="4" {{ request('rating') == '4' ? 'checked' : '' }}>
                                     <span class="books-filter-label">4+</span>
                                     <svg class="books-star-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                         <path d="M4.20459 15.65C3.82126 15.95 3.42959 15.9583 3.02959 15.675C2.62959 15.3917 2.49626 15.0167 2.62959 14.55L4.05459 9.925L0.429594 7.35C0.0295943 7.06667 -0.0910724 6.69167 0.0675943 6.225C0.225594 5.75833 0.546261 5.525 1.02959 5.525H5.50459L6.95459 0.725C7.03793 0.491667 7.16726 0.312334 7.34259 0.187C7.51726 0.0623336 7.70459 0 7.90459 0C8.10459 0 8.29193 0.0623336 8.46659 0.187C8.64193 0.312334 8.77126 0.491667 8.85459 0.725L10.3046 5.525H14.7796C15.2629 5.525 15.5839 5.75833 15.7426 6.225C15.9006 6.69167 15.7796 7.06667 15.3796 7.35L11.7546 9.925L13.1796 14.55C13.3129 15.0167 13.1796 15.3917 12.7796 15.675C12.3796 15.9583 11.9879 15.95 11.6046 15.65L7.90459 12.825L4.20459 15.65Z" fill="#4D4D4D"/>
                                     </svg>
                                 </label>
                                 <label class="books-filter-option {{ request('rating') == '3.5' ? 'active' : '' }}">
-                                    <input type="radio" name="rating" value="3.5" {{ request('rating') == '3.5' ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="rating" value="3.5" {{ request('rating') == '3.5' ? 'checked' : '' }}>
                                     <span class="books-filter-label">3.5+</span>
                                     <svg class="books-star-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                         <path d="M4.20459 15.65C3.82126 15.95 3.42959 15.9583 3.02959 15.675C2.62959 15.3917 2.49626 15.0167 2.62959 14.55L4.05459 9.925L0.429594 7.35C0.0295943 7.06667 -0.0910724 6.69167 0.0675943 6.225C0.225594 5.75833 0.546261 5.525 1.02959 5.525H5.50459L6.95459 0.725C7.03793 0.491667 7.16726 0.312334 7.34259 0.187C7.51726 0.0623336 7.70459 0 7.90459 0C8.10459 0 8.29193 0.0623336 8.46659 0.187C8.64193 0.312334 8.77126 0.491667 8.85459 0.725L10.3046 5.525H14.7796C15.2629 5.525 15.5839 5.75833 15.7426 6.225C15.9006 6.69167 15.7796 7.06667 15.3796 7.35L11.7546 9.925L13.1796 14.55C13.3129 15.0167 13.1796 15.3917 12.7796 15.675C12.3796 15.9583 11.9879 15.95 11.6046 15.65L7.90459 12.825L4.20459 15.65Z" fill="#4D4D4D"/>
                                     </svg>
                                 </label>
                                 <label class="books-filter-option {{ request('rating') == '3' ? 'active' : '' }}">
-                                    <input type="radio" name="rating" value="3" {{ request('rating') == '3' ? 'checked' : '' }} onchange="this.form.submit()">
+                                    <input type="radio" name="rating" value="3" {{ request('rating') == '3' ? 'checked' : '' }}>
                                     <span class="books-filter-label">3+</span>
                                     <svg class="books-star-icon" width="16" height="16" viewBox="0 0 16 16" fill="none">
                                         <path d="M4.20459 15.65C3.82126 15.95 3.42959 15.9583 3.02959 15.675C2.62959 15.3917 2.49626 15.0167 2.62959 14.55L4.05459 9.925L0.429594 7.35C0.0295943 7.06667 -0.0910724 6.69167 0.0675943 6.225C0.225594 5.75833 0.546261 5.525 1.02959 5.525H5.50459L6.95459 0.725C7.03793 0.491667 7.16726 0.312334 7.34259 0.187C7.51726 0.0623336 7.70459 0 7.90459 0C8.10459 0 8.29193 0.0623336 8.46659 0.187C8.64193 0.312334 8.77126 0.491667 8.85459 0.725L10.3046 5.525H14.7796C15.2629 5.525 15.5839 5.75833 15.7426 6.225C15.9006 6.69167 15.7796 7.06667 15.3796 7.35L11.7546 9.925L13.1796 14.55C13.3129 15.0167 13.1796 15.3917 12.7796 15.675C12.3796 15.9583 11.9879 15.95 11.6046 15.65L7.90459 12.825L4.20459 15.65Z" fill="#4D4D4D"/>
@@ -81,6 +81,10 @@
                                 </label>
                             </div>
                         </div>
+
+                        <button type="submit" class="books-filter-submit-btn">
+                            Terapkan Filter
+                        </button>
 
                         <a href="{{ route('customer.books.index') }}" class="books-reset-btn">
                             Reset Filter

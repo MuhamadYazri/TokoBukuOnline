@@ -7,12 +7,6 @@
                 <p class="login-subtitle">Masukkan email Anda untuk reset password</p>
             </div>
 
-            @if (session('status'))
-                <div class="alert alert-success">
-                    {{ session('status') }}
-                </div>
-            @endif
-
             <form method="POST" action="{{ route('password.email') }}" class="login-form">
                 @csrf
 

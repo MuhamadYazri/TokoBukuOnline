@@ -95,10 +95,10 @@
                 <!-- Actions Footer -->
                 <div class="books-card-footer-new">
                     <a href="{{ route('admin.books.edit', $book) }}" class="books-edit-btn">Edit</a>
-                    <form method="POST" action="{{ route('admin.books.destroy', $book) }}" class="books-delete-form" onsubmit="return confirm('Apakah Anda yakin ingin menghapus buku ini?')">
+                    <form method="POST" action="{{ route('admin.books.destroy', $book) }}" class="books-delete-form" id="delete-book-{{ $book->id }}">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="books-delete-btn">Hapus</button>
+                        <button type="button" class="books-delete-btn" onclick="confirmDeleteBook({{ $book->id }}, '{{ $book->title }}')">Hapus</button>
                     </form>
                 </div>
             </div>
@@ -117,4 +117,25 @@
         </div>
         @endif
     </div>
+
+    @push('scripts')
+    <script>
+        function confirmDeleteBook(bookId, bookTitle) {
+            Swal.fire({
+                title: 'Apakah Anda yakin?',
+                text: `Hapus buku "${bookTitle}"? Data tidak dapat dikembalikan!`,
+                icon: 'warning',
+                showCancelButton: true,
+                confirmButtonColor: '#d33',
+                cancelButtonColor: '#3085d6',
+                confirmButtonText: 'Ya, Hapus!',
+                cancelButtonText: 'Batal'
+            }).then((result) => {
+                if (result.isConfirmed) {
+                    document.getElementById('delete-book-' + bookId).submit();
+                }
+            });
+        }
+    </script>
+    @endpush
 </x-admin-layout>

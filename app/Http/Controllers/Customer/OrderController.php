@@ -276,6 +276,30 @@ class OrderController extends Controller
 
 
     /**
+     * Confirm order received (update status to completed)
+     */
+    public function confirm(Order $order)
+    {
+        // Pastikan order milik user yang login
+        if ($order->user_id !== Auth::id()) {
+            abort(403);
+        }
+
+        // Hanya bisa confirm jika status shipped
+        if ($order->status !== 'shipped') {
+            return back()->with('error', 'Pesanan tidak dapat dikonfirmasi!');
+        }
+
+        // Update status ke completed
+        $order->update([
+            'status' => 'completed',
+            'payment_status' => 'paid', // Mark as paid untuk COD
+        ]);
+
+        return back()->with('success', 'Terima kasih! Pesanan telah diterima dan transaksi selesai.');
+    }
+
+    /**
      * Cancel order
      */
     public function cancel(Order $order)

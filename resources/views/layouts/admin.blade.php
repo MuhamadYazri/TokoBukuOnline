@@ -12,6 +12,9 @@
         <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
         <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700&family=Inter:wght@400;500;600;700&family=Arimo:wght@400;700&display=swap" rel="stylesheet" />
 
+        <!-- SweetAlert2 CSS -->
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11/dist/sweetalert2.min.css">
+
         <!-- Scripts -->
         <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
         @vite(['resources/css/app.css', 'resources/js/app.js'])
@@ -28,5 +31,39 @@
         </div>
 
         @stack('scripts')
+
+        <!-- SweetAlert2 JS -->
+        <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
+
+        <!-- Auto-trigger Toast for Session Messages -->
+        <script>
+            @if(session('success'))
+                Toast.fire({
+                    icon: 'success',
+                    title: '{{ session('success') }}'
+                });
+            @endif
+
+            @if(session('error'))
+                Toast.fire({
+                    icon: 'error',
+                    title: '{{ session('error') }}'
+                });
+            @endif
+
+            @if(session('warning'))
+                Toast.fire({
+                    icon: 'warning',
+                    title: '{{ session('warning') }}'
+                });
+            @endif
+
+            @if(session('info'))
+                Toast.fire({
+                    icon: 'info',
+                    title: '{{ session('info') }}'
+                });
+            @endif
+        </script>
     </body>
 </html>

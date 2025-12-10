@@ -64,10 +64,16 @@ class CollectionController extends Controller
      */
     public function destroy(Request $request)
     {
+        $count = count($request->book_ids);
+
         foreach ($request->book_ids as $book_id) {
             Collection::where('user_id', Auth::id())->where('book_id', $book_id)->delete();
         }
 
-        return response()->json(['message' => 'success', 'data' => $request->book_ids]);
+        return response()->json([
+            'message' => 'success',
+            'data' => $request->book_ids,
+            'toast_message' => "{$count} buku berhasil dihapus dari koleksi!"
+        ]);
     }
 }
