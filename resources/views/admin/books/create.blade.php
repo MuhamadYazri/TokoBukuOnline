@@ -106,19 +106,31 @@
                                         <label for="category" class="admin-form-label">
                                             Kategori <span class="admin-form-required">*</span>
                                         </label>
-                                        <select
-                                            name="category"
-                                            id="category"
-                                            class="admin-form-select @error('category') admin-form-input-error @enderror"
-                                            required
-                                        >
-                                            <option value="">Pilih Kategori</option>
-                                            @foreach(\App\Models\Book::getCategories() as $key => $category)
-                                                <option value="{{ $key }}" {{ old('category') == $key ? 'selected' : '' }}>
-                                                    {{ $category }}
-                                                </option>
-                                            @endforeach
-                                        </select>
+                                        <div style="display: flex; gap: 8px;">
+                                            <select
+                                                name="category"
+                                                id="category"
+                                                class="admin-form-select @error('category') admin-form-input-error @enderror"
+                                                required
+                                                style="flex: 1;"
+                                            >
+                                                <option value="">Pilih Kategori</option>
+                                                @foreach(\App\Models\Book::getCategories() as $key => $category)
+                                                    <option value="{{ $key }}" {{ old('category') == $key ? 'selected' : '' }}>
+                                                        {{ $category }}
+                                                    </option>
+                                                @endforeach
+                                                <option value="custom">Tambah Kategori Baru</option>
+                                            </select>
+                                            <input
+                                                type="text"
+                                                name="new_category"
+                                                id="new_category"
+                                                class="admin-form-input"
+                                                placeholder="Kategori baru"
+                                                style="display: none; flex: 1;"
+                                            >
+                                        </div>
                                         @error('category')
                                             <p class="admin-form-error">{{ $message }}</p>
                                         @enderror
@@ -190,19 +202,30 @@
                                     <label for="bahasa" class="admin-form-label">
                                         Bahasa
                                     </label>
-                                    <select
-                                        name="bahasa"
-                                        id="bahasa"
-                                        class="admin-form-select @error('bahasa') admin-form-input-error @enderror"
-                                    >
-                                        <option value="">Pilih Bahasa</option>
-                                        <option value="Indonesia" {{ old('bahasa') == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
-                                        <option value="Inggris" {{ old('bahasa') == 'Inggris' ? 'selected' : '' }}>Inggris</option>
-                                        <option value="Arab" {{ old('bahasa') == 'Arab' ? 'selected' : '' }}>Arab</option>
-                                        <option value="Jepang" {{ old('bahasa') == 'Jepang' ? 'selected' : '' }}>Jepang</option>
-                                        <option value="Mandarin" {{ old('bahasa') == 'Mandarin' ? 'selected' : '' }}>Mandarin</option>
-                                        <option value="Lainnya" {{ old('bahasa') == 'Lainnya' ? 'selected' : '' }}>Lainnya</option>
-                                    </select>
+                                    <div style="display: flex; gap: 8px;">
+                                        <select
+                                            name="bahasa"
+                                            id="bahasa"
+                                            class="admin-form-select @error('bahasa') admin-form-input-error @enderror"
+                                            style="flex: 1;"
+                                        >
+                                            <option value="">Pilih Bahasa</option>
+                                            <option value="Indonesia" {{ old('bahasa') == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
+                                            <option value="Inggris" {{ old('bahasa') == 'Inggris' ? 'selected' : '' }}>Inggris</option>
+                                            <option value="Arab" {{ old('bahasa') == 'Arab' ? 'selected' : '' }}>Arab</option>
+                                            <option value="Jepang" {{ old('bahasa') == 'Jepang' ? 'selected' : '' }}>Jepang</option>
+                                            <option value="Mandarin" {{ old('bahasa') == 'Mandarin' ? 'selected' : '' }}>Mandarin</option>
+                                            <option value="custom">Tambah Bahasa Baru</option>
+                                        </select>
+                                        <input
+                                            type="text"
+                                            name="new_language"
+                                            id="new_language"
+                                            class="admin-form-input"
+                                            placeholder="Bahasa baru"
+                                            style="display: none; flex: 1;"
+                                        >
+                                    </div>
                                     @error('bahasa')
                                         <p class="admin-form-error">{{ $message }}</p>
                                     @enderror
@@ -365,21 +388,35 @@
             uploadPreview.style.display = 'none';
         });
 
-        // Format price input with thousand separators
-        // const priceInput = document.getElementById('price');
-        // if (priceInput) {
-        //     priceInput.addEventListener('blur', function() {
-        //         const value = this.value.replace(/\D/g, '');
-        //         if (value) {
-        //             this.value = parseInt(value).toLocaleString('id-ID');
-        //         }
-        //     });
+        // Category - show/hide custom input
+        const categorySelect = document.getElementById('category');
+        const newCategoryInput = document.getElementById('new_category');
 
-        //     priceInput.addEventListener('focus', function() {
-        //         const value = this.value.replace(/\D/g, '');
-        //         this.value = value;
-        //     });
-        // }
+        categorySelect.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                newCategoryInput.style.display = 'block';
+                newCategoryInput.required = true;
+                newCategoryInput.focus();
+            } else {
+                newCategoryInput.style.display = 'none';
+                newCategoryInput.required = false;
+                newCategoryInput.value = '';
+            }
+        });
+
+        // Language - show/hide custom input
+        const languageSelect = document.getElementById('bahasa');
+        const newLanguageInput = document.getElementById('new_language');
+
+        languageSelect.addEventListener('change', function() {
+            if (this.value === 'custom') {
+                newLanguageInput.style.display = 'block';
+                newLanguageInput.focus();
+            } else {
+                newLanguageInput.style.display = 'none';
+                newLanguageInput.value = '';
+            }
+        });
     </script>
     @endpush
 </x-admin-layout>

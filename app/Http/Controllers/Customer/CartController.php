@@ -39,18 +39,15 @@ class CartController extends Controller
 
         $book = Book::findOrFail($validated['book_id']);
 
-        // Cek stok
         if ($book->stock < $validated['quantity']) {
             return back()->with('error', 'Stok buku tidak mencukupi!');
         }
 
-        // Cek apakah sudah ada di cart
         $cartItem = Cart::where('user_id', Auth::id())
             ->where('book_id', $validated['book_id'])
             ->first();
 
         if ($cartItem) {
-            // Update quantity
             $newQuantity = $cartItem->quantity + $validated['quantity'];
 
             if ($book->stock < $newQuantity) {
@@ -59,20 +56,12 @@ class CartController extends Controller
 
             $cartItem->update(['quantity' => $newQuantity]);
         } else {
-            // Create new cart item
             Cart::create([
                 'user_id' => Auth::id(),
                 'book_id' => $validated['book_id'],
                 'quantity' => $validated['quantity'],
             ]);
         }
-
-        // Log activity
-        // ActivityLog::createLog(
-        //     Auth::id(),
-        //     'add_to_cart',
-        //     "Menambahkan buku '{$book->title}' ke keranjang"
-        // );
 
         return back()->with('success', 'Buku berhasil ditambahkan ke keranjang!');
     }
@@ -91,7 +80,6 @@ class CartController extends Controller
             'quantity' => 'required|integer|min:1',
         ]);
 
-        // Cek stok
         if ($cart->book->stock < $validated['quantity']) {
             return back()->with('error', 'Stok buku tidak mencukupi!');
         }
@@ -101,12 +89,8 @@ class CartController extends Controller
         return back()->with('success', 'Keranjang berhasil diupdate!');
     }
 
-    /**
-     * Hapus item dari keranjang
-     */
     public function destroy(Cart $cart)
     {
-        // Pastikan cart milik user yang login
         if ($cart->user_id !== Auth::id()) {
             abort(403);
         }
@@ -116,9 +100,6 @@ class CartController extends Controller
         return back()->with('success', 'Item berhasil dihapus dari keranjang!');
     }
 
-    /**
-     * Kosongkan seluruh keranjang
-     */
     public function clear()
     {
         Cart::where('user_id', Auth::id())->delete();
@@ -126,9 +107,6 @@ class CartController extends Controller
         return back()->with('success', 'Keranjang berhasil dikosongkan!');
     }
 
-    /**
-     * Bulk delete cart items (selected items)
-     */
     public function bulkDelete(Request $request)
     {
         $request->validate([
@@ -136,7 +114,6 @@ class CartController extends Controller
             'cart_ids.*' => 'exists:carts,id'
         ]);
 
-        // Delete hanya cart yang dimiliki user yang login
         Cart::where('user_id', Auth::id())
             ->whereIn('id', $request->cart_ids)
             ->delete();

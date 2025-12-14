@@ -28,6 +28,17 @@ class Book extends Model
         'fiksi' => 'Fiksi',
         'filosofi' => 'Filosofi',
         'psikologi' => 'Psikologi',
+        'bisnis' => 'Bisnis & Ekonomi',
+        'teknologi' => 'Teknologi & Komputer',
+        'sejarah' => 'Sejarah',
+        'biografi' => 'Biografi',
+        'sains' => 'Sains & Matematika',
+        'kesehatan' => 'Kesehatan & Lifestyle',
+        'agama' => 'Agama & Spiritualitas',
+        'seni' => 'Seni & Budaya',
+        'pendidikan' => 'Pendidikan',
+        'kuliner' => 'Kuliner',
+        'anak' => 'Anak & Remaja',
     ];
 
     public static function getCategories()
@@ -37,8 +48,9 @@ class Book extends Model
 
     public function getCategoryNameAttribute()
     {
-        return self::CATEGORIES[$this->category] ?? 'Pengembangan Diri';
+        return self::CATEGORIES[$this->category] ?? ucwords(str_replace('-', ' ', $this->category));
     }
+
 
     public function orders()
     {
@@ -82,7 +94,6 @@ class Book extends Model
         return $this->hasMany(BookReview::class);
     }
 
-    // HELPER METHOD untuk rating
     public function averageRating()
     {
         return $this->reviews()->avg('rating') ?? 0;

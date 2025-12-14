@@ -6,12 +6,13 @@
                 <h1 class="home-hero-title">Buat Membaca-mu Jadi ASIIIIK!</h1>
                 <p class="home-hero-subtitle">Temukan ribuan buku pilihan dari penulis terbaik Indonesia dan dunia!</p>
             </div>
-            <button class="home-hero-btn">
-                <a href="{{ route('customer.books.index') }}">Lihat Semua Buku ASIIIKK!</a>
+            <a class="home-hero-btn" href="{{ route('customer.books.index') }}">
+                Lihat Semua Buku ASIIIKK!
                 <svg xmlns="http://www.w3.org/2000/svg" width="17" height="19" viewBox="0 0 17 19" fill="none">
             <path d="M1.25 9.25003H15.25M15.25 9.25003L8.25 1.25003M15.25 9.25003L8.25 17.25" stroke="#E5F1FF" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
-            </button>
+            </a>
+
 
             <img src="{{ asset('img/abs-img-hero.svg') }}" class="abs-img-hero" alt="img-books">
         </section>
@@ -30,11 +31,15 @@
             <div class="swiper home-categories-swiper">
                 <div class="swiper-wrapper home-categories-scroll">
                     @foreach ($categories as $key => $name)
+                    @php
+                        $book = \App\Models\Book::where('category', $key)->first()->cover;
+                    @endphp
                     <div class="swiper-slide">
                         <a href="{{ route('customer.books.index', ['category' => $key]) }}" class="home-category-card">
-                            <div class="home-category-image">
+                            <div class="home-category-image" style="background-image: url('{{ asset('storage/' . $book) ?? 'img/img-book.webp' }}');">
                             </div>
                             <p class="home-category-name">{{ $name }}</p>
+
                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none" class="icon-arrow-categories">
                             <path d="M1 0V2H9.59L0 11.59L1.41 13L11 3.41V12H13V0H1Z" fill="#2C2C2C"/>
                             </svg>

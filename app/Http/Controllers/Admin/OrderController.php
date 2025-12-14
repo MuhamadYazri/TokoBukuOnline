@@ -4,32 +4,25 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Order;
-// use App\Models\ActivityLog;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class OrderController extends Controller
 {
-    /**
-     * Tampilkan semua pesanan
-     */
     public function index(Request $request)
     {
         $query = Order::with(['user', 'book', 'orderDetails.book']);
 
-        // Calculate stats
         $pendingCount = Order::where('status', 'pending')->count();
         $processingCount = Order::where('status', 'processing')->count();
         $shippedCount = Order::where('status', 'shipped')->count();
         $completedCount = Order::where('status', 'completed')->count();
         $cancelledCount = Order::where('status', 'cancelled')->count();
 
-        // Filter by status
         if ($request->has('status') && $request->status != 'all') {
             $query->where('status', $request->status);
         }
 
-        // Search by order number or user name
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -45,18 +38,12 @@ class OrderController extends Controller
         return view('admin.orders.index', compact('orders', 'pendingCount', 'processingCount', 'shippedCount', 'completedCount', 'cancelledCount'));
     }
 
-    /**
-     * Tampilkan detail order
-     */
     public function show(Order $order)
     {
         $order->load(['user', 'orderDetails.book', 'book']);
         return view('admin.orders.show', compact('order'));
     }
 
-    /**
-     * Update status order
-     */
     public function updateStatus(Request $request, Order $order)
     {
         $validated = $request->validate([
@@ -65,13 +52,6 @@ class OrderController extends Controller
 
         $oldStatus = $order->status;
         $order->update($validated);
-
-        // Log activity
-        // ActivityLog::createLog(
-        //     Auth::id(),
-        //     'admin_update_order',
-        //     "Admin mengubah status order #{$order->order_number} dari {$oldStatus} ke {$validated['status']}"
-        // );
 
         return back()->with('success', 'Status pesanan berhasil diupdate!');
     }

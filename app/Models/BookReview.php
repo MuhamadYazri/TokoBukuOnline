@@ -16,7 +16,6 @@ class BookReview extends Model
         'review'
     ];
 
-    // RELATIONSHIPS
     public function user()
     {
         return $this->belongsTo(User::class);
@@ -27,7 +26,16 @@ class BookReview extends Model
         return $this->belongsTo(Book::class);
     }
 
-    // HELPER METHODS
+    public function likes()
+    {
+        return $this->hasMany(ReviewLike::class);
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(ReviewReport::class);
+    }
+
     public static function averageRating($bookId)
     {
         return self::where('book_id', $bookId)->avg('rating');

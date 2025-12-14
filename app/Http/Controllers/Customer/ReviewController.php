@@ -5,14 +5,13 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use App\Models\Book;
 use App\Models\BookReview;
+use App\Models\ReviewLike;
+use App\Models\ReviewReport;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class ReviewController extends Controller
 {
-    /**
-     * Store review baru
-     */
     public function store(Request $request, Book $book)
     {
         $validated = $request->validate([
@@ -20,7 +19,6 @@ class ReviewController extends Controller
             'review' => 'nullable|string|max:1000',
         ]);
 
-        // Cek apakah user sudah review buku ini
         $existingReview = BookReview::where('user_id', Auth::id())
             ->where('book_id', $book->id)
             ->first();
@@ -39,12 +37,8 @@ class ReviewController extends Controller
         return back()->with('success', 'Review berhasil ditambahkan!');
     }
 
-    /**
-     * Update review
-     */
     public function update(Request $request, BookReview $review)
     {
-        // Pastikan yang update adalah pemilik review
         if ($review->user_id !== Auth::id()) {
             abort(403, 'Unauthorized');
         }
@@ -59,12 +53,8 @@ class ReviewController extends Controller
         return back()->with('success', 'Review berhasil diupdate!');
     }
 
-    /**
-     * Delete review
-     */
     public function destroy(BookReview $review)
     {
-        // Pastikan yang hapus adalah pemilik review atau admin
         if ($review->user_id !== Auth::id() && !Auth::user()->isAdmin()) {
             abort(403, 'Unauthorized');
         }
@@ -72,5 +62,61 @@ class ReviewController extends Controller
         $review->delete();
 
         return back()->with('success', 'Review berhasil dihapus!');
+    }
+
+    public function like(BookReview $review)
+    {
+        $existingLike = ReviewLike::where('user_id', Auth::id())
+            ->where('book_review_id', $review->id)
+            ->first();
+
+        if ($existingLike) {
+            return back()->with('info', 'Anda sudah menyukai review ini!');
+        }
+
+        ReviewLike::create([
+            'user_id' => Auth::id(),
+            'book_review_id' => $review->id,
+        ]);
+
+        return back()->with('success', 'Review berhasil disukai!');
+    }
+
+    public function unlike(BookReview $review)
+    {
+        $like = ReviewLike::where('user_id', Auth::id())
+            ->where('book_review_id', $review->id)
+            ->first();
+
+        if (!$like) {
+            return back()->with('info', 'Anda belum menyukai review ini!');
+        }
+
+        $like->delete();
+
+        return back()->with('success', 'Like berhasil dibatalkan!');
+    }
+
+    public function report(Request $request, BookReview $review)
+    {
+        $validated = $request->validate([
+            'reason' => 'nullable|string|max:500',
+        ]);
+
+        $existingReport = ReviewReport::where('user_id', Auth::id())
+            ->where('book_review_id', $review->id)
+            ->first();
+
+        if ($existingReport) {
+            return back()->with('info', 'Anda sudah melaporkan review ini!');
+        }
+
+        ReviewReport::create([
+            'user_id' => Auth::id(),
+            'book_review_id' => $review->id,
+            'reason' => $validated['reason'] ?? null,
+        ]);
+
+        return back()->with('success', 'Review berhasil dilaporkan!');
     }
 }

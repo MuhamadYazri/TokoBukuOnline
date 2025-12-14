@@ -28,7 +28,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
                         <path d="M7.2 2.44459H0V4.03716H7.2V2.44459ZM7.2 8.81486H0V10.4074H7.2V8.81486ZM11.472 5.62973L8.64 2.81088L9.768 1.68812L11.464 3.37624L14.856 0L16 1.12276L11.472 5.62973ZM11.472 12L8.64 9.18115L9.768 8.05839L11.464 9.74652L14.856 6.37027L16 7.49303L11.472 12Z" fill="white"/>
                     </svg>
-                    <span>Riwayat Transaksi</span>
+                    <span>Riwayat Pesanan</span>
                 </a>
                 <a href="{{ route('customer.collections.index') }}" class="profile-nav-item">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
@@ -54,7 +54,7 @@
 
         <!-- Orders Content Card -->
         <div class="orders-content-card">
-            <h2 class="orders-content-title">Riwayat Transaksi</h2>
+            <h2 class="orders-content-title">Riwayat Pesanan</h2>
 
             <div class="orders-list">
                 @forelse($orders as $order)

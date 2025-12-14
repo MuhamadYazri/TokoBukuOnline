@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BookController as AdminBookController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Customer\BookController as CustomerBookController;
 use App\Http\Controllers\Customer\CartController;
 use App\Http\Controllers\Customer\CollectionController;
@@ -25,6 +26,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('/books', [CustomerBookController::class, 'index'])->name('customer.books.index');
 
 
 Route::middleware(['auth'])->name('customer.')->group(function () {
@@ -33,7 +35,7 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
-    Route::get('/books', [CustomerBookController::class, 'index'])->name('books.index');
+
     Route::get('/books/{book}', [CustomerBookController::class, 'show'])->name('books.show');
     Route::post('/books/{book}/reviews', [CustomerBookController::class, 'storeReview'])->name('books.reviews.store');
 
@@ -58,6 +60,9 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
     Route::post('/books/{book}/reviews', [ReviewController::class, 'store'])->name('reviews.store');
     Route::patch('/reviews/{review}', [ReviewController::class, 'update'])->name('reviews.update');
     Route::delete('/reviews/{review}', [ReviewController::class, 'destroy'])->name('reviews.destroy');
+    Route::post('/reviews/{review}/like', [ReviewController::class, 'like'])->name('reviews.like');
+    Route::delete('/reviews/{review}/unlike', [ReviewController::class, 'unlike'])->name('reviews.unlike');
+    Route::post('/reviews/{review}/report', [ReviewController::class, 'report'])->name('reviews.report');
 
 
     // payment
@@ -80,6 +85,9 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->name('admin.')->group(f
     Route::get('/orders', [AdminOrderController::class, 'index'])->name('orders.index');
     Route::get('/orders/{order}', [AdminOrderController::class, 'show'])->name('orders.show');
     Route::patch('/orders/{order}/status', [AdminOrderController::class, 'updateStatus'])->name('orders.updateStatus');
+
+    Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
+    Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
 });
 
 

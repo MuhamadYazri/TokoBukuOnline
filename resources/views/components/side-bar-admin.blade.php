@@ -38,16 +38,6 @@
                 </li>
 
                 <li class="admin-sidebar-menu-item">
-                    <a href="#" class="admin-sidebar-link">
-                        <svg class="admin-sidebar-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
-                            <path d="M15.75 11.25H2.25M15.75 11.25C16.1642 11.25 16.5 10.9142 16.5 10.5V3C16.5 2.58579 16.1642 2.25 15.75 2.25H2.25C1.83579 2.25 1.5 2.58579 1.5 3V10.5C1.5 10.9142 1.83579 11.25 2.25 11.25M15.75 11.25V14.25C15.75 14.6642 15.4142 15 15 15H3C2.58579 15 2.25 14.6642 2.25 14.25V11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                            <path d="M9 8.25C9.82843 8.25 10.5 7.57843 10.5 6.75C10.5 5.92157 9.82843 5.25 9 5.25C8.17157 5.25 7.5 5.92157 7.5 6.75C7.5 7.57843 8.17157 8.25 9 8.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
-                        <span class="admin-sidebar-text">Kelola Transaksi</span>
-                    </a>
-                </li>
-
-                <li class="admin-sidebar-menu-item">
                     <a href="{{ route('admin.orders.index') }}" class="admin-sidebar-link {{ request()->routeIs('admin.orders.*') ? 'active' : '' }}">
                         <svg class="admin-sidebar-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M6 16.5C6.41421 16.5 6.75 16.1642 6.75 15.75C6.75 15.3358 6.41421 15 6 15C5.58579 15 5.25 15.3358 5.25 15.75C5.25 16.1642 5.58579 16.5 6 16.5Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -55,6 +45,16 @@
                             <path d="M1.5376 1.5376H3.0376L5.0326 10.8526C5.10578 11.1937 5.2956 11.4987 5.56938 11.715C5.84316 11.9313 6.18378 12.0454 6.5326 12.0376H13.8676C14.209 12.037 14.54 11.9201 14.8059 11.706C15.0718 11.4919 15.2567 11.1935 15.3301 10.8601L16.5676 5.2876H3.8401" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                         </svg>
                         <span class="admin-sidebar-text">Kelola Pesanan</span>
+                    </a>
+                </li>
+
+                <li class="admin-sidebar-menu-item">
+                    <a href="{{ route('admin.reviews.index') }}" class="admin-sidebar-link {{ request()->routeIs('admin.reviews.*') ? 'active' : '' }}">
+                        <svg class="admin-sidebar-icon" width="18" height="18" viewBox="0 0 18 18" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M15.75 8.25C15.75 11.5637 13.0637 14.25 9.75 14.25H3.75L2.25 15.75V3.75C2.25 3.55109 2.32902 3.36032 2.46967 3.21967C2.61032 3.07902 2.80109 3 3 3H9.75C13.0637 3 15.75 5.68629 15.75 8.25Z" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M6 8.25H6.0075M9 8.25H9.0075M12 8.25H12.0075" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span class="admin-sidebar-text">Kelola Review</span>
                     </a>
                 </li>
 

@@ -1067,6 +1067,14 @@ a {
     border-color: #0088ff;
 }
 
+/* Textarea specific styling */
+textarea.field-input {
+    min-height: 80px;
+    resize: vertical;
+    font-family: inherit;
+    line-height: 1.5;
+}
+
 .toggle-password {
     position: absolute;
     right: 16px;
@@ -1986,7 +1994,7 @@ option:last-of-type {
     font-family: "Poppins", sans-serif;
     font-size: 14px;
     font-weight: 500;
-    line-height: 14px;
+    line-height: auto;
     letter-spacing: -0.7px;
     transition: all 0.2s ease;
     cursor: pointer;
@@ -2961,9 +2969,86 @@ option:last-of-type {
     font-weight: 400;
     line-height: 15px;
     color: #4d4d4d;
-    margin: 0;
+    margin: 0 0 12px 0;
     white-space: pre-wrap;
     font-family: "Inter", sans-serif;
+}
+
+/* Review Actions */
+.book-detail-review-actions {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.book-detail-review-like-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4d4d4d;
+    background: transparent;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.book-detail-review-like-btn:hover {
+    background: #f9fafb;
+    border-color: #ff3b30;
+    color: #ff3b30;
+}
+
+.book-detail-review-like-btn.liked {
+    color: #ff3b30;
+    border-color: #ff3b30;
+    background: #ffe5e5;
+}
+
+.book-detail-review-like-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.book-detail-review-report-btn {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 12px;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 500;
+    color: #4d4d4d;
+    background: transparent;
+    border: 1px solid #e6e6e6;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.book-detail-review-report-btn:hover {
+    background: #f9fafb;
+    border-color: #ff8800;
+    color: #ff8800;
+}
+
+.book-detail-review-report-btn svg {
+    width: 16px;
+    height: 16px;
+}
+
+.book-detail-review-reported-badge {
+    padding: 6px 12px;
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ff8800;
+    background: #fff3e5;
+    border-radius: 6px;
 }
 
 /* Load More Reviews */
@@ -3318,11 +3403,8 @@ option:last-of-type {
     padding: 12px;
     gap: 8px;
     font-size: 16px;
-}
-
-.home-hero-btn a {
     text-decoration: none;
-    color: #e5f1ff;
+    color: white;
     font-size: 17px;
     font-style: normal;
     font-weight: 500;
@@ -3334,7 +3416,7 @@ option:last-of-type {
     align-self: stretch;
     aspect-ratio: 7/8;
     stroke-width: 2.5px;
-    stroke: #e5f1ff;
+    stroke: white;
 }
 
 /* .abs-img-hero {
@@ -3446,10 +3528,9 @@ option:last-of-type {
     aspect-ratio: 1/1;
     border-radius: 6.25rem;
     border: 1px solid #ccc;
-    border-radius: 6.25rem;
-    border: 1px solid #ccc;
-    background: url("../../public/img/img-book.webp") lightgray 50% / cover
-        no-repeat;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
 }
 
 .home-category-card .home-category-name {
@@ -10152,6 +10233,16 @@ option:last-of-type {
 
 /* Responsive - Tablet (min-width: 640px) */
 @media (min-width: 640px) {
+    .home-hero {
+        padding-bottom: 9rem;
+    }
+
+    .abs-img-hero {
+        bottom: -2.9rem;
+        width: 80%;
+        max-width: 800px;
+    }
+
     .collections-grid {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
@@ -10227,6 +10318,438 @@ option:last-of-type {
 
 /* =============================================== */
 /* CUSTOMER COLLECTIONS INDEX END */
+/* =============================================== */
+
+/* =============================================== */
+/* ADMIN REVIEWS INDEX START - KELOLA REVIEW */
+/* =============================================== */
+
+.reviews-page {
+    width: 100%;
+    min-height: 100vh;
+    background-color: #f2f2f2;
+    padding: 15px;
+}
+
+/* Stats Cards */
+.reviews-stats-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    width: 100%;
+    margin-bottom: 20px;
+}
+
+.reviews-stat-card {
+    background: #ffffff;
+    border: 2px solid #e6e6e6;
+    border-radius: 10px;
+    padding: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    flex: 1 1 270px;
+    min-width: 270px;
+    box-shadow: 0px 35px 10px 0px rgba(2, 55, 116, 0),
+        0px 22px 9px 0px rgba(2, 55, 116, 0.01),
+        0px 13px 8px 0px rgba(2, 55, 116, 0.03),
+        0px 6px 6px 0px rgba(2, 55, 116, 0.04),
+        0px 1px 3px 0px rgba(2, 55, 116, 0.05);
+}
+
+.reviews-stat-label {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    font-weight: 400;
+    line-height: 18px;
+    color: #000000;
+    margin: 0;
+}
+
+.reviews-stat-value {
+    font-family: "Poppins", sans-serif;
+    font-size: 24px;
+    font-weight: 600;
+    line-height: 28px;
+    margin: 0;
+}
+
+.reviews-stat-blue {
+    color: #0088ff;
+}
+
+.reviews-stat-green {
+    color: #08910a;
+}
+
+.reviews-stat-yellow {
+    color: #ff8800;
+}
+
+.reviews-stat-red {
+    color: #ff3b30;
+}
+
+/* Search & Filter */
+.reviews-search-filter {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    background: white;
+    border: 2px solid #e6e6e6;
+    border-radius: 15px;
+    padding: 15px;
+    margin-bottom: 12px;
+    box-shadow: 0 35px 10px 0 rgba(2, 55, 116, 0),
+        0 22px 9px 0 rgba(2, 55, 116, 0.01), 0 13px 8px 0 rgba(2, 55, 116, 0.03),
+        0 6px 6px 0 rgba(2, 55, 116, 0.04), 0 1px 3px 0 rgba(2, 55, 116, 0.05);
+}
+
+.reviews-search-form {
+    flex: 1 1 0;
+    min-width: 227px;
+    position: relative;
+}
+
+.reviews-search-icon {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+}
+
+.reviews-search-input {
+    width: 100%;
+    height: 45px;
+    padding: 10px 12px 10px 42px;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    color: rgba(10, 10, 10, 0.5);
+    background: white;
+    border: 2px solid #e6e6e6;
+    border-radius: 10px;
+    outline: none;
+}
+
+.reviews-search-input:focus {
+    color: #000000;
+    border-color: #0088ff;
+}
+
+.reviews-filter-form {
+    flex: 0 0 auto;
+    position: relative;
+}
+
+.reviews-filter-select-wrapper {
+    position: relative;
+    height: 45px;
+    width: 186px;
+    display: flex;
+    align-items: center;
+    background: #f3f3f5;
+    border: 2px solid rgba(0, 0, 0, 0);
+    border-radius: 8px;
+    transition: all 0.2s;
+}
+
+.reviews-filter-select-wrapper:hover {
+    background: #e6e6e6;
+}
+
+.reviews-filter-icon {
+    position: absolute;
+    left: 14px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.reviews-filter-chevron {
+    position: absolute;
+    right: 14px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+.reviews-filter-select {
+    width: 100%;
+    height: 100%;
+    padding: 2px 40px;
+    font-family: "Arial", sans-serif;
+    font-size: 14px;
+    line-height: 20px;
+    color: #09090b;
+    background: transparent;
+    border: none;
+    border-radius: 8px;
+    cursor: pointer;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    outline: none;
+}
+
+.reviews-filter-select:focus {
+    outline: none;
+}
+
+/* Reviews List */
+.reviews-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.review-card {
+    background: white;
+    padding: 16px;
+    border-radius: 10px;
+    box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+    transition: all 0.2s;
+}
+
+.review-card:hover {
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.review-reported {
+    border-left: 4px solid #ff3b30;
+}
+
+/* Review Header */
+.review-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    margin-bottom: 12px;
+    gap: 12px;
+}
+
+.review-user-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    flex: 1;
+}
+
+.review-avatar {
+    width: 40px;
+    height: 40px;
+    background: linear-gradient(135deg, #0088ff 0%, #6600ff 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    color: white;
+    flex-shrink: 0;
+}
+
+.review-user-name {
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 20px;
+    color: #09090b;
+    margin: 0;
+}
+
+.review-date {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    color: #4d4d4d;
+    margin: 0;
+}
+
+.review-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+}
+
+.review-report-badge {
+    padding: 4px 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 11px;
+    font-weight: 600;
+    color: #ff3b30;
+    background: #ffe5e5;
+    border-radius: 6px;
+    white-space: nowrap;
+}
+
+.review-delete-btn {
+    padding: 6px 12px;
+    font-family: "Arial", sans-serif;
+    font-size: 12px;
+    line-height: 18px;
+    color: white;
+    background: #ff3b30;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: all 0.2s;
+}
+
+.review-delete-btn:hover {
+    background: #e6332a;
+}
+
+/* Book Info */
+.review-book-info {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 12px;
+    padding: 12px;
+    background: #f9fafb;
+    border-radius: 8px;
+}
+
+.review-book-cover {
+    width: 50px;
+    height: 70px;
+    object-fit: cover;
+    border-radius: 4px;
+    flex-shrink: 0;
+}
+
+.review-book-title {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 18px;
+    color: #09090b;
+    margin: 0 0 4px 0;
+}
+
+.review-book-author {
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    line-height: 16px;
+    color: #4d4d4d;
+    margin: 0;
+}
+
+/* Rating */
+.review-rating {
+    display: flex;
+    gap: 4px;
+    margin-bottom: 12px;
+}
+
+.review-star {
+    font-size: 18px;
+    color: #e6e6e6;
+}
+
+.review-star.active {
+    color: #ff8800;
+}
+
+/* Review Content */
+.review-content {
+    margin-bottom: 12px;
+}
+
+.review-content p {
+    font-family: "Poppins", sans-serif;
+    font-size: 13px;
+    line-height: 20px;
+    color: #333333;
+    margin: 0;
+}
+
+/* Review Stats */
+.review-stats {
+    display: flex;
+    gap: 16px;
+    padding-top: 12px;
+    border-top: 1px solid #e6e6e6;
+}
+
+.review-stat-item {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    font-family: "Poppins", sans-serif;
+    font-size: 12px;
+    color: #4d4d4d;
+}
+
+.review-stat-item svg {
+    width: 16px;
+    height: 16px;
+    color: #ff3b30;
+}
+
+/* Empty State */
+.reviews-empty-state {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: 48px 16px;
+    text-align: center;
+    background: white;
+    border-radius: 10px;
+}
+
+.reviews-empty-state p {
+    font-family: "Poppins", sans-serif;
+    font-size: 16px;
+    font-weight: 500;
+    color: #6b7280;
+    margin-bottom: 12px;
+}
+
+.reviews-reset-btn {
+    padding: 10px 20px;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    background: linear-gradient(135deg, #0088ff 0%, #6600ff 100%);
+    border-radius: 8px;
+    text-decoration: none;
+    transition: all 0.2s;
+    display: inline-block;
+}
+
+.reviews-reset-btn:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 136, 255, 0.4);
+}
+
+/* Pagination */
+.reviews-pagination {
+    margin-top: 12px;
+    display: flex;
+    justify-content: center;
+}
+
+/* Responsive - Tablet (768px+) */
+@media (min-width: 768px) {
+    .reviews-page {
+        padding: 20px;
+    }
+
+    .review-card {
+        padding: 20px;
+    }
+
+    .review-book-cover {
+        width: 60px;
+        height: 85px;
+    }
+}
+
+/* =============================================== */
+/* ADMIN REVIEWS INDEX END */
 /* =============================================== */
 
 /* NavBar STYLE START */

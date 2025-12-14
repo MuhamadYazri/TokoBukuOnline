@@ -226,6 +226,49 @@
                                     </div>
                                 </div>
                                 <p class="book-detail-review-text">{{ $review->review }}</p>
+
+                                <!-- Review Actions -->
+                                <div class="book-detail-review-actions">
+                                    @php
+                                        $userLiked = $review->likes()->where('user_id', auth()->id())->exists();
+                                        $userReported = $review->reports()->where('user_id', auth()->id())->exists();
+                                    @endphp
+
+                                    @if($userLiked)
+                                        <form action="{{ route('customer.reviews.unlike', $review) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            @method('DELETE')
+                                            <button type="submit" class="book-detail-review-like-btn liked">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                                                    <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/>
+                                                </svg>
+                                                <span>{{ $review->likes()->count() }}</span>
+                                            </button>
+                                        </form>
+                                    @else
+                                        <form action="{{ route('customer.reviews.like', $review) }}" method="POST" style="display: inline;">
+                                            @csrf
+                                            <button type="submit" class="book-detail-review-like-btn">
+                                                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"/>
+                                                </svg>
+                                                <span>{{ $review->likes()->count() }}</span>
+                                            </button>
+                                        </form>
+                                    @endif
+
+                                    @if(!$userReported)
+                                        <button type="button" class="book-detail-review-report-btn" onclick="openReportModal({{ $review->id }})">
+                                            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                                                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"/>
+                                                <line x1="4" y1="22" x2="4" y2="15"/>
+                                            </svg>
+                                            <span>Laporkan</span>
+                                        </button>
+                                    @else
+                                        <span class="book-detail-review-reported-badge">Dilaporkan</span>
+                                    @endif
+                                </div>
                             </div>
                         @empty
                             <div class="book-detail-review-empty">
@@ -379,6 +422,62 @@
             url.searchParams.set('review_sort', sortValue);
             window.location.href = url.toString();
         }
+
+        // Report Modal Functions
+        function openReportModal(reviewId) {
+            document.getElementById('reportModal').classList.add('active');
+            document.getElementById('reportReviewId').value = reviewId;
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeReportModal() {
+            document.getElementById('reportModal').classList.remove('active');
+            document.body.style.overflow = '';
+            document.getElementById('reportForm').reset();
+        }
     </script>
     @endpush
+
+    <!-- Report Modal -->
+    <div class="review-modal" id="reportModal">
+        <div class="review-modal-overlay" onclick="closeReportModal()"></div>
+        <div class="review-modal-content">
+            <div class="review-modal-header">
+                <h2 class="review-modal-title">Laporkan Review</h2>
+                <button class="review-modal-close" onclick="closeReportModal()">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none">
+                        <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+                    </svg>
+                </button>
+            </div>
+            <form id="reportForm" action="" method="POST" class="review-modal-form" onsubmit="submitReport(event)">
+                @csrf
+                <input type="hidden" id="reportReviewId" name="review_id" value="">
+
+                <div class="review-modal-field">
+                    <label class="review-modal-label">Alasan Pelaporan (Opsional)</label>
+                    <textarea name="reason" class="review-modal-textarea" rows="4" placeholder="Jelaskan alasan Anda melaporkan review ini..."></textarea>
+                </div>
+
+                <div class="review-modal-actions">
+                    <button type="button" class="review-modal-btn review-modal-btn-cancel" onclick="closeReportModal()">
+                        Batal
+                    </button>
+                    <button type="submit" class="review-modal-btn review-modal-btn-submit">
+                        Kirim Laporan
+                    </button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        function submitReport(event) {
+            event.preventDefault();
+            const form = event.target;
+            const reviewId = document.getElementById('reportReviewId').value;
+            form.action = "{{ url('reviews') }}/" + reviewId + "/report";
+            form.submit();
+        }
+    </script>
 </x-app-layout>

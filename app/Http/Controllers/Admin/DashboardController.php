@@ -12,9 +12,6 @@ use Illuminate\Support\Facades\DB;
 
 class DashboardController extends Controller
 {
-    /**
-     * Tampilkan dashboard admin dengan statistik
-     */
     public function index()
     {
         $stats = $this->getDashboardStats();
@@ -30,9 +27,6 @@ class DashboardController extends Controller
         return view('admin.dashboard');
     }
 
-    /**
-     * Statistik umum dashboard
-     */
     private function getDashboardStats()
     {
         return [
@@ -49,9 +43,6 @@ class DashboardController extends Controller
         ];
     }
 
-    /**
-     * Grafik transaksi bulanan (12 bulan terakhir)
-     */
     private function getMonthlyTransactions()
     {
         return Order::select(
@@ -66,9 +57,6 @@ class DashboardController extends Controller
             ->get();
     }
 
-    /**
-     * Grafik pendapatan bulanan (12 bulan terakhir)
-     */
     private function getMonthlyRevenue()
     {
         return Order::select(
@@ -84,9 +72,6 @@ class DashboardController extends Controller
             ->get();
     }
 
-    /**
-     * Buku terlaris
-     */
     private function getBestSellingBooks($limit = 10)
     {
         return OrderDetail::select(
@@ -101,9 +86,6 @@ class DashboardController extends Controller
             ->get();
     }
 
-    /**
-     * API endpoint untuk grafik (AJAX request)
-     */
     public function getChartData(Request $request)
     {
         $type = $request->input('type');

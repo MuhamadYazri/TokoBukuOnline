@@ -61,16 +61,10 @@ class User extends Authenticatable
         return $this->hasMany(Collection::class);
     }
 
-    // public function activityLogs()
-    // {
-    //     return $this->hasMany(ActivityLog::class);
-    // }
-
     public function reviews()
     {
         return $this->hasMany(BookReview::class);
     }
-
 
     /**
      * Check if user is an admin

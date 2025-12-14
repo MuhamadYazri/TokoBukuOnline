@@ -19,7 +19,18 @@ return new class extends Migration
                 'pengembangan-diri',
                 'fiksi',
                 'filosofi',
-                'psikologi'
+                'psikologi',
+                'bisnis',
+                'teknologi',
+                'sejarah',
+                'biografi',
+                'sains',
+                'kesehatan',
+                'agama',
+                'seni',
+                'pendidikan',
+                'kuliner',
+                'anak'
             ])->default('pengembangan-diri');
             $table->decimal('price', 10, 2);
             $table->integer('stock');

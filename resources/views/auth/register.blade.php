@@ -56,6 +56,48 @@
                 </div>
 
                 <div class="form-field">
+                    <label for="phone" class="field-label">Nomor Telepon</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M18.3333 14.1V16.6C18.3343 16.8321 18.2867 17.0618 18.1937 17.2745C18.1008 17.4871 17.9644 17.678 17.7934 17.8349C17.6224 17.9918 17.4205 18.1113 17.2006 18.1856C16.9808 18.26 16.7478 18.2876 16.5167 18.2667C13.9523 17.9881 11.489 17.1118 9.32499 15.7084C7.31151 14.4289 5.60443 12.7218 4.32499 10.7084C2.91663 8.53438 2.04019 6.05916 1.76666 3.48337C1.74583 3.25293 1.77321 3.02064 1.84707 2.80135C1.92092 2.58207 2.03963 2.38064 2.19562 2.2098C2.35162 2.03896 2.54149 1.90247 2.75314 1.80878C2.9648 1.7151 3.1936 1.66655 3.42499 1.66671H5.92499C6.32953 1.66283 6.72148 1.80628 7.028 2.06942C7.33452 2.33256 7.53393 2.6985 7.59166 3.10004C7.69945 3.90009 7.89481 4.68604 8.17499 5.44171C8.28712 5.73999 8.31137 6.06414 8.24491 6.37576C8.17844 6.68738 8.02404 6.97346 7.79999 7.20004L6.74166 8.25837C7.92795 10.3446 9.65536 12.072 11.7417 13.2584L12.8 12.2C13.0266 11.976 13.3127 11.8216 13.6243 11.7551C13.9359 11.6886 14.2601 11.7129 14.5583 11.825C15.314 12.1052 16.1 12.3006 16.9 12.4084C17.3051 12.4667 17.6739 12.6694 17.9386 12.9808C18.2033 13.2921 18.3445 13.6901 18.3333 14.1Z" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <input
+                            id="phone"
+                            type="text"
+                            name="phone"
+                            value="{{ old('phone') }}"
+                            class="field-input"
+                            placeholder="08xxxxxxxxxx"
+                            required
+                            autocomplete="tel">
+                    </div>
+                    @error('phone')
+                        <span class="field-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-field">
+                    <label for="address" class="field-label">Alamat</label>
+                    <div class="input-wrapper">
+                        <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
+                            <path d="M17.5 8.33337C17.5 14.1667 10 19.1667 10 19.1667C10 19.1667 2.5 14.1667 2.5 8.33337C2.5 6.34425 3.29018 4.4366 4.6967 3.03007C6.10322 1.62355 8.01088 0.833374 10 0.833374C11.9891 0.833374 13.8968 1.62355 15.3033 3.03007C16.7098 4.4366 17.5 6.34425 17.5 8.33337Z" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M10 10.8334C11.3807 10.8334 12.5 9.71408 12.5 8.33337C12.5 6.95266 11.3807 5.83337 10 5.83337C8.61929 5.83337 7.5 6.95266 7.5 8.33337C7.5 9.71408 8.61929 10.8334 10 10.8334Z" stroke="#94A3B8" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <textarea
+                            id="address"
+                            name="address"
+                            class="field-input"
+                            placeholder="Alamat lengkap Anda"
+                            required
+                            autocomplete="street-address"
+                            rows="3">{{ old('address') }}</textarea>
+                    </div>
+                    @error('address')
+                        <span class="field-error">{{ $message }}</span>
+                    @enderror
+                </div>
+
+                <div class="form-field">
                     <label for="password" class="field-label">Password</label>
                     <div class="input-wrapper">
                         <svg class="input-icon" width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">

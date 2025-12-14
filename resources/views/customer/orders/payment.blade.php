@@ -71,6 +71,7 @@
         document.addEventListener('DOMContentLoaded', function() {
             const snapToken = '{{ $order->snap_token }}';
             const payButton = document.getElementById('pay-button');
+            let isPaymentProcessing = false; // Flag untuk mencegah multiple calls
 
             // Auto trigger popup setelah 1.5 detik
             // Delay untuk memberi user waktu melihat loading screen
@@ -79,11 +80,26 @@
             }, 1500);
 
             // Manual trigger jika user klik button
-            payButton.addEventListener('click', function() {
+            payButton.addEventListener('click', function(e) {
+                e.preventDefault(); // Prevent default button behavior
                 openMidtransPopup();
             });
 
             function openMidtransPopup() {
+                // Cek apakah popup sudah dibuka
+                if (isPaymentProcessing) {
+                    console.log('Payment popup already open');
+                    return;
+                }
+
+                // Set flag untuk mencegah multiple calls
+                isPaymentProcessing = true;
+
+                // Disable button untuk mencegah double click
+                payButton.disabled = true;
+                payButton.style.opacity = '0.6';
+                payButton.style.cursor = 'not-allowed';
+
                 window.snap.pay(snapToken, {
                     // Success: Pembayaran berhasil
                     onSuccess: function(result) {
@@ -105,6 +121,14 @@
 
                     // Close: User tutup popup tanpa menyelesaikan
                     onClose: function() {
+                        // Reset flag ketika popup ditutup
+                        isPaymentProcessing = false;
+
+                        // Re-enable button
+                        payButton.disabled = false;
+                        payButton.style.opacity = '1';
+                        payButton.style.cursor = 'pointer';
+
                         if (confirm('Anda belum menyelesaikan pembayaran. Kembali ke riwayat pesanan?')) {
                             window.location.href = '{{ route("customer.orders.index") }}';
                         }

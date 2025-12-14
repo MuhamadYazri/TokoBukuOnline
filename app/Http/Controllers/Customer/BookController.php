@@ -10,14 +10,10 @@ use Illuminate\Support\Facades\Auth;
 
 class BookController extends Controller
 {
-    /**
-     * Tampilkan daftar buku untuk customer
-     */
     public function index(Request $request)
     {
         $query = Book::where('stock', '>', 0);
 
-        // Search
         if ($request->has('search')) {
             $search = $request->input('search');
             $query->where(function ($q) use ($search) {
@@ -26,12 +22,10 @@ class BookController extends Controller
             });
         }
 
-        // Category Filter
         if ($request->has('category') && $request->category != '') {
             $query->where('category', $request->category);
         }
 
-        // Rating Filter
         if ($request->has('rating') && $request->rating != '') {
             $rating = (float) $request->rating;
             $query->whereIn('id', function ($subquery) use ($rating) {
@@ -42,7 +36,6 @@ class BookController extends Controller
             });
         }
 
-        // Sorting
         $sort = $request->input('sort', 'latest');
         switch ($sort) {
             case 'price_low':
@@ -58,19 +51,16 @@ class BookController extends Controller
                 $query->latest();
         }
 
-        $books = $query->paginate(10);
+
+        $books = $query->paginate(12);
 
         return view('customer.books.index', compact('books'));
     }
 
-    /**
-     * Tampilkan detail buku
-     */
     public function show(Request $request, $id)
     {
         $book = Book::findOrFail($id);
 
-        // Handle review sorting
         $reviewSort = $request->input('review_sort', 'latest');
         $reviewsQuery = $book->reviews()->with('user');
 
@@ -84,19 +74,15 @@ class BookController extends Controller
             case 'rating_low':
                 $reviewsQuery->orderBy('rating', 'asc');
                 break;
-            default: // latest
+            default:
                 $reviewsQuery->latest();
         }
 
-        // Get paginated reviews
         $reviews = $reviewsQuery->paginate(5);
 
         return view('customer.books.show', compact('book', 'reviews'));
     }
 
-    /**
-     * Store a review for a book
-     */
     public function storeReview(Request $request, $id)
     {
         $request->validate([

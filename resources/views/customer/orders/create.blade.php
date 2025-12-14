@@ -17,47 +17,20 @@
                         <div class="checkout-address-list">
                             <label class="checkout-address-card checkout-address-selected">
                                 <div class="checkout-address-header">
-                                    <input type="radio" name="shipping_address" value="home" class="checkout-radio" checked>
+                                    <input type="radio" name="shipping_address" value="default" class="checkout-radio" checked>
                                     <div class="checkout-address-title-group">
-                                        <span class="checkout-address-name">Rumah</span>
-                                        <span class="checkout-address-badge">Utama</span>
+                                        <span class="checkout-address-name">Alamat Utama</span>
+                                        <span class="checkout-address-badge">Default</span>
                                     </div>
                                 </div>
                                 <div class="checkout-address-body">
                                     <p class="checkout-address-recipient">{{ auth()->user()->name }}</p>
-                                    <p class="checkout-address-phone">+62 812-3456-7890</p>
+                                    <p class="checkout-address-phone">{{ auth()->user()->phone }}</p>
                                     <p class="checkout-address-detail">
-                                        Jl. Mawar No. 123, Kelurahan Sukamaju<br>
-                                        Kecamatan Bandung Barat, Kota Bandung<br>
-                                        Jawa Barat 40123
+                                        {{ auth()->user()->address }}
                                     </p>
                                 </div>
                             </label>
-
-                            <label class="checkout-address-card">
-                                <div class="checkout-address-header">
-                                    <input type="radio" name="shipping_address" value="office" class="checkout-radio">
-                                    <div class="checkout-address-title-group">
-                                        <span class="checkout-address-name">Kantor</span>
-                                    </div>
-                                </div>
-                                <div class="checkout-address-body">
-                                    <p class="checkout-address-recipient">{{ auth()->user()->name }}</p>
-                                    <p class="checkout-address-phone">+62 812-3456-7890</p>
-                                    <p class="checkout-address-detail">
-                                        Gedung Plaza Indonesia, Lantai 5<br>
-                                        Jl. MH Thamrin No. 28-30<br>
-                                        Jakarta Pusat, DKI Jakarta 10350
-                                    </p>
-                                </div>
-                            </label>
-
-                            <button type="button" class="checkout-add-address-btn">
-                                <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                                    <path d="M10 4V16M4 10H16" stroke="#0088FF" stroke-width="2" stroke-linecap="round"/>
-                                </svg>
-                                Tambah Alamat Baru
-                            </button>
                         </div>
                     </section>
 

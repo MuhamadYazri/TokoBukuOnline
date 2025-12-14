@@ -80,8 +80,8 @@
                         <p class="customer-stat-item-value customer-stat-blue">{{ $customer->orders_count }}</p>
                     </div>
                     <div class="customer-stat-item customer-stat-item-right">
-                        <p class="customer-stat-item-value customer-stat-green">Rp {{ number_format($customer->total_spent ?? 3180000, 0, ',', '.') }}</p>
                         <p class="customer-stat-item-label">Total Belanja</p>
+                        <p class="customer-stat-item-value customer-stat-green">Rp {{ number_format($customer->total_spent, 0, ',', '.') }}</p>
                     </div>
                 </div>
 

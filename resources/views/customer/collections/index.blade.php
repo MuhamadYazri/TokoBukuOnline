@@ -28,7 +28,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
                         <path d="M7.2 2.44459H0V4.03716H7.2V2.44459ZM7.2 8.81486H0V10.4074H7.2V8.81486ZM11.472 5.62973L8.64 2.81088L9.768 1.68812L11.464 3.37624L14.856 0L16 1.12276L11.472 5.62973ZM11.472 12L8.64 9.18115L9.768 8.05839L11.464 9.74652L14.856 6.37027L16 7.49303L11.472 12Z" fill="#4D4D4D"/>
                     </svg>
-                    <span>Riwayat Transaksi</span>
+                    <span>Riwayat Pesanan</span>
                 </a>
                 <a href="{{ route('customer.collections.index') }}" class="profile-nav-item profile-nav-item-active">
                     <svg xmlns="http://www.w3.org/2000/svg" width="16" height="12" viewBox="0 0 16 12" fill="none">
@@ -88,7 +88,7 @@
                                 </label>
                             </div>
                             <div class="collection-book-image">
-                                <img src="{{ $collection->book->cover_image ? asset('storage/' . $collection->book->cover_image) : asset('img/img-book.webp') }}" alt="{{ $collection->book->title }}">
+                                <img src="{{ $collection->book->cover ? asset($collection->book->cover) : asset('img/img-book.webp') }}" alt="{{ $collection->book->title }}">
                                 <div class="collection-book-rating">
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M6 0L7.854 3.756L12 4.362L9 7.266L9.708 11.388L6 9.456L2.292 11.388L3 7.266L0 4.362L4.146 3.756L6 0Z" fill="white"/>

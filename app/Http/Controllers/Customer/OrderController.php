@@ -7,7 +7,6 @@ use App\Models\Order;
 use App\Models\OrderDetail;
 use App\Models\Cart;
 use App\Models\Book;
-// use App\Models\ActivityLog;
 use App\Services\MidtransService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,9 +22,6 @@ class OrderController extends Controller
     }
 
 
-    /**
-     * Tampilkan riwayat pesanan
-     */
     public function index()
     {
         $orders = Order::with('book')
@@ -36,14 +32,10 @@ class OrderController extends Controller
         return view('customer.orders.index', compact('orders'));
     }
 
-    /**
-     * Tampilkan form checkout
-     */
     public function create(Request $request)
     {
         $query = Cart::with('book')->where('user_id', Auth::id());
 
-        // Jika ada cart_ids yang dipilih (dari checkbox), ambil hanya yang dipilih
         if ($request->has('cart_ids') && is_array($request->cart_ids)) {
             $query->whereIn('id', $request->cart_ids);
         }
@@ -59,7 +51,6 @@ class OrderController extends Controller
             return $item->quantity * $item->book->price;
         });
 
-        // Simpan cart_ids di session untuk digunakan saat store
         if ($request->has('cart_ids')) {
             session(['checkout_cart_ids' => $request->cart_ids]);
         } else {
@@ -88,7 +79,6 @@ class OrderController extends Controller
 
         $query = Cart::with('book')->where('user_id', Auth::id());
 
-        // Ambil hanya cart items yang dipilih (dari session checkout)
         if (session()->has('checkout_cart_ids')) {
             $query->whereIn('id', session('checkout_cart_ids'));
         }
@@ -105,7 +95,6 @@ class OrderController extends Controller
             $totalQuantity = 0;
             $totalPrice = 0;
 
-            // Validasi stok & hitung total
             foreach ($cartItems as $item) {
                 if ($item->book->stock < $item->quantity) {
                     DB::rollBack();
@@ -115,7 +104,6 @@ class OrderController extends Controller
                 $totalPrice += $item->quantity * $item->book->price;
             }
 
-            // Generate order number
             $orderNumber = 'ORD-' . date('Ymd') . '-' . strtoupper(substr(uniqid(), -6));
 
             $order = Order::create([
@@ -127,9 +115,8 @@ class OrderController extends Controller
                 'payment_method' => $request->payment_method,
                 'payment_status' => 'pending',
             ]);
-            // Buat order untuk setiap buku
+
             foreach ($cartItems as $item) {
-                // Buat order detail
                 OrderDetail::create([
                     'order_id' => $order->id,
                     'book_id' => $item->book_id,
@@ -137,7 +124,6 @@ class OrderController extends Controller
                     'price' => $item->book->price,
                 ]);
 
-                // Kurangi stok buku
                 $item->book->decreaseStock($item->quantity);
             }
 
@@ -147,24 +133,14 @@ class OrderController extends Controller
                 $order->update(['snap_token' => $snapToken]);
             }
 
-            // Hapus cart items yang sudah di-checkout
-            // Jika ada selected items, hapus hanya yang dipilih
             if (session()->has('checkout_cart_ids')) {
                 Cart::where('user_id', Auth::id())
                     ->whereIn('id', session('checkout_cart_ids'))
                     ->delete();
                 session()->forget('checkout_cart_ids');
             } else {
-                // Hapus semua cart jika checkout semua items
                 Cart::where('user_id', Auth::id())->delete();
             }
-
-            // Log activity
-            // ActivityLog::createLog(
-            //     Auth::id(),
-            //     'create_order',
-            //     "Membuat pesanan #{$orderNumber} dengan total Rp " . number_format($totalPrice)
-            // );
 
             DB::commit();
 
@@ -191,12 +167,10 @@ class OrderController extends Controller
     {
         $order = Order::with('orderDetails.book')->findOrFail($id);
 
-        // check order milik user
         if ($order->user_id !== Auth::id()) {
             abort(403, 'Unauthorized');
         }
 
-        // jika sudah payment, redirect ke orders
         if ($order->isPaid()) {
             return redirect()->route('customer.orders.index')->with('info', 'Pesanan sudah dibayar');
         }
@@ -221,16 +195,12 @@ class OrderController extends Controller
     {
         $order = Order::findOrFail($orderId);
 
-        // Ambil status dari query string
         $status = $request->query('status');
 
-        // Handle berdasarkan status
         if ($status === 'success') {
-            // Cek status dari Midtrans API (untuk validasi)
             try {
                 $midtransStatus = $this->midtransService->getTransactionStatus($order->order_number);
 
-                // Jika settlement (berhasil dibayar)
                 if ($midtransStatus->transaction_status === 'settlement') {
                     $order->markAsPaid($midtransStatus->transaction_id);
 
@@ -238,7 +208,6 @@ class OrderController extends Controller
                         ->with('success', 'Pembayaran berhasil! Pesanan Anda sedang diproses.');
                 }
             } catch (\Exception $e) {
-                // Jika error saat cek status, assume success (akan diupdate via webhook)
                 return redirect()->route('customer.orders.index')
                     ->with('info', 'Pembayaran sedang diproses, mohon tunggu konfirmasi.');
             }
@@ -249,19 +218,13 @@ class OrderController extends Controller
                 ->with('info', 'Pembayaran pending, silakan selesaikan pembayaran.');
         }
 
-        // Failed
         $order->update(['payment_status' => 'failed']);
-
         return redirect()->route('customer.orders.index')
             ->with('error', 'Pembayaran gagal, silakan coba lagi.');
     }
 
-    /**
-     * Tampilkan detail order
-     */
     public function show(Order $order)
     {
-        // Pastikan order milik user yang login
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }
@@ -275,48 +238,36 @@ class OrderController extends Controller
 
 
 
-    /**
-     * Confirm order received (update status to completed)
-     */
     public function confirm(Order $order)
     {
-        // Pastikan order milik user yang login
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }
 
-        // Hanya bisa confirm jika status shipped
         if ($order->status !== 'shipped') {
             return back()->with('error', 'Pesanan tidak dapat dikonfirmasi!');
         }
 
-        // Update status ke completed
         $order->update([
             'status' => 'completed',
-            'payment_status' => 'paid', // Mark as paid untuk COD
+            'payment_status' => 'paid',
         ]);
 
         return back()->with('success', 'Terima kasih! Pesanan telah diterima dan transaksi selesai.');
     }
 
-    /**
-     * Cancel order
-     */
     public function cancel(Order $order)
     {
-        // Pastikan order milik user yang login
         if ($order->user_id !== Auth::id()) {
             abort(403);
         }
 
-        // Hanya bisa cancel jika status pending
         if ($order->status !== 'pending') {
             return back()->with('error', 'Pesanan tidak dapat dibatalkan!');
         }
 
         $order->cancel();
 
-        // Kembalikan stok buku
         foreach ($order->orderDetails as $detail) {
             $detail->book->increaseStock($detail->quantity);
         }
@@ -340,8 +291,6 @@ class OrderController extends Controller
      */
     public function midtransNotification(Request $request)
     {
-        // Validasi signature untuk keamanan
-        // Pastikan request benar-benar dari Midtrans
         $serverKey = config('midtrans.server_key');
         $hashed = hash(
             'sha512',
@@ -351,32 +300,29 @@ class OrderController extends Controller
                 $serverKey
         );
 
-        // Jika signature tidak cocok, reject
         if ($hashed !== $request->signature_key) {
             return response()->json(['message' => 'Invalid signature'], 403);
         }
 
-        // Cari order berdasarkan order_number
         $order = Order::where('order_number', $request->order_id)->first();
 
         if (!$order) {
             return response()->json(['message' => 'Order not found'], 404);
         }
 
-        // Update status berdasarkan transaction_status dari Midtrans
         switch ($request->transaction_status) {
-            case 'settlement':  // Pembayaran berhasil
-            case 'capture':     // Kartu kredit berhasil
+            case 'settlement':
+            case 'capture':
                 $order->markAsPaid($request->transaction_id);
                 break;
 
-            case 'pending':     // Menunggu pembayaran
+            case 'pending':
                 $order->update(['payment_status' => 'pending']);
                 break;
 
-            case 'deny':        // Ditolak
-            case 'expire':      // Expired
-            case 'cancel':      // Dibatalkan
+            case 'deny':
+            case 'expire':
+            case 'cancel':
                 $order->update([
                     'payment_status' => 'failed',
                     'status' => 'cancelled'
@@ -384,7 +330,6 @@ class OrderController extends Controller
                 break;
         }
 
-        // Return response ke Midtrans
         return response()->json(['message' => 'Notification received']);
     }
 }
