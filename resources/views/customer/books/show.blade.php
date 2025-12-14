@@ -22,18 +22,22 @@
                 </div>
 
                 <div class="book-detail-actions">
+                    @php
+                        $isLoved = \App\Models\Collection::find($book->id, 'book_id')?->with('user_id',Auth::id());
+                    @endphp
+
                     <form class="book-detail-actions" action="{{ route('customer.collections.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="book_id" value="{{ $book->id }}">
-                        <button class="book-detail-btn-action" type="submit">
+                        <button class="book-detail-btn-action {{ $isLoved ? 'active' :  '' }}" type="submit">
                             <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
-                                <path d="M11 18L9.405 16.5425C3.74 11.395 0 8.0075 0 3.95C0 1.5625 1.87 0 4.4 0C5.808 0 7.15 0.6425 8 1.635C8.85 0.6425 10.192 0 11.6 0C14.13 0 16 1.5625 16 3.95C16 8.0075 12.26 11.395 6.595 16.5425L11 18Z" fill="#B3B3B3"/>
+                                <path d="M11 18L9.405 16.5425C3.74 11.395 0 8.0075 0 3.95C0 1.5625 1.87 0 4.4 0C5.808 0 7.15 0.6425 8 1.635C8.85 0.6425 10.192 0 11.6 0C14.13 0 16 1.5625 16 3.95C16 8.0075 12.26 11.395 6.595 16.5425L11 18Z" fill="currentColor"/>
                             </svg>
                         </button>
                         <button class="book-detail-btn-action">
                         <svg width="18" height="20" viewBox="0 0 18 20" fill="none">
-                            <path d="M15 13.5L9 17L3 13.5V3L9 6.5L15 3V13.5Z" stroke="#B3B3B3" stroke-width="2" fill="none"/>
-                            <path d="M9 6.5V17" stroke="#B3B3B3" stroke-width="2"/>
+                            <path d="M15 13.5L9 17L3 13.5V3L9 6.5L15 3V13.5Z" stroke="currentColor" stroke-width="2" fill="none"/>
+                            <path d="M9 6.5V17" stroke="currentColor" stroke-width="2"/>
                         </svg>
                     </button>
                     </form>

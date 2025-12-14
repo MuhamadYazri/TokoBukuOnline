@@ -18,17 +18,12 @@
                     <p class="dashboard-stat-value dashboard-stat-purple">{{ number_format($stats['total_books'] ?? 0, 0, ',', '.') }}</p>
                 </div>
 
-                <!-- Total Transaksi -->
+                <!-- Total Pesanan -->
                 <div class="dashboard-stat-card">
-                    <p class="dashboard-stat-label">Total Transaksi</p>
+                    <p class="dashboard-stat-label">Total Pesanan</p>
                     <p class="dashboard-stat-value dashboard-stat-green">{{ number_format($stats['total_orders'] ?? 0, 0, ',', '.') }}</p>
                 </div>
 
-                <!-- Total Pesanan -->
-                <div class="dashboard-stat-card dashboard-stat-card-wide">
-                    <p class="dashboard-stat-label">Total Pesanan</p>
-                    <p class="dashboard-stat-value dashboard-stat-orange">{{ number_format($stats['pending_orders'] ?? 0, 0, ',', '.') }}</p>
-                </div>
             </div>
 
             <!-- Two Column Section -->

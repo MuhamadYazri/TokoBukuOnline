@@ -133,7 +133,7 @@
 
                         <!-- Order Actions -->
                         <div class="order-actions">
-                            @if($order->payment_method === 'cod')
+                            @if($order->payment_method === 'cod' && $order->status != 'cancelled')
                                 @if($order->status === 'shipped')
                                     <form class="order-actions" method="POST" action="{{ route('customer.orders.confirm', $order->id) }}" >
                                         @csrf
@@ -141,10 +141,25 @@
                                     </form>
                                 @elseif($order->status === 'completed')
                                     <a href="{{ route('customer.orders.show', $order->id) }}" class="order-btn order-btn-success">Lihat Detail</a>
+                                @elseif($order->canBeCancelled())
+                                    <form method="POST" action="{{ route('customer.orders.cancel', $order->id) }}" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+                                        @csrf
+                                        @method('DELETE')
+                                        <button type="submit" class="order-btn order-btn-danger">Batalkan Pesanan</button>
+                                    </form>
                                 @endif
-                            @else
+                            @elseif ($order->status != 'cancelled')
                                 @if($order->payment_status === 'pending')
-                                    <a href="{{ route('customer.orders.payment', $order->id) }}" class="order-btn order-btn-dark">Bayar</a>
+                                    <div style="display: flex; gap: 8px;">
+                                        <a href="{{ route('customer.orders.payment', $order->id) }}" class="order-btn order-btn-dark">Bayar</a>
+                                        @if($order->canBeCancelled())
+                                            <form method="POST" action="{{ route('customer.orders.cancel', $order->id) }}" style="display: inline;" onsubmit="return confirm('Apakah Anda yakin ingin membatalkan pesanan ini?')">
+                                                @csrf
+                                                @method('PATCH')
+                                                <button type="submit" class="order-btn order-btn-danger">Batalkan</button>
+                                            </form>
+                                        @endif
+                                    </div>
                                 @elseif($order->status === 'shipped')
                                     <form method="POST" action="{{ route('customer.orders.confirm', $order->id) }}">
                                         @csrf
@@ -152,6 +167,8 @@
                                     </form>
                                 @elseif($order->status === 'completed')
                                     <a href="{{ route('customer.orders.show', $order->id) }}" class="order-btn order-btn-success">Lihat Detail</a>
+                                @elseif($order->status === 'cancelled')
+
                                 @endif
                             @endif
                         </div>

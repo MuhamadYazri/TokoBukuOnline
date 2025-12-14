@@ -33,6 +33,14 @@ class OrderController extends Controller
             });
         }
 
+        if ($request->has('start_date') && $request->start_date) {
+            $query->whereDate('created_at', '>=', $request->start_date);
+        }
+
+        if ($request->has('end_date') && $request->end_date) {
+            $query->whereDate('created_at', '<=', $request->end_date);
+        }
+
         $orders = $query->latest()->paginate(20);
 
         return view('admin.orders.index', compact('orders', 'pendingCount', 'processingCount', 'shippedCount', 'completedCount', 'cancelledCount'));

@@ -97,4 +97,9 @@ class Order extends Model
             'payment_status' => 'failed',
         ]);
     }
+
+    public function canBeCancelled()
+    {
+        return $this->status === 'pending';
+    }
 }

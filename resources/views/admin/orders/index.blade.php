@@ -37,12 +37,24 @@
                 @if(request('status'))
                     <input type="hidden" name="status" value="{{ request('status') }}">
                 @endif
+                @if(request('start_date'))
+                    <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+                @endif
+                @if(request('end_date'))
+                    <input type="hidden" name="end_date" value="{{ request('end_date') }}">
+                @endif
             </form>
 
             <div class="orders-filter-wrapper">
                 <form action="{{ route('admin.orders.index') }}" method="GET" id="statusFilterForm">
                     @if(request('search'))
                         <input type="hidden" name="search" value="{{ request('search') }}">
+                    @endif
+                    @if(request('start_date'))
+                        <input type="hidden" name="start_date" value="{{ request('start_date') }}">
+                    @endif
+                    @if(request('end_date'))
+                        <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                     @endif
                     <div class="orders-filter-select-wrapper">
                         <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="orders-filter-icon">
@@ -65,6 +77,29 @@
                     </div>
                 </form>
             </div>
+
+            <form action="{{ route('admin.orders.index') }}" method="GET" class="orders-date-filter">
+                @if(request('search'))
+                    <input type="hidden" name="search" value="{{ request('search') }}">
+                @endif
+                @if(request('status'))
+                    <input type="hidden" name="status" value="{{ request('status') }}">
+                @endif
+                <div class="orders-date-inputs">
+                    <div class="orders-date-input-wrapper">
+                        <label for="start_date" class="orders-date-label">Dari</label>
+                        <input type="date" name="start_date" id="start_date" class="orders-date-input" value="{{ request('start_date') }}">
+                    </div>
+                    <div class="orders-date-input-wrapper">
+                        <label for="end_date" class="orders-date-label">Sampai</label>
+                        <input type="date" name="end_date" id="end_date" class="orders-date-input" value="{{ request('end_date') }}">
+                    </div>
+                </div>
+                <button type="submit" class="orders-date-submit-btn">Filter</button>
+                @if(request('start_date') || request('end_date'))
+                    <a href="{{ route('admin.orders.index', ['search' => request('search'), 'status' => request('status')]) }}" class="orders-date-clear-btn">Reset</a>
+                @endif
+            </form>
         </div>
 
         <!-- Orders Cards Grid -->

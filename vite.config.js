@@ -9,23 +9,23 @@ export default defineConfig({
         }),
     ],
     // hapus ketika production
-    server: {
-        host: "0.0.0.0",
-        port: 5173,
-        strictPort: true,
-        hmr: {
-            host: "tokobukuonline.me",
-            protocol: "ws", // WebSocket protocol
-            clientPort: 5173,
-        },
-        cors: {
-            origin: "*", // development only!
-            credentials: true,
-        },
-        watch: {
-            usePolling: true, // For Windows file watching
-        },
-    },
+    // server: {
+    //     host: "0.0.0.0",
+    //     port: 5173,
+    //     strictPort: true,
+    //     hmr: {
+    //         host: "tokobukuonline.me",
+    //         protocol: "ws", // WebSocket protocol
+    //         clientPort: 5173,
+    //     },
+    //     cors: {
+    //         origin: "*", // development only!
+    //         credentials: true,
+    //     },
+    //     watch: {
+    //         usePolling: true, // For Windows file watching
+    //     },
+    // },
     // server: {
     //     allowedHosts: ["pseudorhombohedral-larissa-spiteless.ngrok-free.dev"],
     // },

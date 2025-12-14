@@ -48,6 +48,7 @@ class CustomerController extends Controller
         }
 
         $customers = $query->withCount(['orders', 'reviews', 'collections'])
+            ->withSum('orders', 'total_price')
             ->paginate(20);
 
         return view('admin.customer.index', compact('customers', 'totalCustomers', 'newCustomersThisMonth'));

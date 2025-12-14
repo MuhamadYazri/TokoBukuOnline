@@ -262,8 +262,8 @@ class OrderController extends Controller
             abort(403);
         }
 
-        if ($order->status !== 'pending') {
-            return back()->with('error', 'Pesanan tidak dapat dibatalkan!');
+        if (!$order->canBeCancelled()) {
+            return back()->with('error', 'Pesanan tidak dapat dibatalkan! Hanya pesanan dengan status "Menunggu" yang dapat dibatalkan.');
         }
 
         $order->cancel();
