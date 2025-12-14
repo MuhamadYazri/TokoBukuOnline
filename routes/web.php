@@ -4,6 +4,7 @@ use App\Http\Controllers\Admin\BookController as AdminBookController;
 use App\Http\Controllers\Admin\CustomerController as AdminCustomerController;
 use App\Http\Controllers\Admin\DashboardController as AdminDashboard;
 use App\Http\Controllers\Admin\OrderController as AdminOrderController;
+use App\Http\Controllers\Admin\ReportController as AdminReportController;
 use App\Http\Controllers\Admin\ReviewController as AdminReviewController;
 use App\Http\Controllers\Customer\BookController as CustomerBookController;
 use App\Http\Controllers\Customer\CartController;
@@ -88,6 +89,8 @@ Route::middleware(['auth', 'isAdmin'])->prefix('admin')->name('admin.')->group(f
 
     Route::get('/reviews', [AdminReviewController::class, 'index'])->name('reviews.index');
     Route::delete('/reviews/{review}', [AdminReviewController::class, 'destroy'])->name('reviews.destroy');
+
+    Route::get('/reports/export', [AdminReportController::class, 'exportMonthly'])->name('reports.export');
 });
 
 

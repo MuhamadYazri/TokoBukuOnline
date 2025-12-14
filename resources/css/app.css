@@ -5709,6 +5709,83 @@ option:last-of-type {
     width: 100%;
 }
 
+/* Export Section */
+.dashboard-export-section {
+    background: #ffffff;
+    border: 1px solid #e6e6e6;
+    border-radius: 15px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+.dashboard-export-title {
+    font-family: "Poppins", sans-serif;
+    font-size: 18px;
+    font-weight: 600;
+    color: #000000;
+    margin: 0 0 16px 0;
+}
+
+.dashboard-export-form {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+}
+
+.dashboard-export-inputs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    flex: 1 1 auto;
+}
+
+.dashboard-export-select {
+    flex: 1 1 150px;
+    min-width: 150px;
+    height: 45px;
+    padding: 10px 12px;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    color: #09090b;
+    background: white;
+    border: 2px solid #e6e6e6;
+    border-radius: 10px;
+    outline: none;
+    cursor: pointer;
+    transition: border-color 0.2s;
+}
+
+.dashboard-export-select:focus {
+    border-color: #0088ff;
+}
+
+.dashboard-export-btn {
+    height: 45px;
+    padding: 0 24px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-family: "Poppins", sans-serif;
+    font-size: 14px;
+    font-weight: 500;
+    color: white;
+    background: #0088ff;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.2s;
+    white-space: nowrap;
+}
+
+.dashboard-export-btn:hover {
+    background: #0077dd;
+}
+
+.dashboard-export-btn svg {
+    flex-shrink: 0;
+}
+
 /* Stats Cards Grid */
 .dashboard-stats-grid {
     display: flex;
@@ -5975,7 +6052,7 @@ option:last-of-type {
 /* Chart Card */
 .dashboard-chart-card {
     background: #ffffff;
-    border: 2px solid #e6e6e6;
+    border: 1px solid #e6e6e6;
     border-radius: 15px;
     padding: 24px;
     display: flex;
@@ -5983,11 +6060,27 @@ option:last-of-type {
     gap: 16px;
     width: 100%;
     min-height: 288px;
-    box-shadow: 0px 35px 10px 0px rgba(2, 55, 116, 0),
-        0px 22px 9px 0px rgba(2, 55, 116, 0.01),
-        0px 13px 8px 0px rgba(2, 55, 116, 0.03),
-        0px 6px 6px 0px rgba(2, 55, 116, 0.04),
-        0px 1px 3px 0px rgba(2, 55, 116, 0.05);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.05);
+}
+
+/* Responsive - Mobile */
+@media (max-width: 767px) {
+    .dashboard-export-select {
+        flex: 1 1 100%;
+        min-width: 100%;
+    }
+
+    .dashboard-export-btn {
+        flex: 1 1 100%;
+        width: 100%;
+        justify-content: center;
+    }
+}
+
+@media (min-width: 768px) {
+    .dashboard-export-inputs {
+        flex-wrap: nowrap;
+    }
 }
 
 .dashboard-chart-title {

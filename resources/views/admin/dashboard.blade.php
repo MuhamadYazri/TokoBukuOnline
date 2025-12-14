@@ -4,6 +4,37 @@
     <div class="dashboard-page">
         <div class="dashboard-container">
 
+            <!-- Export Report Section -->
+            <div class="dashboard-export-section">
+                <h3 class="dashboard-export-title">Laporan Bulanan</h3>
+                <form action="{{ route('admin.reports.export') }}" method="GET" class="dashboard-export-form">
+                    <div class="dashboard-export-inputs">
+                        <select name="month" class="dashboard-export-select" required>
+                            <option value="">Pilih Bulan</option>
+                            @for($i = 1; $i <= 12; $i++)
+                                <option value="{{ $i }}" {{ now()->month == $i ? 'selected' : '' }}>
+                                    {{ date('F', mktime(0, 0, 0, $i, 1)) }}
+                                </option>
+                            @endfor
+                        </select>
+                        <select name="year" class="dashboard-export-select" required>
+                            <option value="">Pilih Tahun</option>
+                            @for($year = now()->year; $year >= 2020; $year--)
+                                <option value="{{ $year }}" {{ now()->year == $year ? 'selected' : '' }}>
+                                    {{ $year }}
+                                </option>
+                            @endfor
+                        </select>
+                    </div>
+                    <button type="submit" class="dashboard-export-btn">
+                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                            <path d="M15.75 11.25V14.25C15.75 14.6478 15.592 15.0294 15.3107 15.3107C15.0294 15.592 14.6478 15.75 14.25 15.75H3.75C3.35218 15.75 2.97064 15.592 2.68934 15.3107C2.40804 15.0294 2.25 14.6478 2.25 14.25V11.25M5.25 7.5L9 11.25M9 11.25L12.75 7.5M9 11.25V2.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <span>Export Excel</span>
+                    </button>
+                </form>
+            </div>
+
             <!-- Stats Cards Grid -->
             <div class="dashboard-stats-grid">
                 <!-- Total Pengguna -->
