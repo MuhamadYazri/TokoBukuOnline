@@ -28,6 +28,7 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('/', [HomeController::class, 'index'])->name('home');
 Route::get('/books', [CustomerBookController::class, 'index'])->name('customer.books.index');
+Route::get('/books/{book}', [CustomerBookController::class, 'show'])->name('customer.books.show');
 
 
 Route::middleware(['auth'])->name('customer.')->group(function () {
@@ -37,7 +38,7 @@ Route::middleware(['auth'])->name('customer.')->group(function () {
     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 
 
-    Route::get('/books/{book}', [CustomerBookController::class, 'show'])->name('books.show');
+
     Route::post('/books/{book}/reviews', [CustomerBookController::class, 'storeReview'])->name('books.reviews.store');
 
     Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
