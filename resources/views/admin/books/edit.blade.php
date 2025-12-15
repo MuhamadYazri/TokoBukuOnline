@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <x-AdminHeaderGradient title="Tambah Buku Baru" subtitle="Lengkapi informasi buku yang akan ditambahkan">
+    <x-AdminHeaderGradient title="Edit Buku" subtitle="Perbarui informasi buku">
     </x-AdminHeaderGradient>
 
     <div class="admin-form-body">
@@ -7,8 +7,9 @@
 
             <!-- Form Card -->
             <div class="admin-form-card">
-                <form method="POST" action="{{ route('admin.books.store') }}" enctype="multipart/form-data" class="admin-book-form">
+                <form method="POST" action="{{ route('admin.books.update', $book) }}" enctype="multipart/form-data" class="admin-book-form">
                     @csrf
+                    @method('PATCH')
 
                     <!-- Form Grid -->
                     <div class="admin-form-grid">
@@ -29,7 +30,7 @@
                                             accept="image/jpeg,image/jpg,image/png"
                                         >
 
-                                        <div class="admin-upload-placeholder" id="uploadPlaceholder">
+                                        <div class="admin-upload-placeholder" id="uploadPlaceholder" style="{{ $book->cover ? 'display: none;' : '' }}">
                                             <svg width="48" height="48" viewBox="0 0 48 48" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                 <rect width="48" height="48" rx="24" fill="#E0F2FE"/>
                                                 <path d="M24 18V30M18 24H30" stroke="#0088FF" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
@@ -38,8 +39,8 @@
                                             <p class="admin-upload-hint">JPG, JPEG, PNG (Max. 2MB)</p>
                                         </div>
 
-                                        <div class="admin-upload-preview" id="uploadPreview" style="display: none;">
-                                            <img src="" alt="Preview" id="previewImage">
+                                        <div class="admin-upload-preview" id="uploadPreview" style="{{ $book->cover ? 'display: flex;' : 'display: none;' }}">
+                                            <img src="{{ $book->cover ? asset('storage/' . $book->cover) : '' }}" alt="Preview" id="previewImage">
                                             <button type="button" class="admin-upload-remove" id="removeImage">
                                                 <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                                     <path d="M15 5L5 15M5 5L15 15" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
@@ -71,7 +72,7 @@
                                         name="title"
                                         id="title"
                                         class="admin-form-input @error('title') admin-form-input-error @enderror"
-                                        value="{{ old('title') }}"
+                                        value="{{ old('title', $book->title) }}"
                                         placeholder="Masukkan judul buku"
                                         required
                                     >
@@ -90,7 +91,7 @@
                                         name="author"
                                         id="author"
                                         class="admin-form-input @error('author') admin-form-input-error @enderror"
-                                        value="{{ old('author') }}"
+                                        value="{{ old('author', $book->author) }}"
                                         placeholder="Masukkan nama penulis"
                                         required
                                     >
@@ -116,7 +117,7 @@
                                             >
                                                 <option value="">Pilih Kategori</option>
                                                 @foreach(\App\Models\Book::getCategories() as $key => $category)
-                                                    <option value="{{ $key }}" {{ old('category') == $key ? 'selected' : '' }}>
+                                                    <option value="{{ $key }}" {{ old('category', $book->category) == $key ? 'selected' : '' }}>
                                                         {{ $category }}
                                                     </option>
                                                 @endforeach
@@ -146,7 +147,7 @@
                                             name="year"
                                             id="year"
                                             class="admin-form-input @error('year') admin-form-input-error @enderror"
-                                            value="{{ old('year', date('Y')) }}"
+                                            value="{{ old('year', $book->year) }}"
                                             placeholder="2024"
                                             min="1900"
                                             max="{{ date('Y') }}"
@@ -169,7 +170,7 @@
                                             name="penerbit"
                                             id="penerbit"
                                             class="admin-form-input @error('penerbit') admin-form-input-error @enderror"
-                                            value="{{ old('penerbit') }}"
+                                            value="{{ old('penerbit', $book->penerbit) }}"
                                             placeholder="Masukkan nama penerbit"
                                         >
                                         @error('penerbit')
@@ -187,7 +188,7 @@
                                             name="halaman"
                                             id="halaman"
                                             class="admin-form-input @error('halaman') admin-form-input-error @enderror"
-                                            value="{{ old('halaman') }}"
+                                            value="{{ old('halaman', $book->halaman) }}"
                                             placeholder="0"
                                             min="1"
                                         >
@@ -210,11 +211,11 @@
                                             style="flex: 1;"
                                         >
                                             <option value="">Pilih Bahasa</option>
-                                            <option value="Indonesia" {{ old('bahasa') == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
-                                            <option value="Inggris" {{ old('bahasa') == 'Inggris' ? 'selected' : '' }}>Inggris</option>
-                                            <option value="Arab" {{ old('bahasa') == 'Arab' ? 'selected' : '' }}>Arab</option>
-                                            <option value="Jepang" {{ old('bahasa') == 'Jepang' ? 'selected' : '' }}>Jepang</option>
-                                            <option value="Mandarin" {{ old('bahasa') == 'Mandarin' ? 'selected' : '' }}>Mandarin</option>
+                                            <option value="Indonesia" {{ old('bahasa', $book->bahasa) == 'Indonesia' ? 'selected' : '' }}>Indonesia</option>
+                                            <option value="Inggris" {{ old('bahasa', $book->bahasa) == 'Inggris' ? 'selected' : '' }}>Inggris</option>
+                                            <option value="Arab" {{ old('bahasa', $book->bahasa) == 'Arab' ? 'selected' : '' }}>Arab</option>
+                                            <option value="Jepang" {{ old('bahasa', $book->bahasa) == 'Jepang' ? 'selected' : '' }}>Jepang</option>
+                                            <option value="Mandarin" {{ old('bahasa', $book->bahasa) == 'Mandarin' ? 'selected' : '' }}>Mandarin</option>
                                             <option value="custom">Tambah Bahasa Baru</option>
                                         </select>
                                         <input
@@ -242,7 +243,7 @@
                                         rows="4"
                                         class="admin-form-textarea @error('description') admin-form-input-error @enderror"
                                         placeholder="Masukkan deskripsi buku (opsional)"
-                                    >{{ old('description') }}</textarea>
+                                    >{{ old('description', $book->description) }}</textarea>
                                     @error('description')
                                         <p class="admin-form-error">{{ $message }}</p>
                                     @enderror
@@ -267,7 +268,7 @@
                                                 name="price"
                                                 id="price"
                                                 class="admin-form-input admin-form-input-with-prefix @error('price') admin-form-input-error @enderror"
-                                                value="{{ old('price') }}"
+                                                value="{{ old('price', $book->price) }}"
                                                 placeholder="0"
                                                 min="0"
 
@@ -289,7 +290,7 @@
                                             name="stock"
                                             id="stock"
                                             class="admin-form-input @error('stock') admin-form-input-error @enderror"
-                                            value="{{ old('stock') }}"
+                                            value="{{ old('stock', $book->stock) }}"
                                             placeholder="0"
                                             min="0"
                                             required
@@ -309,14 +310,12 @@
                         <a href="{{ route('admin.books.index') }}" class="admin-form-btn admin-form-btn-cancel">
                             Batal
                         </a>
-                        <a href="{{ route('admin.books.store') }}"><button type="submit" class="admin-form-btn admin-form-btn-submit">
-
+                        <button type="submit" class="admin-form-btn admin-form-btn-submit">
                             <svg width="20" height="20" viewBox="0 0 20 20" fill="none" xmlns="http://www.w3.org/2000/svg">
                                 <path d="M16.6667 5L7.50004 14.1667L3.33337 10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
                             </svg>
-                            <span>Simpan Buku</span>
-                        </button></a>
-
+                            <span>Simpan Perubahan</span>
+                        </button>
                     </div>
                 </form>
             </div>

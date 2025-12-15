@@ -1,13 +1,16 @@
 <x-guest-layout>
-    <div class="login-wrapper">
-        <div class="login-card">
+    <div class="login-wrapper-horizontal">
 
-            <div class="login-header">
-                <h1 class="login-title">Lupa Password?</h1>
-                <p class="login-subtitle">Masukkan email Anda untuk reset password</p>
-            </div>
 
-            <form method="POST" action="{{ route('password.email') }}" class="login-form">
+        <!-- Right Side - Form -->
+        <div class="login-form-wrapper">
+            <div class="login-form-card">
+                <div class="login-header">
+                    <h1 class="login-title">Lupa Password?</h1>
+                    <p class="login-subtitle">Masukkan email Anda untuk reset password</p>
+                </div>
+
+                <form method="POST" action="{{ route('password.email') }}" class="login-form">
                 @csrf
 
                 <div class="form-field">
@@ -40,6 +43,7 @@
             <div class="register-prompt">
                 <span class="prompt-text">Ingat password?</span>
                 <a href="{{ route('login') }}" class="register-link">Kembali ke login</a>
+            </div>
             </div>
         </div>
     </div>

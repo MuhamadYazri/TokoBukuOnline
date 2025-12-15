@@ -88,7 +88,11 @@
                                 </label>
                             </div>
                             <div class="collection-book-image">
-                                <img src="{{ $collection->book->cover ? asset($collection->book->cover) : asset('img/img-book.webp') }}" alt="{{ $collection->book->title }}">
+                                @if(Storage::exists('public/' . $collection->book->cover))
+                                <img src="{{ asset('storage/' . $collection->book->cover) }}" alt="{{ $collection->book->cover }}">
+                                @else
+                                    <img src="{{ asset($collection->book->cover) }}" alt="{{ $collection->book->title }}">
+                                @endif
                                 <div class="collection-book-rating">
                                     <svg width="12" height="12" viewBox="0 0 12 12" fill="none" xmlns="http://www.w3.org/2000/svg">
                                         <path d="M6 0L7.854 3.756L12 4.362L9 7.266L9.708 11.388L6 9.456L2.292 11.388L3 7.266L0 4.362L4.146 3.756L6 0Z" fill="white"/>

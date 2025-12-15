@@ -8,12 +8,15 @@ use Illuminate\View\Component;
 
 class AdminHeaderGradient extends Component
 {
+    public $title;
+    public $subtitle;
     /**
      * Create a new component instance.
      */
-    public function __construct()
+    public function __construct(string $title, string $subtitle)
     {
-        //
+        $this->title = $title;
+        $this->subtitle = $subtitle;
     }
 
     /**

@@ -13,14 +13,11 @@
                         @foreach($cartItems as $item)
                             <div class="checkout-item">
                                 <div class="checkout-item-image">
-                                    @if($item->book->cover)
+                                    @if(Storage::exists('public/' . $item->book->cover))
                                         <img src="{{ asset('storage/' . $item->book->cover) }}" alt="{{ $item->book->title }}">
                                     @else
-                                        <div class="checkout-item-placeholder">
-                                            <svg width="40" height="40" viewBox="0 0 60 60" fill="none">
-                                                <path d="M10 5H40L50 15V50C50 51.1046 49.1046 52 48 52H10C8.89543 52 8 51.1046 8 50V7C8 5.89543 8.89543 5 10 5Z" fill="#E5E7EB"/>
-                                            </svg>
-                                        </div>
+                                        <img src="{{ asset( 'public/' .$item->book->cover) }}" alt="{{ $item->book->title }}">
+
                                     @endif
                                     <span class="item-quantity-badge">{{ $item->quantity }}x</span>
                                 </div>

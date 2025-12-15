@@ -44,14 +44,10 @@
                             @foreach($cartItems as $item)
                                 <div class="checkout-product-item">
                                     <div class="checkout-product-image">
-                                        @if($item->book->cover)
+                                        @if(Storage::exists('public/' . $item->book->cover))
                                             <img src="{{ asset('storage/' . $item->book->cover) }}" alt="{{ $item->book->title }}">
                                         @else
-                                            <div class="checkout-product-placeholder">
-                                                <svg width="36" height="36" viewBox="0 0 60 60" fill="none" aria-hidden="true">
-                                                    <path d="M10 5H40L50 15V50C50 51.1046 49.1046 52 48 52H10C8.89543 52 8 51.1046 8 50V7C8 5.89543 8.89543 5 10 5Z" fill="#E5E7EB"/>
-                                                </svg>
-                                            </div>
+                                            <img src="{{ asset( $item->book->cover) }}" alt="{{ $item->book->title }}">
                                         @endif
                                     </div>
                                     <div class="checkout-product-details">

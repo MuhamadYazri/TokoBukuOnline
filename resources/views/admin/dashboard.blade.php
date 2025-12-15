@@ -1,6 +1,6 @@
 <x-admin-layout>
-    <x-HeaderGradient title="Dashboard" subtitle="Ringkasan statistik dan aktivitas terkini">
-    </x-HeaderGradient>
+    <x-AdminHeaderGradient title="Dashboard" subtitle="Ringkasan statistik dan aktivitas terkini">
+    </x-AdminHeaderGradient>
     <div class="dashboard-page">
         <div class="dashboard-container">
 

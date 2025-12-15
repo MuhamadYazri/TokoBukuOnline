@@ -1,5 +1,5 @@
 <x-admin-layout>
-    <x-header-gradient title="Kelola Pengguna" subtitle="Kelola data dan informasi pengguna" />
+    <x-AdminHeaderGradient title="Kelola Pengguna" subtitle="Kelola data dan informasi pengguna" />
     <div class="customer-page">
         <!-- Header -->
 

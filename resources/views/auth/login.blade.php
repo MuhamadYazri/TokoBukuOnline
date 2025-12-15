@@ -1,13 +1,15 @@
 <x-guest-layout>
-    <div class="login-wrapper">
-        <div class="login-card">
+    <div class="login-wrapper-horizontal">
 
-            <div class="login-header">
-                <h1 class="login-title">Selamat Datang</h1>
-                <p class="login-subtitle">Masuk ke akun Anda</p>
-            </div>
+        <!-- Right Side - Form -->
+        <div class="login-form-wrapper">
+            <div class="login-form-card">
+                <div class="login-header">
+                    <h1 class="login-title">Masuk</h1>
+                    <p class="login-subtitle">Masukkan email dan password Anda</p>
+                </div>
 
-            <form method="POST" action="{{ route('login') }}" class="login-form">
+                <form method="POST" action="{{ route('login') }}" class="login-form">
                 @csrf
 
 
@@ -79,11 +81,10 @@
                 </button>
             </form>
 
-
-
             <div class="register-prompt">
                 <span class="prompt-text">Belum punya akun?</span>
                 <a href="{{ route('register') }}" class="register-link">Daftar sekarang</a>
+            </div>
             </div>
         </div>
     </div>

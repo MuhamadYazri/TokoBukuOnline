@@ -12,31 +12,23 @@
                 <div class="books-filter-card">
                     <h2 class="books-filter-heading">Filter</h2>
 
-                    <form method="GET" class="form-books" action="{{ route('customer.books.index') }}">
+                    <form method="GET" class="form-books" action="{{ route('customer.books.index') }}" id="filterForm">
                         <div class="books-filter-section">
                             <h3 class="books-filter-title">Kategori</h3>
-                            <div class="books-filter-options">
-                                <label class="books-filter-option {{ !request('category') ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="" {{ !request('category') ? 'checked' : '' }}>
-                                    <span class="books-filter-label">Semua</span>
-                                </label>
-                                <label class="books-filter-option {{ request('category') == 'pengembangan-diri' ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="pengembangan-diri" {{ request('category') == 'pengembangan-diri' ? 'checked' : '' }}>
-                                    <span class="books-filter-label">Pengembangan Diri</span>
-                                </label>
-                                <label class="books-filter-option {{ request('category') == 'fiksi' ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="fiksi" {{ request('category') == 'fiksi' ? 'checked' : '' }}>
-                                    <span class="books-filter-label">Fiksi</span>
-                                </label>
-                                <label class="books-filter-option {{ request('category') == 'filosofi' ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="filosofi" {{ request('category') == 'filosofi' ? 'checked' : '' }}>
-                                    <span class="books-filter-label">Filosofi</span>
-                                </label>
-                                <label class="books-filter-option {{ request('category') == 'psikologi' ? 'active' : '' }}">
-                                    <input type="radio" name="category" value="psikologi" {{ request('category') == 'psikologi' ? 'checked' : '' }}>
-                                    <span class="books-filter-label">Psikologi</span>
-                                </label>
-                            </div>
+                            @php
+                                $selectedCategories = request('categories', []);
+                                if (!is_array($selectedCategories)) {
+                                    $selectedCategories = [$selectedCategories];
+                                }
+                                $categoryCount = count($selectedCategories);
+                                $displayText = $categoryCount > 0 ? "$categoryCount kategori dipilih" : "Pilih Kategori";
+                            @endphp
+                            <button type="button" class="books-category-modal-btn" onclick="openCategoryModal()">
+                                <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
+                                    <path d="M2.25 4.5H15.75M4.5 9H13.5M6.75 13.5H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                                </svg>
+                                <span>{{ $displayText }}</span>
+                            </button>
                         </div>
 
                         <div class="divider">
@@ -86,9 +78,11 @@
                             Terapkan Filter
                         </button>
 
-                        <a href="{{ route('customer.books.index') }}" class="books-reset-btn">
-                            Reset Filter
-                        </a>
+                        @if(request('categories') || request('rating'))
+                            <a href="{{ route('customer.books.index') }}" class="books-reset-btn">
+                                Reset Filter
+                            </a>
+                        @endif
                     </form>
 
                     <button class="books-filter-toggle" onclick="toggleFilter()">
@@ -99,13 +93,41 @@
                 </div>
             </div>
 
+            <!-- Category Modal -->
+            <div class="books-category-modal" id="categoryModal" onclick="closeCategoryModal(event)">
+                <div class="books-category-modal-content" onclick="event.stopPropagation()">
+                    <div class="books-category-modal-header">
+                        <h3>Pilih Kategori</h3>
+                        <button type="button" class="books-category-modal-close" onclick="closeCategoryModal()">
+                            <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
+                                <path d="M18 6L6 18M6 6L18 18" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="books-category-modal-body">
+                        @foreach(\App\Models\Book::getCategories() as $key => $label)
+                            <label class="books-category-modal-option">
+                                <input type="checkbox" name="categories[]" value="{{ $key }}" {{ in_array($key, $selectedCategories) ? 'checked' : '' }} form="filterForm">
+                                <span class="books-category-modal-label">{{ $label }}</span>
+                            </label>
+                        @endforeach
+                    </div>
+                    <div class="books-category-modal-footer">
+                        <button type="button" class="books-category-modal-clear" onclick="clearCategories()">Clear</button>
+                        <button type="button" class="books-category-modal-apply" onclick="applyCategoryFilter()">Terapkan</button>
+                    </div>
+                </div>
+            </div>
+
             <div class="books-list-wrapper">
 
                 <div class="books-list-header">
                     <p class="books-count-text">Menampilkan {{ $books->total() }} buku</p>
                     <form method="GET" action="{{ route('customer.books.index') }}" class="books-sort-form">
-                        @if(request('category'))
-                            <input type="hidden" name="category" value="{{ request('category') }}">
+                        @if(request('categories'))
+                            @foreach(request('categories') as $cat)
+                                <input type="hidden" name="categories[]" value="{{ $cat }}">
+                            @endforeach
                         @endif
                         @if(request('rating'))
                             <input type="hidden" name="rating" value="{{ request('rating') }}">
@@ -139,7 +161,7 @@
                             @endphp
                             <a href="{{ route('customer.books.show', $book->id) }}" class="books-card-item">
                                 <div class="books-card-image">
-                                    @if($book->cover)
+                                    @if(Storage::exists('public/' . $book->cover))
                                         <img src="{{ asset( 'storage/' . $book->cover) }}" alt="{{ $book->cover }}">
                                     @else
                                         <img src="{{ asset( $book->cover) }}" alt="{{ $book->title }}">
@@ -187,6 +209,28 @@
 
             filterCard.classList.toggle('collapsed');
             toggleBtn.classList.toggle('active');
+        }
+
+        function openCategoryModal() {
+            document.getElementById('categoryModal').classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeCategoryModal(event) {
+            if (!event || event.target.id === 'categoryModal') {
+                document.getElementById('categoryModal').classList.remove('show');
+                document.body.style.overflow = 'auto';
+            }
+        }
+
+        function clearCategories() {
+            const checkboxes = document.querySelectorAll('.books-category-modal-option input[type="checkbox"]');
+            checkboxes.forEach(cb => cb.checked = false);
+        }
+
+        function applyCategoryFilter() {
+            closeCategoryModal();
+            // Button text will update on page reload
         }
     </script>
     @endpush

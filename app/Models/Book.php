@@ -43,7 +43,19 @@ class Book extends Model
 
     public static function getCategories()
     {
-        return self::CATEGORIES;
+        $defaultCategories = self::CATEGORIES;
+
+        $customCategories = Book::select('category')
+            ->whereNotIn('category', array_keys($defaultCategories))
+            ->groupBy('category')
+            ->pluck('category')
+            ->mapWithKeys(function ($category) {
+                return [$category => ucwords(str_replace('-', ' ', $category))];
+            })
+            ->toArray();
+
+        $categories = array_merge($defaultCategories, $customCategories);
+        return $categories;
     }
 
     public function getCategoryNameAttribute()

@@ -1,6 +1,6 @@
 <x-admin-layout>
-    <x-HeaderGradient title="Kelola Buku" subtitle="Kelola inventaris dan informasi buku">
-    </x-HeaderGradient>
+    <x-AdminHeaderGradient title="Kelola Buku" subtitle="Kelola inventaris dan informasi buku">
+    </x-AdminHeaderGradient>
 
     <div class="books-page">
         <!-- Stats Cards -->
@@ -32,9 +32,6 @@
                     <input type="hidden" name="search" value="{{ request('search') }}">
                 @endif
                 <div class="books-filter-select-wrapper">
-                    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="books-filter-icon">
-                        <path d="M2.25 4.5H15.75M4.5 9H13.5M6.75 13.5H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
                     <select name="filter" class="books-filter-select" onchange="document.getElementById('filterForm').submit()">
                         <option value="" {{ !request('filter') ? 'selected' : '' }}>Semua</option>
                         <option value="tersedia" {{ request('filter') == 'tersedia' ? 'selected' : '' }}>Tersedia</option>
@@ -42,9 +39,6 @@
                         <option value="stok_terbanyak" {{ request('filter') == 'stok_terbanyak' ? 'selected' : '' }}>Stok Terbanyak</option>
                         <option value="stok_tersedikit" {{ request('filter') == 'stok_tersedikit' ? 'selected' : '' }}>Stok Tersedikit</option>
                     </select>
-                    <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="books-filter-chevron">
-                        <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                    </svg>
                 </div>
             </form>
 

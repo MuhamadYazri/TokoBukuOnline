@@ -16,13 +16,8 @@
                     </svg>
                 </button>
 
-                <!-- Dropdown Menu -->
-                <div class="navbar-desktop-category-menu" id="categoryMenu">
-                    <a href="{{ route('customer.books.index', ['category' => 'pengembangan-diri']) }}" class="navbar-desktop-category-item">Pengembangan Diri</a>
-                    <a href="{{ route('customer.books.index', ['category' => 'fiksi']) }}" class="navbar-desktop-category-item">Fiksi</a>
-                    <a href="{{ route('customer.books.index', ['category' => 'filosofi']) }}" class="navbar-desktop-category-item">Filosofi</a>
-                    <a href="{{ route('customer.books.index', ['category' => 'psikologi']) }}" class="navbar-desktop-category-item">Psikologi</a>
-                </div>
+
+
             </div>
 
             <!-- Search Bar -->
@@ -120,6 +115,31 @@
                     </svg>
                 </a>
             @endauth
+        </div>
+        <div class="navbar-category-menu-container" id="categoryMenu">
+            <div class="navbar-category-menu-header">
+                <h3 class="navbar-category-menu-title">Jelajahi Kategori</h3>
+            </div>
+            <div class="navbar-category-menu-grid">
+                <!-- Semua Kategori -->
+                <a href="{{ route('customer.books.index') }}" class="navbar-category-menu-item">
+                    <div class="navbar-category-content">
+                        <p class="navbar-category-name">Semua Kategori</p>
+                    </div>
+                </a>
+
+                @php
+                    $categories = \App\Models\Book::getCategories();
+                @endphp
+
+                @foreach($categories as $category)
+                <a href="{{ route('customer.books.index', ['categories' => [$category]]) }}" class="navbar-category-menu-item">
+                    <div class="navbar-category-content">
+                        <p class="navbar-category-name">{{ $category }}</p>
+                    </div>
+                </a>
+                @endforeach
+            </div>
         </div>
     </div>
 </nav>

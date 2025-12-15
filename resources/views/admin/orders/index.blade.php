@@ -1,6 +1,6 @@
 <x-admin-layout>
-    <x-HeaderGradient title="Kelola Pesanan" subtitle="Pantau dan kelola semua pesanan">
-    </x-HeaderGradient>
+    <x-AdminHeaderGradient title="Kelola Pesanan" subtitle="Pantau dan kelola semua pesanan">
+    </x-AdminHeaderGradient>
 
     <div class="orders-page">
         <!-- Stats Cards -->
@@ -57,9 +57,7 @@
                         <input type="hidden" name="end_date" value="{{ request('end_date') }}">
                     @endif
                     <div class="orders-filter-select-wrapper">
-                        <svg width="18" height="18" viewBox="0 0 18 18" fill="none" class="orders-filter-icon">
-                            <path d="M2.25 4.5H15.75M4.5 9H13.5M6.75 13.5H11.25" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+
                         <select name="status" class="orders-filter-select" onchange="document.getElementById('statusFilterForm').submit()">
                             @php
                                 $activeStatus = request('status', 'all');
@@ -71,9 +69,7 @@
                             <option value="completed" {{ $activeStatus === 'completed' ? 'selected' : '' }}>Selesai</option>
                             <option value="cancelled" {{ $activeStatus === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
                         </select>
-                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none" class="orders-filter-chevron">
-                            <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                        </svg>
+
                     </div>
                 </form>
             </div>
@@ -154,7 +150,7 @@
                         @endif
                     </div>
 
-                    <!-- Address Section -->
+                    <div>                    <!-- Address Section -->
                     <div class="orders-address-section">
                         <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
                             <path d="M14 6.66667C14 11.3333 8 15.3333 8 15.3333C8 15.3333 2 11.3333 2 6.66667C2 5.07536 2.63214 3.54925 3.75736 2.42403C4.88258 1.29881 6.40869 0.666672 8 0.666672C9.59131 0.666672 11.1174 1.29881 12.2426 2.42403C13.3679 3.54925 14 5.07536 14 6.66667Z" stroke="#4d4d4d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
@@ -163,31 +159,46 @@
                         <p class="orders-address-text">{{ $order->user->address ?? 'Jl. Sudirman No. 123, Jakarta' }}</p>
                     </div>
 
+                    <!-- Payment Method Section -->
+                    <div class="orders-payment-section">
+                        <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
+                            <path d="M14 3.33334H2C1.63181 3.33334 1.33333 3.63182 1.33333 4.00001V12C1.33333 12.3682 1.63181 12.6667 2 12.6667H14C14.3682 12.6667 14.6667 12.3682 14.6667 12V4.00001C14.6667 3.63182 14.3682 3.33334 14 3.33334Z" stroke="#4d4d4d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                            <path d="M1.33333 6.66666H14.6667" stroke="#4d4d4d" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+                        </svg>
+                        <p class="orders-payment-text">
+                            @if($order->payment_method === 'bank_transfer')
+                                Transfer Bank
+                            @elseif($order->payment_method === 'e-wallet')
+                                E-Wallet
+                            @elseif($order->payment_method === 'credit_card')
+                                Kartu Kredit
+                            @elseif($order->payment_method === 'cod')
+                                COD (Bayar di Tempat)
+                            @else
+                                {{ ucwords(str_replace('_', ' ', $order->payment_method)) }}
+                            @endif
+                        </p>
+                    </div>
+                    </div>
+
+
                     <!-- Total & Action Section -->
                     <div class="orders-total-section">
                         <div class="orders-total-info">
                             <p class="orders-total-label">Total Pembayaran</p>
                             <p class="orders-total-value">Rp {{ number_format($order->total_price, 0, ',', '.') }}</p>
                         </div>
-                        <div class="orders-action-dropdown">
-                            <button type="button" class="orders-action-btn" onclick="toggleOrderAction({{ $order->id }})">
-                                <span>{{ $status['label'] }}</span>
-                                <svg width="16" height="16" viewBox="0 0 16 16" fill="none">
-                                    <path d="M4 6L8 10L12 6" stroke="currentColor" stroke-opacity="0.5" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                                </svg>
-                            </button>
-                            <div class="orders-action-dropdown-menu" id="action-menu-{{ $order->id }}">
-                                <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST">
-                                    @csrf
-                                    @method('PATCH')
-                                    <button type="submit" name="status" value="pending" class="orders-action-option">Menunggu</button>
-                                    <button type="submit" name="status" value="processing" class="orders-action-option">Diproses</button>
-                                    <button type="submit" name="status" value="shipped" class="orders-action-option">Dikirim</button>
-                                    <button type="submit" name="status" value="completed" class="orders-action-option">Selesai</button>
-                                    <button type="submit" name="status" value="cancelled" class="orders-action-option">Dibatalkan</button>
-                                </form>
-                            </div>
-                        </div>
+                        <form action="{{ route('admin.orders.updateStatus', $order) }}" method="POST" class="orders-action-form">
+                            @csrf
+                            @method('PATCH')
+                            <select name="status" class="orders-action-select" onchange="this.form.submit()">
+                                <option value="pending" {{ $order->status === 'pending' ? 'selected' : '' }}>Menunggu</option>
+                                <option value="processing" {{ $order->status === 'processing' ? 'selected' : '' }}>Diproses</option>
+                                <option value="shipped" {{ $order->status === 'shipped' ? 'selected' : '' }}>Dikirim</option>
+                                <option value="completed" {{ $order->status === 'completed' ? 'selected' : '' }}>Selesai</option>
+                                <option value="cancelled" {{ $order->status === 'cancelled' ? 'selected' : '' }}>Dibatalkan</option>
+                            </select>
+                        </form>
                     </div>
 
                     <!-- Date -->
@@ -212,29 +223,6 @@
         @endif
     </div>
 
-    @push('scripts')
-        <script>
-    function toggleOrderAction(orderId) {
-        const menu = document.getElementById('action-menu-' + orderId);
-        const allMenus = document.querySelectorAll('.orders-action-dropdown-menu');
 
-        allMenus.forEach(m => {
-            if (m.id !== 'action-menu-' + orderId) {
-                m.classList.remove('show');
-            }
-        });
-
-        menu.classList.toggle('show');
-    }
-
-    // Close dropdown when clicking outside
-    window.onclick = function(event) {
-        if (!event.target.closest('.orders-action-dropdown')) {
-            const allMenus = document.querySelectorAll('.orders-action-dropdown-menu');
-            allMenus.forEach(m => m.classList.remove('show'));
-        }
-    }
-    </script>
-    @endpush
 
 </x-admin-layout>

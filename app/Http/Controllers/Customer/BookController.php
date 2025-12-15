@@ -22,8 +22,8 @@ class BookController extends Controller
             });
         }
 
-        if ($request->has('category') && $request->category != '') {
-            $query->where('category', $request->category);
+        if ($request->has('categories') && is_array($request->categories) && count($request->categories) > 0) {
+            $query->whereIn('category', $request->categories);
         }
 
         if ($request->has('rating') && $request->rating != '') {

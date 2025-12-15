@@ -40,6 +40,7 @@ class OrderController extends Controller
             $query->whereIn('id', $request->cart_ids);
         }
 
+
         $cartItems = $query->get();
 
         if ($cartItems->isEmpty()) {

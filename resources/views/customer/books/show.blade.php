@@ -14,7 +14,7 @@
 
             <div class="book-detail-section-1">
                 <div class="book-detail-image">
-                    @if($book->cover)
+                    @if(Storage::exists('public/' . $book->cover))
                         <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->cover }}">
                     @else
                         <img src="{{ asset($book->cover) }}" alt="{{ $book->title }}">
@@ -130,11 +130,10 @@
                         $isLimited = strlen($book->description) > $limit;
                     @endphp
 
-                    <p class="book-detail-description" id="descriptionText">
-                        {{ Str::limit($book->description, 300, '') }}
-                    </p>
-
                     @if($isLimited)
+                        <p class="book-detail-description" id="descriptionText">
+                        {{ Str::limit($book->description, 300, '') }}
+                        </p>
                         <p class="book-detail-description remainingContent" id="remainingContent">
                         {{ substr($book->description, 300) }}
                     </p>
@@ -164,9 +163,13 @@
                     </button>
                 </form>
 
-                <a href="#" class="book-detail-btn-buy">
-                    Beli Sekarang
-                </a>
+                <form action="{{ route('customer.orders.create') }}" method="POST">
+                    @csrf
+
+                    <input type="hidden" name="cart_ids[]" value="{{ $book->id }}">
+                    <button type="submit" class="book-detail-btn-buy">Beli Sekarang</button>
+                </form>
+
 
                 <div class="book-detail-reviews-section">
                     <div class="book-detail-review-prompt">
@@ -308,7 +311,11 @@
                 @csrf
 
                 <div class="review-modal-book-info">
-                    <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}" class="review-modal-book-cover">
+                    @if (Storage::exists('public/' . $book->cover))
+                        <img src="{{ asset('storage/' . $book->cover) }}" alt="{{ $book->title }}" class="review-modal-book-cover">
+                    @else
+                        <img src="{{ asset($book->cover) }}" alt="{{ $book->title }}" class="review-modal-book-cover">
+                    @endif
                     <div class="review-modal-book-details">
                         <p class="review-modal-book-title">{{ $book->title }}</p>
                         <p class="review-modal-book-author">{{ $book->author }}</p>

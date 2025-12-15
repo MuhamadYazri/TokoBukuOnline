@@ -1,4 +1,4 @@
-<x-admin-layout>
+{{-- <x-admin-layout>
     <x-header-gradient title="Kelola Review" subtitle="Kelola dan moderasi review pengguna" />
     <div class="reviews-page">
         <!-- Stats Cards -->
@@ -133,4 +133,5 @@
         </div>
         @endif
     </div>
-</x-admin-layout>
+</x-admin-layout> --}}
+<h1>Stay Tune</h1>

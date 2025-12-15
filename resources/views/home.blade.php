@@ -32,12 +32,18 @@
                 <div class="swiper-wrapper home-categories-scroll">
                     @foreach ($categories as $key => $name)
                     @php
-                        $book = \App\Models\Book::where('category', $key)->first()->cover;
+                        $bookCover = \App\Models\Book::where('category', $key)->first()->cover;
                     @endphp
                     <div class="swiper-slide">
                         <a href="{{ route('customer.books.index', ['category' => $key]) }}" class="home-category-card">
-                            <div class="home-category-image" style="background-image: url('{{ asset('storage/' . $book) ?? 'img/img-book.webp' }}');">
-                            </div>
+                            @if (Storage::exists('public/' . $bookCover))
+                                <div class="home-category-image" style="background-image: url('{{ asset('storage/' . $bookCover)}}');">
+                                </div>
+                            @else
+                                <div class="home-category-image" style="background-image: url('{{ 'img/img-book.webp' }}');">
+                                </div>
+                            @endif
+
                             <p class="home-category-name">{{ $name }}</p>
 
                             <svg xmlns="http://www.w3.org/2000/svg" width="13" height="13" viewBox="0 0 13 13" fill="none" class="icon-arrow-categories">
