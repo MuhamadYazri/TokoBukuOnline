@@ -60,6 +60,10 @@ class MidtransService
                     'status' => 'success'
                 ])
             ]
+
+            // NOTE: Notification URL harus di-set manual di Midtrans Dashboard
+            // Settings -> Configuration -> Notification URL
+            // URL: https://your-domain.railway.app/api/midtrans/notification
         ];
 
         // pakai preselect method payment pelanggan
