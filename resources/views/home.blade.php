@@ -32,7 +32,7 @@
                 <div class="swiper-wrapper home-categories-scroll">
                     @foreach ($categories as $key => $name)
                     @php
-                        $bookCover = \App\Models\Book::where('category', $key)->first()->cover;
+                        $bookCover = \App\Models\Book::where('category', $key)?->first()->cover;
                     @endphp
                     <div class="swiper-slide">
                         <a href="{{ route('customer.books.index', ['category' => $key]) }}" class="home-category-card">
