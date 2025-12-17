@@ -31,7 +31,9 @@ class CollectionController extends Controller
             ->exists();
 
         if ($exists) {
-            return back()->with('error', 'Buku sudah ada di koleksi Anda!');
+            Collection::where('user_id', Auth::id())
+                ->where('book_id', $validated['book_id'])->delete();
+            return back()->with('success', 'Buku sudah berhasil di hapus dari koleksi Anda!');
         }
 
         Collection::create([
