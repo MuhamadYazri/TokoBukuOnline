@@ -34,7 +34,22 @@ class OrderController extends Controller
 
     public function create(Request $request)
     {
+
+
         $query = Cart::with('book')->where('user_id', Auth::id());
+
+        if ($query->get()->isEmpty() && $request->has('book_id')) {
+            $validated = $request->validate([
+                'book_id' => 'required|exists:books,id',
+            ]);
+
+            Cart::create([
+                'user_id' => Auth::id(),
+                'book_id' => $validated['book_id'],
+                'quantity' => 1,
+            ]);
+        }
+
 
         if ($request->has('cart_ids') && is_array($request->cart_ids)) {
             $query->whereIn('id', $request->cart_ids);

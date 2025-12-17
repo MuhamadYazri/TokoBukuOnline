@@ -170,7 +170,7 @@
                 <form action="{{ route('customer.orders.create') }}" method="POST">
                     @csrf
 
-                    <input type="hidden" name="cart_ids[]" value="{{ $book->id }}">
+                    <input type="hidden" name="book_id" value="{{ $book->id }}">
                     <button type="submit" class="book-detail-btn-buy">Beli Sekarang</button>
                 </form>
 
