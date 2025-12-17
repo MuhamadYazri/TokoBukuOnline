@@ -26,7 +26,7 @@
                         if (Auth::check()){
                             $isLoved = \App\Models\Collection::where('book_id', $book->id)->where('user_id',Auth::id())->get();
                             if($isLoved === null){
-                                $isLoved = 0;;
+                                $isLoved = 0;
                             }
                         }
 
