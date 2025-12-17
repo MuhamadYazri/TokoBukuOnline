@@ -24,7 +24,7 @@
                 <div class="book-detail-actions">
                     @php
                         if (Auth::check()){
-                            $isLoved = \App\Models\Collection::find($book->id, 'book_id')?->with('user_id',Auth::id());
+                            $isLoved = \App\Models\Collection::find($book->id, 'book_id')->with('user_id',Auth::id());
                         } else {
                             $isLoved = false;
                         }
@@ -34,7 +34,7 @@
                     <form class="book-detail-actions" action="{{ route('customer.collections.store') }}" method="POST">
                         @csrf
                         <input type="hidden" name="book_id" value="{{ $book->id }}">
-                        <button class="book-detail-btn-action {{ $isLoved ? 'active' :  '' }}" type="submit">
+                        <button class="book-detail-btn-action {{ $isLoved === null ? '' :  'active' }}" type="submit">
                             <svg width="22" height="18" viewBox="0 0 22 18" fill="none">
                                 <path d="M11 18L9.405 16.5425C3.74 11.395 0 8.0075 0 3.95C0 1.5625 1.87 0 4.4 0C5.808 0 7.15 0.6425 8 1.635C8.85 0.6425 10.192 0 11.6 0C14.13 0 16 1.5625 16 3.95C16 8.0075 12.26 11.395 6.595 16.5425L11 18Z" fill="currentColor"/>
                             </svg>
