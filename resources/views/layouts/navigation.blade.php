@@ -86,18 +86,14 @@
 
             if(window.scrollY > 80){
                 navbar.classList.add('scrolled');
-                console.log('top');
             }else{
                 navbar.classList.remove('scrolled');
-                console.log('not-top');
             }
 
             if(lastScrollPosition < scrollPosition){
                 navbar.classList.add('scrollAtas');
-                console.log('scroll down');
             }else{
                 navbar.classList.remove('scrollAtas');
-                console.log('scroll up');
             }
 
 
