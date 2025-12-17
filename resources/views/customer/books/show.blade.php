@@ -24,7 +24,7 @@
                 <div class="book-detail-actions">
                     @php
                         if (Auth::check()){
-                            $isLoved = \App\Models\Collection::where('book_id', $book->id)->with('user_id',Auth::id())->get();
+                            $isLoved = \App\Models\Collection::where('book_id', $book->id)->where('user_id',Auth::id())->get();
                         } else {
                             $isLoved = false;
                         }
