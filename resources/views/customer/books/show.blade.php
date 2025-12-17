@@ -23,7 +23,12 @@
 
                 <div class="book-detail-actions">
                     @php
-                        $isLoved = \App\Models\Collection::find($book->id, 'book_id')?->with('user_id',Auth::id());
+                        if (Auth::check()){
+                            $isLoved = \App\Models\Collection::find($book->id, 'book_id')?->with('user_id',Auth::id());
+                        } else {
+                            $isLoved = false;
+                        }
+
                     @endphp
 
                     <form class="book-detail-actions" action="{{ route('customer.collections.store') }}" method="POST">
